@@ -1,0 +1,22 @@
+
+@import "variables/variables.scss";
+
+
+body.single-product{
+
+    div.product-type-variable{
+
+        form.cart.dro-variable-products-form{
+            box-shadow: 0px 0px 4px #bebebe;
+            padding: 10px 5px;
+            margin-top: 10px;
+            display:block;
+            width: 96%;
+            margin: 10px auto 20px;
+            // Import Carousel Styles 
+            @import "media/carousel.scss";
+            // Add To Cart , Total, Reset link
+            @import "add-to-cart/add-to-cart";
+        }
+    }
+}

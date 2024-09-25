@@ -1,0 +1,32 @@
+@mixin carousel-indicators(){
+    ol.carousel-indicators{
+        /*border: 1px solid #f00;*/
+        min-height: 20px;
+        margin-bottom: 3px !important;
+        position: relative;
+        >li.active{
+            background-color: #eee !important;
+            >span{
+                color:#544f4f !important;
+            }
+        }
+        >li{
+            &:hover{
+                background-color: #eee!important;
+            }
+            border: 1px solid #ccc;
+            min-height: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            background-color: #fff !important;
+            text-indent:0;
+            >span{
+                color: #000 !important;
+            }
+        }
+    }
+}
+
