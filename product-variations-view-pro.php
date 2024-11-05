@@ -1,46 +1,39 @@
 <?php
-
 /**
- * Plugin Name: Variation Carousel for WooCommerce
- * Plugin URI: https://github.com/younes-dro
- * Description: Display product variations in carousel animation and allow the customer to add several variations to the basket In one time.
+ * Plugin Name: Product Variations View Pro
+ * Plugin URI: https://github.com/younes-dro/product-variations-view-pro
+ * Description: Product Variation View Pro enhances WooCommerce variable products by displaying variations in an intuitive, carousel-style interface. It allows customers to add multiple product variations to the cart in a single action, streamlining the shopping experience.
  * Version: 1.0.0
  * Author: Younes DRO
  * Author URI: https://github.com/younes-dro
- * Text Domain: dro-vcw
+ * Text Domain: product-variations-view
  * Domain Path: /languages
  *
  * WC requires at least: 3.7.0
  * WC tested up to: 5.3.0
  *
- * Copyright: © 2020 Younes DRO
+ * Copyright: © 2024 Younes DRO
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
-
-
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-
-
-
-
 /**
- * DRO_Variation_Carousel class.
+ * Product_Variations_View_Pro class.
  *
  * The main instance of the plugin.
  *
  * @since 1.0.0
  */
-class DRO_Variation_Carousel {
+class Product_Variations_View_Pro {
 
 	/**
 	 * The Single instance of the class.
 	 *
-	 * @var obj DRO_Variation_Carousel object
+	 * @var obj Product_Variations_View_Pro object
 	 */
 	protected static $instance;
 
@@ -56,13 +49,14 @@ class DRO_Variation_Carousel {
 	 *
 	 * @var String
 	 */
-	public $plugin_name = 'Variation Carousel for WooCommerce';
+	public $plugin_name = 'Product Variations View Pro';
+
 	/**
-	 * Instance of the DRO_Variation_Carousel_Dependencies class.
+	 * Instance of the Product_Variations_View_Pro_Dependencies class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var obj DRO_Variation_Carousel_Dependencies object
+	 * @var obj Product_Variations_View_Pro_Dependencies object
 	 */
 	protected static $dependencies;
 
@@ -71,9 +65,9 @@ class DRO_Variation_Carousel {
 
 	/**
 	 *
-	 * @param DRO_Variation_Carousel_Dependencies $dependencies
+	 * @param Product_Variations_View_Pro_Dependencies $dependencies
 	 */
-	public function __construct( DRO_Variation_Carousel_Dependencies $dependencies ) {
+	public function __construct( Product_Variations_View_Pro_Dependencies $dependencies ) {
 
 		self::$dependencies = $dependencies;
 
@@ -86,18 +80,17 @@ class DRO_Variation_Carousel {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
 
 		add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
-
 	}
 
 	/**
-	 * Gets the main DRO_Variation_Carousel instance.
+	 * Gets the main Product_Variations_View_Pro instance.
 	 *
-	 * Ensures only one instance of DRO_Variation_Carousel is loaded or can be loaded.
+	 * Ensures only one instance of Product_Variations_View_Pro is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
-	 * @return DRO_Variation_Carousel instance
+	 * @return Product_Variations_View_Pro instance
 	 */
-	public static function start( DRO_Variation_Carousel_Dependencies $dependencies ) {
+	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ) {
 		if ( null === self::$instance ) {
 			self::$instance = new self( $dependencies );
 		}
@@ -112,7 +105,7 @@ class DRO_Variation_Carousel {
 	 */
 	public function __clone() {
 		$cloning_message = sprintf(
-			esc_html__( 'You cannot clone instances of %s.', 'dro-vcw' ),
+			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view' ),
 			get_class( $this )
 		);
 		_doing_it_wrong( __FUNCTION__, $cloning_message, $this->version );
@@ -125,10 +118,10 @@ class DRO_Variation_Carousel {
 	 */
 	public function __wakeup() {
 		$unserializing_message = sprintf(
-			esc_html__( 'You cannot clone instances of %s.', 'dro-vcw' ),
+			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view' ),
 			get_class( $this )
 		);
-				_doing_it_wrong( __FUNCTION__, $unserializing_message, $this->version );
+		_doing_it_wrong( __FUNCTION__, $unserializing_message, $this->version );
 	}
 
 	/**
@@ -142,7 +135,7 @@ class DRO_Variation_Carousel {
 
 			$this->deactivate_plugin();
 
-			wp_die( $this->plugin_name . esc_html__( ' could not be activated. ', 'dro-vcw' ) . self::$dependencies->get_php_notice() );
+			wp_die( $this->plugin_name . esc_html__( ' could not be activated. ', 'product-variations-view' ) . self::$dependencies->get_php_notice() );
 
 		}
 	}
@@ -160,7 +153,7 @@ class DRO_Variation_Carousel {
 			$this->add_admin_notice(
 				'bad_environment',
 				'error',
-				$this->plugin_name . esc_html__( ' has been deactivated. ', 'dro-vcw' ) . self::$dependencies->get_php_notice()
+				$this->plugin_name . esc_html__( ' has been deactivated. ', 'product-variations-view' ) . self::$dependencies->get_php_notice()
 			);
 		}
 	}
@@ -205,12 +198,12 @@ class DRO_Variation_Carousel {
 
 		if ( ! self::$dependencies->check_wc_version() ) {
 
-			 $this->add_admin_notice( 'update_woocommerce', 'error', self::$dependencies->get_wc_notice() );
+			$this->add_admin_notice( 'update_woocommerce', 'error', self::$dependencies->get_wc_notice() );
 		}
 	}
 
 	/**
-	 * Displays any admin notices added with \DRO_Variation_Carousel::add_admin_notice()
+	 * Displays any admin notices added with \Product_Variations_View_Pro::add_admin_notice()
 	 *
 	 * @since 1.0.0
 	 */
@@ -238,7 +231,7 @@ class DRO_Variation_Carousel {
 		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
 
 		if ( ! is_admin() ) {
-			new DRO_Variation_Carousel_Display();
+			new Product_Variations_View_Pro_Display();
 		}
 	}
 
@@ -252,7 +245,7 @@ class DRO_Variation_Carousel {
 	/*
 	-----------------------------------------------------------------------------------*/
 	/*
-	  Helper Functions                                                                 */
+		Helper Functions                                                                 */
 	/*-----------------------------------------------------------------------------------*/
 
 		/**
@@ -294,7 +287,7 @@ class DRO_Variation_Carousel {
 		 * @codeCoverageIgnore
 		 */
 	public static function register_autoloader() {
-		spl_autoload_register( array( 'DRO_Variation_Carousel', 'autoloader' ) );
+		spl_autoload_register( array( 'Product_Variations_View_Pro', 'autoloader' ) );
 	}
 
 		/**
@@ -310,15 +303,14 @@ class DRO_Variation_Carousel {
 			require_once $file;
 		}
 	}
-
 }
 
 /**
- * Returns the main instance of DRO_Variation_Carousel.
+ * Returns the main instance of Product_Variations_View_Pro.
  */
-function DRO_Variation_Carousel() {
-	DRO_Variation_Carousel::register_autoloader();
-	return DRO_Variation_Carousel::start( new DRO_Variation_Carousel_Dependencies() );
+function Product_Variations_View_Pro() {
+	Product_Variations_View_Pro::register_autoloader();
+	return Product_Variations_View_Pro::start( new Product_Variations_View_Pro_Dependencies() );
 }
 
-DRO_Variation_Carousel();
+Product_Variations_View_Pro();
