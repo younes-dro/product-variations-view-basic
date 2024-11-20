@@ -66,6 +66,8 @@ class Product_Variations_View_Pro {
 		add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
 
         add_action( 'init', array( $this, 'load_textdomain' ) );
+
+		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
 	}
 
 	/**
@@ -198,9 +200,7 @@ class Product_Variations_View_Pro {
 		if ( ! self::$dependencies->is_compatible() ) {
 			return;
 		}
-		// Load the front end template
-		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
-
+		
 		if ( ! is_admin() ) {
 			new Product_Variations_View_Pro_Display();
 		}
@@ -210,6 +210,7 @@ class Product_Variations_View_Pro {
 	 * Include template functions and hooks.
 	 */
 	public function frontend_includes() {
+		
 		require_once  INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 		require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
 	}

@@ -54,7 +54,7 @@ function register_autoloader() {
 			$class = strtolower( str_replace( '_', '-', $class_name ) );
 			$file  = plugin_dir_path( __FILE__ ) . '/includes/class-' . $class . '.php';
 			if ( file_exists( $file ) ) {
-							require_once $file;
+				require_once $file;
 			}
 		}
 	);
