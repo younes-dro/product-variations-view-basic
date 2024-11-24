@@ -101,8 +101,8 @@ if ( ! function_exists( 'wc_cvp_template_variation_data' ) ) {
 		wc_get_template(
 			'single-product/cvp/cvp-variation-data.php',
 			array( 'variation' => $current_variation ),
-			'',
-			DRO_Variation_Carousel()->plugin_path() . '/templates/'
+			'woocommerce',
+			Product_Variations_View_Pro()->plugin_path() . '/templates/'
 		);
 	}
 }
@@ -116,8 +116,8 @@ if ( ! function_exists( 'wc_cvp_template_carousel_indicators' ) ) {
 			array(
 				'indicators' => $indicators,
 			),
-			'',
-			DRO_Variation_Carousel()->plugin_path() . '/templates/'
+			'woocommerce',
+			Product_Variations_View_Pro()->plugin_path() . '/templates/'
 		);
 	}
 }
@@ -133,8 +133,8 @@ if ( ! function_exists( 'wc_cvp_template_reset_button' ) ) {
 			array(
 				'product' => $product,
 			),
-			'',
-			DRO_Variation_Carousel()->plugin_path() . '/templates/'
+			'woocommerce',
+			Product_Variations_View_Pro()->plugin_path() . '/templates/'
 		);
 	}
 }
@@ -144,14 +144,14 @@ if ( ! function_exists( 'wc_cvp_template_add_to_cart_wrap' ) ) {
 	function wc_cvp_template_add_to_cart_wrap() {
 
 		global $product;
-
+		// consider to use wc_get_template_html()
 		wc_get_template(
 			'single-product/add-to-cart/cvp-add-to-cart-wrap.php',
 			array(
 				'product' => $product,
 			),
-			'',
-			DRO_Variation_Carousel()->plugin_path() . '/templates/'
+			'woocommerce',
+			Product_Variations_View_Pro()->plugin_path() . '/templates/'
 		);
 	}
 }
