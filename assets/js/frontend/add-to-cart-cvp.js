@@ -51,8 +51,11 @@ console.log(wc_cvp_params);
         e.preventDefault();
         var itemsToAdd = [];
 
-        $('input[name^="quantity["]').each(function() {
+        $('input[name^="cvp-quantity["]').each(function() {
+            alert( 'Variaton id : ' + $(this).data('variation-id') ) ;
+            
             var qty = parseInt($(this).val(), 10);
+        
             if (qty > 0) {
                 itemsToAdd.push({
                     variation_id: $(this).data('variation-id'),
@@ -60,18 +63,22 @@ console.log(wc_cvp_params);
                 });
             }
         });
-
+        // alert(itemsToAdd.length);
+        console.log(wc_cvp_params.ajax_url);
         if (itemsToAdd.length > 0) {
             $.ajax({
                 url: wc_cvp_params.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'wc_cvp_add_to_cart',
-                    products: itemsToAdd
+                    products: itemsToAdd,
+                    'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
                 success: function(response) {
+                    console.log( response);
                     if (response.success) {
                         // Update UI: e.g., cart count, messages
+                        
                         alert('Added to cart!');
                     }
                 },
@@ -104,7 +111,7 @@ console.log(wc_cvp_params);
 
         this.initialize = function () {
 
-            $('span.cvp-total').append('0€');
+           // $('span.cvp-total').append('0€');
         };
     }
 

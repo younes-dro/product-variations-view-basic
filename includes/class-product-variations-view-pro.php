@@ -201,16 +201,15 @@ class Product_Variations_View_Pro {
 			return;
 		}
 		
-		if ( ! is_admin() ) {
-			new Product_Variations_View_Pro_Display();
-		}
+
 	}
 
 	/**
 	 * Include template functions and hooks.
 	 */
 	public function frontend_includes() {
-		
+		// TODO: Implement singleton pattern.
+		new Product_Variations_View_Pro_Display();
 		require_once  INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 		require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
 	}

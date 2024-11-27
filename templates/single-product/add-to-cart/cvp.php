@@ -134,16 +134,32 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						</div>
 						<div class="row">
 							<div class="col-12">
-								<?php
-								woocommerce_quantity_input(
-									array(
-										'input_name'  => 'quantity[]',
-										'min_value'   => 0,
-										'input_value' => '0',
-										'max_value'   => $product->backorders_allowed() ? '' : $product->get_stock_quantity(),
-									)
-								);
+							<?php
+								$input_id = uniqid( 'quantity_' ); // Unique ID for the input field
+
+								// TODO : use product name 
+								$label = ! empty( $variation['attributes'] ) 
+									? sprintf( esc_html__( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $attribute_name ) )
+									: esc_html__( 'Quantity', 'woocommerce' );
 								?>
+
+								<div class="quantity">
+									<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $label ); ?></label>
+									<input 
+										type="number" 
+										id="<?php echo esc_attr( $input_id ); ?>" 
+										class="input-text qty text" 
+										name="cvp-quantity[]" 
+										value="0" 
+										min="0" 
+										max="<?php echo esc_attr( $product->backorders_allowed() ? '' : $product->get_stock_quantity() ); ?>" 
+										step="1" 
+										placeholder="0" 
+										data-variation-id="<?php echo esc_attr( $variation['variation_id'] ); ?>" 
+										aria-label="<?php echo esc_attr( $label ); ?>" 
+									/>
+								</div>
+
 							</div>
 						</div>
 						<?php

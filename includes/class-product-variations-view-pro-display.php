@@ -20,8 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Product_Variations_View_Pro_Display {
 
     function __construct() {
+        add_filter( 'woocommerce_quantity_input_args', array ( $this, 'add_custom_variation_id_to_quantity_input' ), 10, 2 );
         add_action( 'init', array( $this, 'remove_woocommerce_variable_add_to_cart' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
+        add_action( 'wp_ajax_wc_cvp_add_to_cart', array ( $this, 'cvp_add_bulk_variation' ) );
+        add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
     }
 
     public function remove_woocommerce_variable_add_to_cart() {
@@ -101,10 +104,31 @@ class Product_Variations_View_Pro_Display {
                     'prices_include_tax'                 => esc_attr( get_option( 'woocommerce_prices_include_tax' ) ),
                     'tax_display_shop'                   => esc_attr( get_option( 'woocommerce_tax_display_shop' ) ),
                     'calc_taxes'                         => esc_attr( get_option( 'woocommerce_calc_taxes' ) ),
+                    'ajax_url'                           => admin_url( 'admin-ajax.php' ),
+                    'cvp_nonce'                          => wp_create_nonce( 'cvp-nonce')
                 )
             );
 
             wp_localize_script( 'wc-add-to-cart-cvp', 'wc_cvp_params', $params );
         }
+    }
+
+    
+function add_custom_variation_id_to_quantity_input( $args, $product ) {
+    
+    if ( isset( $args['data-variation-id'] ) ) {
+        $args['custom_attributes'] = array_merge(
+            $args['custom_attributes'] ?? [],
+            array( 'data-variation-id' => $args['data-variation-id'] )
+        );
+    }
+    return $args;
+}
+
+
+    public function cvp_add_bulk_variation(){
+
+        error_log( print_r ( $_POST, true));
+        exit();
     }
 }
