@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Product_Variations_View_Pro_Display {
 
     function __construct() {
-        add_filter( 'woocommerce_quantity_input_args', array ( $this, 'add_custom_variation_id_to_quantity_input' ), 10, 2 );
+
         add_action( 'init', array( $this, 'remove_woocommerce_variable_add_to_cart' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
         add_action( 'wp_ajax_wc_cvp_add_to_cart', array ( $this, 'cvp_add_bulk_variation' ) );
@@ -105,7 +105,7 @@ class Product_Variations_View_Pro_Display {
                     'tax_display_shop'                   => esc_attr( get_option( 'woocommerce_tax_display_shop' ) ),
                     'calc_taxes'                         => esc_attr( get_option( 'woocommerce_calc_taxes' ) ),
                     'ajax_url'                           => admin_url( 'admin-ajax.php' ),
-                    'cvp_nonce'                          => wp_create_nonce( 'cvp-nonce')
+                    'cvp_nonce'                          => wp_create_nonce( 'cvp_add_to_cart_nonce')
                 )
             );
 
@@ -113,22 +113,58 @@ class Product_Variations_View_Pro_Display {
         }
     }
 
+
+
+    public function cvp_add_bulk_variation() {
+        // Verify nonce for security
+        if ( ! isset( $_POST['cvp_nonce'] ) || ! wp_verify_nonce( $_POST['cvp_nonce'], 'cvp_add_to_cart_nonce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid nonce.', 'product-variations-view' ) ) );
+            wp_die();
+        }
     
-function add_custom_variation_id_to_quantity_input( $args, $product ) {
+        // Check if products are passed
+        if ( ! isset( $_POST['products'] ) || ! is_array( $_POST['products'] ) ) {
+            wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view' ) ) );
+            wp_die();
+        }
     
-    if ( isset( $args['data-variation-id'] ) ) {
-        $args['custom_attributes'] = array_merge(
-            $args['custom_attributes'] ?? [],
-            array( 'data-variation-id' => $args['data-variation-id'] )
-        );
-    }
-    return $args;
-}
-
-
-    public function cvp_add_bulk_variation(){
-
-        error_log( print_r ( $_POST, true));
+        $products = $_POST['products'];
+        $cart_items_added = array();
+    
+        foreach ( $products as $product ) {
+            if ( isset( $product['variation_id'], $product['quantity'] ) ) {
+                $variation_id = intval( $product['variation_id'] );
+                $quantity     = intval( $product['quantity'] );
+    
+                // Check if the variation exists
+                $variation = wc_get_product( $variation_id );
+                if ( ! $variation || 'variation' !== $variation->get_type() ) {
+                    continue; // Skip invalid or non-variation products
+                }
+    
+                // Add the product to the cart
+                $added = WC()->cart->add_to_cart( $variation->get_parent_id(), $quantity, $variation_id );
+                if ( $added ) {
+                    $cart_items_added[] = array(
+                        'variation_id' => $variation_id,
+                        'quantity'     => $quantity,
+                        'cart_item_key' => $added,
+                    );
+                }
+            }
+        }
+    
+        // Respond with the results
+        if ( ! empty( $cart_items_added ) ) {
+            wp_send_json_success( array(
+                'message' => __( 'Products added to cart successfully.', 'product-variations-view' ),
+                'cart_items' => $cart_items_added,
+            ) );
+        } else {
+            wp_send_json_error( array( 'message' => __( 'No products were added to the cart.', 'product-variations-view' ) ) );
+        }
+    
         exit();
     }
+    
 }

@@ -50,21 +50,15 @@ console.log(wc_cvp_params);
     $('#cvp-add-to-cart-button').on('click', function(e) {
         e.preventDefault();
         var itemsToAdd = [];
-
-        $('input[name^="cvp-quantity["]').each(function() {
-            alert( 'Variaton id : ' + $(this).data('variation-id') ) ;
-            
-            var qty = parseInt($(this).val(), 10);
-        
+        $('input[name^="cvp-quantity"]').each(function() {
+            var qty = parseInt($(this).val(), 10); 
             if (qty > 0) {
                 itemsToAdd.push({
-                    variation_id: $(this).data('variation-id'),
+                    variation_id: $(this).attr('data-variation-id'),
                     quantity: qty
                 });
             }
         });
-        // alert(itemsToAdd.length);
-        console.log(wc_cvp_params.ajax_url);
         if (itemsToAdd.length > 0) {
             $.ajax({
                 url: wc_cvp_params.ajax_url,
@@ -75,7 +69,7 @@ console.log(wc_cvp_params);
                     'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
                 success: function(response) {
-                    console.log( response);
+                    console.log();
                     if (response.success) {
                         // Update UI: e.g., cart count, messages
                         
@@ -94,36 +88,9 @@ console.log(wc_cvp_params);
 
 
 (function($) {
-    $('#cvp-reset').on('click', function() {
-        $('input[name^="quantity["]').val(0);
+    $('#cvp-reset').on('click', function(e) {
+        e.preventDefault();
+        $('input[name^="cvp-quantity"]').val(0);
         updateTotalPrice();
     });
-})(jQuery);
-
-
-
-
-
-
-(function ($) {
-
-    function CVP() {
-
-        this.initialize = function () {
-
-           // $('span.cvp-total').append('0€');
-        };
-    }
-
-    $(document).ready(function () {
-
-        $.fn.cvp_form = function () {
-
-            var cvp = new CVP();
-            cvp.initialize();
-        };
-
-        $('.cvp-from').cvp_form();
-    });
-
 })(jQuery);
