@@ -94,3 +94,32 @@ console.log(wc_cvp_params);
         updateTotalPrice();
     });
 })(jQuery);
+
+
+(function ($) {
+    $(document).ready(function () {
+        // Listen for Bootstrap carousel slide event
+        $('#variable-products-carousel').on('slide.bs.carousel', function (event) {
+
+            // Get the next active slide
+            var $nextSlide = $(event.relatedTarget);
+
+            // Fetch the variation image URL
+            var variationImage = $nextSlide.find('.attribute-thumb').attr('src');
+
+            // Update the main product gallery image
+            var $mainGalleryImage = $('.woocommerce-product-gallery__image img');
+
+            if (variationImage) {
+                $mainGalleryImage.attr('src', variationImage); // Update the src
+                $mainGalleryImage.attr('srcset', variationImage); // Update the srcset for responsive images
+                $mainGalleryImage.attr('alt', 'Selected Variation Image'); // Set alt attribute
+            } else {
+                // Revert to the default image if no variation image is found
+                $mainGalleryImage.attr('src', $mainGalleryImage.data('default-src'));
+                $mainGalleryImage.attr('srcset', $mainGalleryImage.data('default-srcset'));
+            }
+        });
+    });
+})(jQuery);
+
