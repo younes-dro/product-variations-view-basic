@@ -20,7 +20,7 @@ console.log(wc_cvp_params);
     // Function to update total price
     function updateTotalPrice() {
         var total = 0;
-        $('input[name^="quantity["]').each(function() {
+        $('input[name^="cvp-quantity"]').each(function() {
             var quantity = parseInt($(this).val(), 10);
             var price = parseFloat($(this).closest('.carousel-item').find('.display_price').val());
             if (!isNaN(quantity) && !isNaN(price)) {
@@ -36,7 +36,7 @@ console.log(wc_cvp_params);
     }
 
     // Event binding for quantity changes
-    $(document).on('change', 'input[name^="quantity["]', function() {
+    $(document).on('change', 'input[name^="cvp-quantity"]', function() {
         updateTotalPrice();
     });
 
