@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 		?>
 		<div class="row">
 			<div class="col-6">
-				<span class="cvp-total">Total</span>
+				<span class="cvp-total"><?php esc_html_e( 'Total: ', 'product-variations-view' )?></span>
 			</div>
 		</div>
 		<div class="row">
@@ -52,7 +52,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 	} else {
 
-		printf( '<div class="row"><div class="col-12"><p class="woocommerce-info">%s</p></div></div>', esc_html__( 'This product is currently unavailable.', 'dro-wcvc' ) );
+		printf( '<div class="row"><div class="col-12"><p class="woocommerce-info">%s</p></div></div>', esc_html__( 'This product is currently unavailable.', 'product-variations-view' ) );
 	}
 	?>
 

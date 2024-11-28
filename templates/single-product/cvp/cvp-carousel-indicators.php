@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$available_variations = sprintf( '%1$s %2$s %3$s', esc_html__( 'Available in ', 'dro-wcvc' ), $indicators, esc_html__( 'variations', 'dro-wcvc' ) );
+$available_variations = sprintf( '%1$s %2$s %3$s', esc_html__( 'Available in ', 'product-variations-view' ), $indicators, esc_html__( 'variations', 'product-variations-view' ) );
 echo '<h6 class="available-variations">' . $available_variations . '</h6>';
 
 ?>

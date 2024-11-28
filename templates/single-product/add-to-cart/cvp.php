@@ -64,12 +64,12 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								<a class="carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
 									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 									
-									<span class="sr-only"><?php esc_html_e( 'Previous', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view' ); ?></span>
 								   
 								</a>
 								<a class="carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Next', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view' ); ?></span>
 								</a>                                
 							</div>                          
 						</div>
@@ -104,7 +104,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						<?php if ( ! empty( trim( $variation['variation_description'] ) ) ) : ?>
 							<div class="row description-variation-wrapper">
 								<div class="col-12">
-									<a href="#" class="description-toggle"><?php esc_html_e( 'Description', 'dro-wcvc' ); ?><span class="toggle"></span></a>
+									<a href="#" class="description-toggle"><?php esc_html_e( 'Description', 'product-variations-view' ); ?><span class="toggle"></span></a>
 								</div>
 								<div class="col-12 description-variation-container">
 									<p class="description-variation"><?php echo wp_kses( $variation['variation_description'], array( '' ) ); ?></p>
@@ -197,13 +197,13 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							<div class="col-6 carousel-nav">
 								<a  class="float-left carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
 									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Previous', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view' ); ?></span>
 								</a>
 							</div>
 							<div class="col-6  carousel-nav">
 								<a  class="float-right carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Next', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view' ); ?></span>
 								</a>
 							</div>
 						</div>                        -->
