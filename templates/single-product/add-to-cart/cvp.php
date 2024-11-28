@@ -148,7 +148,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 									<input 
 										type="number" 
 										id="<?php echo esc_attr( $input_id ); ?>" 
-										class="input-text qty text" 
+										class="input-text text" 
 										name="cvp-quantity[]" 
 										value="0" 
 										min="0" 
