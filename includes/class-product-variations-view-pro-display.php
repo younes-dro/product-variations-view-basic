@@ -10,6 +10,8 @@
  * @email    younesdro@gmail.com
  */
 
+use function GuzzleHttp\Psr7\try_fopen;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -84,18 +86,18 @@ class Product_Variations_View_Pro_Display {
 		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
 		wp_enqueue_script( 'bootstrap-js' );
 
-		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp.js', array( 'jquery', 'bootstrap-js' ), Product_Variations_View_Pro()->version, true );
+		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__), true );
 		wp_enqueue_script( 'wc-add-to-cart-cvp' );
 
-		$params = apply_filters(
-			'woocommerce_cvp_add_to_cart_parameters',
-			array(
-				'i18n_total'       => esc_html__( 'Total: ', 'product-variations-view' ),
-				'i18n_empty_error' => esc_html__( 'Please select at least 1 item to continue&hellip;', 'product-variations-view' ),
-				'currency_symbol'  => get_woocommerce_currency_symbol(),
-				'ajax_url'         => admin_url( 'admin-ajax.php' ),
-				'cvp_nonce'        => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
-			)
+		$params = array(
+			'currency_symbol'                => get_woocommerce_currency_symbol(),
+			'currency_format_decimal_sep'    => wc_get_price_decimal_separator(),
+			'currency_format_thousand_sep'   => wc_get_price_thousand_separator(),
+			'currency_format_num_decimals'   => wc_get_price_decimals(),
+			'currency_position'              => get_option( 'woocommerce_currency_pos' ),
+			'currency_format_trim_zeros'     => get_option( 'woocommerce_price_trim_zeros', 'no' ),
+			'ajax_url'         => admin_url( 'admin-ajax.php' ),
+			'cvp_nonce'        => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
 		);
 
 		wp_localize_script( 'wc-add-to-cart-cvp', 'wc_cvp_params', $params );
@@ -109,6 +111,9 @@ class Product_Variations_View_Pro_Display {
 	 * @since 1.0.0
 	 */
 	public function cvp_add_bulk_variation() {
+		// var_dump( $_POST);
+		// error_log( print_r( $_POST, true));
+		// exit();
 		if ( ! isset( $_POST['cvp_nonce'] ) || ! wp_verify_nonce( $_POST['cvp_nonce'], 'cvp_add_to_cart_nonce' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid nonce.', 'product-variations-view' ) ) );
 		}

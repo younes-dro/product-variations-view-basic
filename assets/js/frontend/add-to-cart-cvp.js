@@ -1,13 +1,8 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* global wc_cvp_params */
 
 console.log(wc_cvp_params);
 
 (function ($) {
-
     $('a.description-toggle').on('click', function (e) {
         e.preventDefault();
         $('div.description-variation-container').slideToggle();
@@ -15,28 +10,156 @@ console.log(wc_cvp_params);
     });
 })(jQuery);
 
+(function ($) {
 
-(function($) {
-    // Function to update total price
-    function updateTotalPrice() {
-        var total = 0;
-        $('input[name^="cvp-quantity"]').each(function() {
-            var quantity = parseInt($(this).val(), 10);
-            var price = parseFloat($(this).closest('.carousel-item').find('.display_price').val());
-            if (!isNaN(quantity) && !isNaN(price)) {
-                total += quantity * price;
+/**
+ * Updates the total price dynamically based on quantities and prices.
+ */
+function updateTotalPrice() {
+    let total = 0;
+
+    // Iterate through each quantity input
+    $('input[name^="cvp-quantity"]').each(function () {
+        const qty = parseInt($(this).val(), 10);
+
+        if (qty > 0) {
+            // Fetch the price from the hidden input for this variation
+            const priceInput = $(this).closest('.carousel-content').find('input.display_price');
+            console.log("price input " + priceInput);
+            if (priceInput.length === 0) {
+                console.error('Price input not found for:', $(this));
+                return;
             }
-        });
-        $('.cvp-total').text(formatPrice(total));
+
+            const priceString = priceInput.val();
+            console.log('priceString ' + priceString);
+            if (!priceString) {
+                console.error('Price string is empty or invalid for:', priceInput);
+                return;
+            }
+
+            // Parse the price correctly
+            const price = parsePrice(priceString);
+            console.log('Price ' + price);
+            if (!isNaN(price)) {
+                total += price * qty;
+            } else {
+                console.error('Invalid price detected:', priceString);
+            }
+        }
+    });
+
+    // Format the total price for display
+    const formattedTotal = formatPrice(total);
+
+    // Update the total price in the UI
+    $('.cvp-total').text(formattedTotal);
+}
+
+/**
+ * Formats a number to a currency string based on WooCommerce settings.
+ * @param {number} price - The price to format.
+ * @returns {string} - Formatted price string.
+ */
+function formatPrice(price) {
+    const symbol = wc_cvp_params.currency_symbol || '$';
+    const decimals = parseInt(wc_cvp_params.currency_format_num_decimals, 10) || 2;
+    const decimalSeparator = wc_cvp_params.currency_format_decimal_sep || '.';
+    const thousandSeparator = wc_cvp_params.currency_format_thousand_sep || ',';
+    const position = wc_cvp_params.currency_position || 'left';
+    const trimZeros = wc_cvp_params.currency_format_trim_zeros === 'yes';
+
+    // Ensure the number is rounded to the correct number of decimals
+    let formattedPrice = price.toFixed(decimals);
+
+    if (trimZeros) {
+        const regex = new RegExp(decimalSeparator + '0{' + decimals + '}$');
+        formattedPrice = formattedPrice.replace(regex, '');
     }
 
-    // Utilize the passed currency symbol and formatting
-    function formatPrice(price) {
-        return wc_cvp_params.currency_symbol + price.toFixed(wc_cvp_params.currency_format_num_decimals);
+    // Add thousand separators
+    const parts = formattedPrice.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+    formattedPrice = parts.join(decimalSeparator);
+
+    // Add currency symbol based on position
+    switch (position) {
+        case 'left':
+            return symbol + formattedPrice;
+        case 'right':
+            return formattedPrice + symbol;
+        case 'left_space':
+            return symbol + ' ' + formattedPrice;
+        case 'right_space':
+            return formattedPrice + ' ' + symbol;
+        default:
+            return formattedPrice;
     }
+}
+
+
+
+/**
+ * Parses a price string into a number, respecting WooCommerce settings.
+ * @param {string} price - The price string to parse.
+ * @returns {number} - Parsed number.
+ */
+/**
+ * Parses a price string into a number, respecting WooCommerce settings.
+ * @param {string} price - The price string to parse.
+ * @returns {number} - Parsed number.
+ */
+/**
+ * Parses a price string into a number, respecting WooCommerce settings.
+ * @param {string} price - The price string to parse.
+ * @returns {number} - Parsed number.
+ */
+/**
+ * Parses a price string into a number, respecting WooCommerce settings.
+ * @param {string} price - The price string to parse.
+ * @returns {number} - Parsed number.
+ */
+function parsePrice(price) {
+    console.log('Original price input:', price);
+
+    const decimalSeparator = wc_cvp_params.currency_format_decimal_sep || '.';
+    const thousandSeparator = wc_cvp_params.currency_format_thousand_sep || ',';
+
+    // Handle edge case: If the price is already numeric
+    if (!isNaN(price)) {
+        return parseFloat(price);
+    }
+
+    // Remove thousand separators if they exist
+    let priceWithoutThousand = price;
+    if (price.includes(thousandSeparator)) {
+        priceWithoutThousand = price.split(thousandSeparator).join('');
+    }
+    console.log('Price without thousand separator:', priceWithoutThousand);
+
+    // Replace the decimal separator with a dot for proper parsing
+    const normalizedPrice = priceWithoutThousand.replace(decimalSeparator, '.');
+    console.log('Normalized price (decimal separator replaced):', normalizedPrice);
+
+    // Convert the string to a float
+    const parsedPrice = parseFloat(normalizedPrice);
+    console.log('Parsed price (as float):', parsedPrice);
+
+    // Handle fallback if parsing fails
+    if (isNaN(parsedPrice)) {
+        console.error('Failed to parse price:', price);
+        return 0; // Default to 0
+    }
+
+    return parsedPrice;
+}
+
+
+
+
 
     // Event binding for quantity changes
-    $(document).on('change', 'input[name^="cvp-quantity"]', function() {
+    $(document).on('change', 'input[name^="cvp-quantity"]', function () {
         updateTotalPrice();
     });
 
@@ -44,14 +167,12 @@ console.log(wc_cvp_params);
     updateTotalPrice();
 })(jQuery);
 
-
-
-(function($) {
-    $('#cvp-add-to-cart-button').on('click', function(e) {
+(function ($) {
+    $('#cvp-add-to-cart-button').on('click', function (e) {
         e.preventDefault();
         var itemsToAdd = [];
-        $('input[name^="cvp-quantity"]').each(function() {
-            var qty = parseInt($(this).val(), 10); 
+        $('input[name^="cvp-quantity"]').each(function () {
+            var qty = parseInt($(this).val(), 10);
             if (qty > 0) {
                 itemsToAdd.push({
                     variation_id: $(this).attr('data-variation-id'),
@@ -69,16 +190,17 @@ console.log(wc_cvp_params);
                     products: itemsToAdd,
                     'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
-                success: function(response) {
+                success: function (response) {
+                    console.log(response);
+                    // return;
                     if (response.success) {
-                        // TODO: Update UI (e.g., cart count, messages, link to cart...)
                         alert('Added to cart!');
                     } else {
                         $('.cvp-error').html('<p class="woocommerce-error">' + response.data.message + '</p>');
                         $('input[name^="cvp-quantity"]').val('');
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log('Error adding to cart:', error);
                     $('.cvp-error').html('<p class="woocommerce-error">An unexpected error occurred. Please try again.</p>');
                 }
@@ -89,41 +211,29 @@ console.log(wc_cvp_params);
     });
 })(jQuery);
 
-
-
-(function($) {
-    $('#cvp-reset').on('click', function(e) {
+(function ($) {
+    $('#cvp-reset').on('click', function (e) {
         e.preventDefault();
         $('input[name^="cvp-quantity"]').val(0);
         updateTotalPrice();
     });
 })(jQuery);
 
-
 (function ($) {
     $(document).ready(function () {
-        // Listen for Bootstrap carousel slide event
         $('#variable-products-carousel').on('slide.bs.carousel', function (event) {
-
-            // Get the next active slide
             var $nextSlide = $(event.relatedTarget);
-
-            // Fetch the variation image URL
             var variationImage = $nextSlide.find('.attribute-thumb').attr('src');
-
-            // Update the main product gallery image
             var $mainGalleryImage = $('.woocommerce-product-gallery__image img');
 
             if (variationImage) {
-                $mainGalleryImage.attr('src', variationImage); // Update the src
-                $mainGalleryImage.attr('srcset', variationImage); // Update the srcset for responsive images
-                $mainGalleryImage.attr('alt', 'Selected Variation Image'); // Set alt attribute
+                $mainGalleryImage.attr('src', variationImage);
+                $mainGalleryImage.attr('srcset', variationImage);
+                $mainGalleryImage.attr('alt', 'Selected Variation Image');
             } else {
-                // Revert to the default image if no variation image is found
                 $mainGalleryImage.attr('src', $mainGalleryImage.data('default-src'));
                 $mainGalleryImage.attr('srcset', $mainGalleryImage.data('default-srcset'));
             }
         });
     });
 })(jQuery);
-
