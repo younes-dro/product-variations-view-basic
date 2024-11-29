@@ -125,9 +125,31 @@ class Product_Variations_View_Pro_Display {
 				$variation_id = intval( $product['variation_id'] );
 				$quantity     = intval( $product['quantity'] );
 				$variation    = wc_get_product( $variation_id );
+
 				if ( ! $variation || 'variation' !== $variation->get_type() ) {
 					continue;
 				}
+
+				// Check if any attribute is set to "Any" (undefined attribute).
+				$variation_attributes = $variation->get_attributes();
+				$missing_attributes   = array();
+				foreach ( $variation_attributes as $attribute => $value ) {
+					if ( strtolower( $value ) === 'any' || empty( $value ) ) {
+						$missing_attributes[] = wc_attribute_label( $attribute, $variation );
+					}
+				}
+
+				if ( ! empty( $missing_attributes ) ) {
+					wp_send_json_error(
+						array(
+							'message' => sprintf(
+								__( 'The following attributes are missing: %s. Please define them or contact the administrator.', 'product-variations-view' ),
+								implode( ', ', $missing_attributes )
+							),
+						)
+					);
+				}
+
 				$added = WC()->cart->add_to_cart( $variation->get_parent_id(), $quantity, $variation_id );
 				if ( $added ) {
 					$cart_items_added[] = array(
