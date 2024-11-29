@@ -206,6 +206,10 @@ class Product_Variations_View_Pro {
 		if ( ! self::$dependencies->is_compatible() ) {
 			return;
 		}
+		if ( is_admin() ) {
+			// TODO: Implement singleton pattern.
+			new Product_Variations_View_Pro_Admin();
+		}
 	}
 
 	/**
