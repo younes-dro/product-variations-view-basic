@@ -143,7 +143,7 @@ class Product_Variations_View_Pro_Display {
 					wp_send_json_error(
 						array(
 							'message' => sprintf(
-								__( 'The following attributes are missing: %s. Please define them or contact the administrator.', 'product-variations-view' ),
+								__( 'The following attributes are missing: %s. Please contact the administrator.', 'product-variations-view' ),
 								implode( ', ', $missing_attributes )
 							),
 						)

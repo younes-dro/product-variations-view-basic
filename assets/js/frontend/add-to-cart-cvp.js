@@ -59,6 +59,7 @@ console.log(wc_cvp_params);
                 });
             }
         });
+        $('.cvp-error').html('');
         if (itemsToAdd.length > 0) {
             $.ajax({
                 url: wc_cvp_params.ajax_url,
@@ -69,22 +70,25 @@ console.log(wc_cvp_params);
                     'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
                 success: function(response) {
-                    console.log();
                     if (response.success) {
-                        // Update UI: e.g., cart count, messages
-                        
+                        // TODO: Update UI (e.g., cart count, messages, link to cart...)
                         alert('Added to cart!');
+                    } else {
+                        $('.cvp-error').html('<p class="woocommerce-error">' + response.data.message + '</p>');
+                        $('input[name^="cvp-quantity"]').val('');
                     }
                 },
                 error: function(error) {
                     console.log('Error adding to cart:', error);
+                    $('.cvp-error').html('<p class="woocommerce-error">An unexpected error occurred. Please try again.</p>');
                 }
             });
         } else {
-            alert('Please select at least one product.');
+            $('.cvp-error').html('<p class="woocommerce-error">Please select at least one product.</p>');
         }
     });
 })(jQuery);
+
 
 
 (function($) {

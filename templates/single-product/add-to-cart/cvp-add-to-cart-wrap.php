@@ -38,7 +38,8 @@ defined( 'ABSPATH' ) || exit;
 				?>
 
 				<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" />
-
+		
+				<div class="cvp-error"></div>
 				<button type="submit" id="cvp-add-to-cart-button" class="button single_add_to_cart_button alt"><?php echo $product->single_add_to_cart_text(); ?></button>        
 
 				<?php
