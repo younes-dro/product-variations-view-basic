@@ -10,7 +10,7 @@
  * @email    younesdro@gmail.com
  */
 
-use function GuzzleHttp\Psr7\try_fopen;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -35,6 +35,8 @@ class Product_Variations_View_Pro_Display {
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
 		add_action( 'wp_ajax_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
 		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
+		add_filter( 'woocommerce_get_price_html', array( $this, 'remove_variable_price_range_on_product_page' ), 10, 2 );
+		add_action( 'wp', array( $this, 'remove_short_description_from_product_page' ) );
 	}
 
 	/**
@@ -86,18 +88,18 @@ class Product_Variations_View_Pro_Display {
 		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
 		wp_enqueue_script( 'bootstrap-js' );
 
-		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__), true );
+		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
 		wp_enqueue_script( 'wc-add-to-cart-cvp' );
 
 		$params = array(
-			'currency_symbol'                => get_woocommerce_currency_symbol(),
-			'currency_format_decimal_sep'    => wc_get_price_decimal_separator(),
-			'currency_format_thousand_sep'   => wc_get_price_thousand_separator(),
-			'currency_format_num_decimals'   => wc_get_price_decimals(),
-			'currency_position'              => get_option( 'woocommerce_currency_pos' ),
-			'currency_format_trim_zeros'     => get_option( 'woocommerce_price_trim_zeros', 'no' ),
-			'ajax_url'         => admin_url( 'admin-ajax.php' ),
-			'cvp_nonce'        => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
+			'currency_symbol'              => get_woocommerce_currency_symbol(),
+			'currency_format_decimal_sep'  => wc_get_price_decimal_separator(),
+			'currency_format_thousand_sep' => wc_get_price_thousand_separator(),
+			'currency_format_num_decimals' => wc_get_price_decimals(),
+			'currency_position'            => get_option( 'woocommerce_currency_pos' ),
+			'currency_format_trim_zeros'   => get_option( 'woocommerce_price_trim_zeros', 'no' ),
+			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
+			'cvp_nonce'                    => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
 		);
 
 		wp_localize_script( 'wc-add-to-cart-cvp', 'wc_cvp_params', $params );
@@ -175,6 +177,39 @@ class Product_Variations_View_Pro_Display {
 			);
 		} else {
 			wp_send_json_error( array( 'message' => __( 'No products were added to the cart.', 'product-variations-view' ) ) );
+		}
+	}
+
+	/**
+	 * Removes the price range display for variable products on the single product detail page.
+	 *
+	 * @param string $price   The HTML string for the product price.
+	 * @param object $product The current product object.
+	 *
+	 * @return string The modified price HTML (empty for variable products on product detail page).
+	 */
+	public function remove_variable_price_range_on_product_page( $price, $product ) {
+
+		if ( $product->get_type() == 'variable' && is_product() ) {
+			return '';
+		}
+
+		return $price;
+	}
+
+	/**
+	 * Hides the short description for variable products on the single product detail page.
+	 *
+	 * @return void
+	 */
+	public function remove_short_description_from_product_page() {
+
+		if ( is_product() ) {
+			global $post;
+			$product = wc_get_product( $post->ID );
+			if ( $product && $product->is_type( 'variable' ) ) {
+				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+			}
 		}
 	}
 }
