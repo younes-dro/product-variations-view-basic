@@ -1,6 +1,3 @@
-/* global wc_cvp_params */
-
-console.log(wc_cvp_params);
 
 (function ($) {
     $('a.description-toggle').on('click', function (e) {
@@ -25,14 +22,14 @@ function updateTotalPrice() {
         if (qty > 0) {
             // Fetch the price from the hidden input for this variation
             const priceInput = $(this).closest('.carousel-content').find('input.display_price');
-            console.log("price input " + priceInput);
+            
             if (priceInput.length === 0) {
                 console.error('Price input not found for:', $(this));
                 return;
             }
 
             const priceString = priceInput.val();
-            console.log('priceString ' + priceString);
+            
             if (!priceString) {
                 console.error('Price string is empty or invalid for:', priceInput);
                 return;
@@ -40,7 +37,7 @@ function updateTotalPrice() {
 
             // Parse the price correctly
             const price = parsePrice(priceString);
-            console.log('Price ' + price);
+            
             if (!isNaN(price)) {
                 total += price * qty;
             } else {
@@ -48,11 +45,7 @@ function updateTotalPrice() {
             }
         }
     });
-
-    // Format the total price for display
     const formattedTotal = formatPrice(total);
-
-    // Update the total price in the UI
     $('.cvp-total').text(formattedTotal);
 }
 
@@ -77,12 +70,10 @@ function formatPrice(price) {
         formattedPrice = formattedPrice.replace(regex, '');
     }
 
-    // Add thousand separators
     const parts = formattedPrice.split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
     formattedPrice = parts.join(decimalSeparator);
 
-    // Add currency symbol based on position
     switch (position) {
         case 'left':
             return symbol + formattedPrice;
@@ -104,48 +95,26 @@ function formatPrice(price) {
  * @param {string} price - The price string to parse.
  * @returns {number} - Parsed number.
  */
-/**
- * Parses a price string into a number, respecting WooCommerce settings.
- * @param {string} price - The price string to parse.
- * @returns {number} - Parsed number.
- */
-/**
- * Parses a price string into a number, respecting WooCommerce settings.
- * @param {string} price - The price string to parse.
- * @returns {number} - Parsed number.
- */
-/**
- * Parses a price string into a number, respecting WooCommerce settings.
- * @param {string} price - The price string to parse.
- * @returns {number} - Parsed number.
- */
-function parsePrice(price) {
-    console.log('Original price input:', price);
 
+function parsePrice(price) {
     const decimalSeparator = wc_cvp_params.currency_format_decimal_sep || '.';
     const thousandSeparator = wc_cvp_params.currency_format_thousand_sep || ',';
 
-    // Handle edge case: If the price is already numeric
     if (!isNaN(price)) {
         return parseFloat(price);
     }
 
-    // Remove thousand separators if they exist
     let priceWithoutThousand = price;
     if (price.includes(thousandSeparator)) {
         priceWithoutThousand = price.split(thousandSeparator).join('');
     }
-    console.log('Price without thousand separator:', priceWithoutThousand);
-
-    // Replace the decimal separator with a dot for proper parsing
+    
     const normalizedPrice = priceWithoutThousand.replace(decimalSeparator, '.');
-    console.log('Normalized price (decimal separator replaced):', normalizedPrice);
+    
 
-    // Convert the string to a float
     const parsedPrice = parseFloat(normalizedPrice);
-    console.log('Parsed price (as float):', parsedPrice);
+    
 
-    // Handle fallback if parsing fails
     if (isNaN(parsedPrice)) {
         console.error('Failed to parse price:', price);
         return 0; // Default to 0
@@ -182,6 +151,7 @@ function parsePrice(price) {
         });
         $('.cvp-error').html('');
         if (itemsToAdd.length > 0) {
+            $thisbutton = $(this);
             $.ajax({
                 url: wc_cvp_params.ajax_url,
                 type: 'POST',
@@ -190,11 +160,20 @@ function parsePrice(price) {
                     products: itemsToAdd,
                     'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
+                beforeSend: function(resposnse){
+                    $thisbutton.prop('disabled',true);
+                    $thisbutton.addClass('loading');
+                },
+                complete:function(resposnse){
+                    $thisbutton.prop('disabled',false);
+                    $thisbutton.removeClass('loading');
+                },
                 success: function (response) {
-                    console.log(response);
-                    // return;
+                    
+                    
                     if (response.success) {
                         alert('Added to cart!');
+                        $( document.body ).trigger( 'wc_fragment_refresh' );
                     } else {
                         $('.cvp-error').html('<p class="woocommerce-error">' + response.data.message + '</p>');
                         $('input[name^="cvp-quantity"]').val('');
@@ -215,6 +194,7 @@ function parsePrice(price) {
     $('#cvp-reset').on('click', function (e) {
         e.preventDefault();
         $('input[name^="cvp-quantity"]').val(0);
+        $('.cvp-total').text('');
         updateTotalPrice();
     });
 })(jQuery);
