@@ -64,12 +64,12 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								<a class="carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
 									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 									
-									<span class="sr-only"><?php esc_html_e( 'Previous', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view' ); ?></span>
 								   
 								</a>
 								<a class="carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Next', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view' ); ?></span>
 								</a>                                
 							</div>                          
 						</div>
@@ -104,7 +104,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						<?php if ( ! empty( trim( $variation['variation_description'] ) ) ) : ?>
 							<div class="row description-variation-wrapper">
 								<div class="col-12">
-									<a href="#" class="description-toggle"><?php esc_html_e( 'Description', 'dro-wcvc' ); ?><span class="toggle"></span></a>
+									<a href="#" class="description-toggle"><?php esc_html_e( 'Description', 'product-variations-view' ); ?><span class="toggle"></span></a>
 								</div>
 								<div class="col-12 description-variation-container">
 									<p class="description-variation"><?php echo wp_kses( $variation['variation_description'], array( '' ) ); ?></p>
@@ -134,16 +134,32 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						</div>
 						<div class="row">
 							<div class="col-12">
-								<?php
-								woocommerce_quantity_input(
-									array(
-										'input_name'  => 'quantity[]',
-										'min_value'   => 0,
-										'input_value' => '0',
-										'max_value'   => $product->backorders_allowed() ? '' : $product->get_stock_quantity(),
-									)
-								);
+							<?php
+								$input_id = uniqid( 'quantity_' ); // Unique ID for the input field
+
+								// TODO : use product name 
+								$label = ! empty( $variation['attributes'] ) 
+									? sprintf( esc_html__( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $attribute_name ) )
+									: esc_html__( 'Quantity', 'woocommerce' );
 								?>
+
+								<div class="quantity">
+									<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $label ); ?></label>
+									<input 
+										type="number" 
+										id="<?php echo esc_attr( $input_id ); ?>" 
+										class="input-text text" 
+										name="cvp-quantity[]" 
+										value="0" 
+										min="0" 
+										max="<?php echo esc_attr( $product->backorders_allowed() ? '' : $product->get_stock_quantity() ); ?>" 
+										step="1" 
+										placeholder="0" 
+										data-variation-id="<?php echo esc_attr( $variation['variation_id'] ); ?>" 
+										aria-label="<?php echo esc_attr( $label ); ?>" 
+									/>
+								</div>
+
 							</div>
 						</div>
 						<?php
@@ -181,13 +197,13 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							<div class="col-6 carousel-nav">
 								<a  class="float-left carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
 									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Previous', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view' ); ?></span>
 								</a>
 							</div>
 							<div class="col-6  carousel-nav">
 								<a  class="float-right carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Next', 'dro-wcvc' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view' ); ?></span>
 								</a>
 							</div>
 						</div>                        -->

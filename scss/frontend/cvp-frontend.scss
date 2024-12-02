@@ -3,7 +3,10 @@
 
 
 body.single-product{
-
+    .woocommerce-product-gallery__image img {
+        transition: opacity 0.3s ease-in-out;
+    }
+    
     div.product-type-variable{
 
         form.cart.dro-variable-products-form{

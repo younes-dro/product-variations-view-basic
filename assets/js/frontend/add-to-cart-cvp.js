@@ -1,13 +1,5 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-console.log(wc_cvp_params);
 
 (function ($) {
-
     $('a.description-toggle').on('click', function (e) {
         e.preventDefault();
         $('div.description-variation-container').slideToggle();
@@ -15,28 +7,128 @@ console.log(wc_cvp_params);
     });
 })(jQuery);
 
+(function ($) {
 
-(function($) {
-    // Function to update total price
-    function updateTotalPrice() {
-        var total = 0;
-        $('input[name^="quantity["]').each(function() {
-            var quantity = parseInt($(this).val(), 10);
-            var price = parseFloat($(this).closest('.carousel-item').find('.display_price').val());
-            if (!isNaN(quantity) && !isNaN(price)) {
-                total += quantity * price;
+/**
+ * Updates the total price dynamically based on quantities and prices.
+ */
+function updateTotalPrice() {
+    let total = 0;
+
+    // Iterate through each quantity input
+    $('input[name^="cvp-quantity"]').each(function () {
+        const qty = parseInt($(this).val(), 10);
+
+        if (qty > 0) {
+            // Fetch the price from the hidden input for this variation
+            const priceInput = $(this).closest('.carousel-content').find('input.display_price');
+            
+            if (priceInput.length === 0) {
+                console.error('Price input not found for:', $(this));
+                return;
             }
-        });
-        $('.cvp-total').text(formatPrice(total));
+
+            const priceString = priceInput.val();
+            
+            if (!priceString) {
+                console.error('Price string is empty or invalid for:', priceInput);
+                return;
+            }
+
+            // Parse the price correctly
+            const price = parsePrice(priceString);
+            
+            if (!isNaN(price)) {
+                total += price * qty;
+            } else {
+                console.error('Invalid price detected:', priceString);
+            }
+        }
+    });
+    const formattedTotal = formatPrice(total);
+    $('.cvp-total').text(formattedTotal);
+}
+
+/**
+ * Formats a number to a currency string based on WooCommerce settings.
+ * @param {number} price - The price to format.
+ * @returns {string} - Formatted price string.
+ */
+function formatPrice(price) {
+    const symbol = wc_cvp_params.currency_symbol || '$';
+    const decimals = parseInt(wc_cvp_params.currency_format_num_decimals, 10) || 2;
+    const decimalSeparator = wc_cvp_params.currency_format_decimal_sep || '.';
+    const thousandSeparator = wc_cvp_params.currency_format_thousand_sep || ',';
+    const position = wc_cvp_params.currency_position || 'left';
+    const trimZeros = wc_cvp_params.currency_format_trim_zeros === 'yes';
+
+    // Ensure the number is rounded to the correct number of decimals
+    let formattedPrice = price.toFixed(decimals);
+
+    if (trimZeros) {
+        const regex = new RegExp(decimalSeparator + '0{' + decimals + '}$');
+        formattedPrice = formattedPrice.replace(regex, '');
     }
 
-    // Utilize the passed currency symbol and formatting
-    function formatPrice(price) {
-        return wc_cvp_params.currency_symbol + price.toFixed(wc_cvp_params.currency_format_num_decimals);
+    const parts = formattedPrice.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+    formattedPrice = parts.join(decimalSeparator);
+
+    switch (position) {
+        case 'left':
+            return symbol + formattedPrice;
+        case 'right':
+            return formattedPrice + symbol;
+        case 'left_space':
+            return symbol + ' ' + formattedPrice;
+        case 'right_space':
+            return formattedPrice + ' ' + symbol;
+        default:
+            return formattedPrice;
     }
+}
+
+
+
+/**
+ * Parses a price string into a number, respecting WooCommerce settings.
+ * @param {string} price - The price string to parse.
+ * @returns {number} - Parsed number.
+ */
+
+function parsePrice(price) {
+    const decimalSeparator = wc_cvp_params.currency_format_decimal_sep || '.';
+    const thousandSeparator = wc_cvp_params.currency_format_thousand_sep || ',';
+
+    if (!isNaN(price)) {
+        return parseFloat(price);
+    }
+
+    let priceWithoutThousand = price;
+    if (price.includes(thousandSeparator)) {
+        priceWithoutThousand = price.split(thousandSeparator).join('');
+    }
+    
+    const normalizedPrice = priceWithoutThousand.replace(decimalSeparator, '.');
+    
+
+    const parsedPrice = parseFloat(normalizedPrice);
+    
+
+    if (isNaN(parsedPrice)) {
+        console.error('Failed to parse price:', price);
+        return 0; // Default to 0
+    }
+
+    return parsedPrice;
+}
+
+
+
+
 
     // Event binding for quantity changes
-    $(document).on('change', 'input[name^="quantity["]', function() {
+    $(document).on('change', 'input[name^="cvp-quantity"]', function () {
         updateTotalPrice();
     });
 
@@ -44,79 +136,84 @@ console.log(wc_cvp_params);
     updateTotalPrice();
 })(jQuery);
 
-
-
-(function($) {
-    $('#cvp-add-to-cart-button').on('click', function(e) {
+(function ($) {
+    $('#cvp-add-to-cart-button').on('click', function (e) {
         e.preventDefault();
         var itemsToAdd = [];
-
-        $('input[name^="quantity["]').each(function() {
+        $('input[name^="cvp-quantity"]').each(function () {
             var qty = parseInt($(this).val(), 10);
             if (qty > 0) {
                 itemsToAdd.push({
-                    variation_id: $(this).data('variation-id'),
+                    variation_id: $(this).attr('data-variation-id'),
                     quantity: qty
                 });
             }
         });
-
+        $('.cvp-error').html('');
         if (itemsToAdd.length > 0) {
+            $thisbutton = $(this);
             $.ajax({
                 url: wc_cvp_params.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'wc_cvp_add_to_cart',
-                    products: itemsToAdd
+                    products: itemsToAdd,
+                    'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
-                success: function(response) {
+                beforeSend: function(resposnse){
+                    $thisbutton.prop('disabled',true);
+                    $thisbutton.addClass('loading');
+                },
+                complete:function(resposnse){
+                    $thisbutton.prop('disabled',false);
+                    $thisbutton.removeClass('loading');
+                },
+                success: function (response) {
+                    
+                    
                     if (response.success) {
-                        // Update UI: e.g., cart count, messages
                         alert('Added to cart!');
+                        $( document.body ).trigger( 'wc_fragment_refresh' );
+                    } else {
+                        $('.cvp-error').html('<p class="woocommerce-error">' + response.data.message + '</p>');
+                        $('input[name^="cvp-quantity"]').val('');
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log('Error adding to cart:', error);
+                    $('.cvp-error').html('<p class="woocommerce-error">An unexpected error occurred. Please try again.</p>');
                 }
             });
         } else {
-            alert('Please select at least one product.');
+            $('.cvp-error').html('<p class="woocommerce-error">Please select at least one product.</p>');
         }
     });
 })(jQuery);
 
-
-(function($) {
-    $('#cvp-reset').on('click', function() {
-        $('input[name^="quantity["]').val(0);
+(function ($) {
+    $('#cvp-reset').on('click', function (e) {
+        e.preventDefault();
+        $('input[name^="cvp-quantity"]').val(0);
+        $('.cvp-total').text('');
         updateTotalPrice();
     });
 })(jQuery);
 
-
-
-
-
-
 (function ($) {
-
-    function CVP() {
-
-        this.initialize = function () {
-
-            $('span.cvp-total').append('0€');
-        };
-    }
-
     $(document).ready(function () {
+        $('#variable-products-carousel').on('slide.bs.carousel', function (event) {
+            var $nextSlide = $(event.relatedTarget);
+            var variationImage = $nextSlide.find('.attribute-thumb').attr('src');
+            var $mainGalleryImage = $('.woocommerce-product-gallery__image img');
 
-        $.fn.cvp_form = function () {
-
-            var cvp = new CVP();
-            cvp.initialize();
-        };
-
-        $('.cvp-from').cvp_form();
+            if (variationImage) {
+                $mainGalleryImage.attr('src', variationImage);
+                $mainGalleryImage.attr('srcset', variationImage);
+                $mainGalleryImage.attr('alt', 'Selected Variation Image');
+            } else {
+                $mainGalleryImage.attr('src', $mainGalleryImage.data('default-src'));
+                $mainGalleryImage.attr('srcset', $mainGalleryImage.data('default-srcset'));
+            }
+        });
     });
-
 })(jQuery);
