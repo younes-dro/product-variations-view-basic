@@ -32,6 +32,7 @@ class Product_Variations_View_Pro_Admin {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_pvv_settings_script'));
 		add_action( 'admin_menu', array( $this, 'add_pvv_menu' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
 	}
@@ -61,8 +62,35 @@ class Product_Variations_View_Pro_Admin {
 	 * @since 1.0.0
 	 */
 	public function render_pvv_settings() {
-		echo '<div id="product-variations-view-app"></div>';
+		wp_enqueue_script( 'product-variations-view-settings' );
+		echo '<div id="pvv-app"></div>';
 	}
+
+	
+
+	function register_pvv_settings_script( $hook ) {
+
+
+		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings.js' )
+    ? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings.js' )
+    : '1.0.0'; 
+	
+		wp_register_script(
+			'product-variations-view-settings',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings.js',
+			array( 'wp-element' ), 
+			$settings_version,
+			true
+		);
+	
+		wp_register_style(
+			'product-variations-view-settings',
+			plugin_dir_url( __DIR__ ) . 'assets/css/admin/settings.css',
+			array(),
+		$settings_version
+		);
+	}
+	
 
 
 	/**
