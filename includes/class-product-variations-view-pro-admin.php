@@ -32,8 +32,38 @@ class Product_Variations_View_Pro_Admin {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+		add_action( 'admin_menu', array( $this, 'add_pvv_menu' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
 	}
+
+	/**
+	 * Adds a top-level menu for the plugin settings.
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_pvv_menu() {
+		add_menu_page(
+			esc_html__( 'Product Variations View', 'product-variations-view' ),
+			esc_html__( 'Variations View', 'product-variations-view' ),
+			'manage_options',
+			'product-variations-view',
+			array( $this, 'render_pvv_settings' ),
+			'dashicons-admin-generic',
+			26
+		);
+	}
+
+	/**
+	 * Renders the plugin settings page.
+	 *
+	 * This function will display the ReactJS-based UI in the future.
+	 *
+	 * @since 1.0.0
+	 */
+	public function render_pvv_settings() {
+		echo '<div id="product-variations-view-app"></div>';
+	}
+
 
 	/**
 	 * Displays a warning in the Variations tab for variations with missing attributes.
