@@ -55,7 +55,7 @@ const GeneralSettings = () => {
                 onChange={() => setIsEnabled(!isEnabled)}
               />
             }
-            label="Enable Plugin"
+            label="Enable Frontend Display"
           />
         </Grid2>
 
