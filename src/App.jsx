@@ -1,5 +1,7 @@
 import React from 'react';
 import { Tabs, Tab, Box } from '@mui/material';
+import GeneralSettings from './components/GeneralSettings';
+import AdvancedSettings from './components/AdvancedSettings';
 
 function App() {
   const [value, setValue] = React.useState(0);
@@ -14,8 +16,8 @@ function App() {
         <Tab label="General" />
         <Tab label="Advanced" />
       </Tabs>
-      {value === 0 && <Box>General Settings</Box>}
-      {value === 1 && <Box>Advanced Settings</Box>}
+      {value === 0 && <GeneralSettings />}
+      {value === 1 && <AdvancedSettings />}
     </Box>
   );
 }
