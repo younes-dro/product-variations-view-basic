@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Switch, FormControlLabel, Checkbox, Grid2, CircularProgress, Typography } from '@mui/material';
+import { Box, Switch, FormControlLabel, Checkbox, Grid2, CircularProgress, Typography, Button } from '@mui/material';
 
 const GeneralSettings = () => {
   const [isEnabled, setIsEnabled] = useState(true);
@@ -9,8 +9,8 @@ const GeneralSettings = () => {
   const [statusMessage, setStatusMessage] = useState('');
 
   const handleSave = async () => {
-    setLoading(true); // Start loading
-    setStatusMessage(''); // Clear previous message
+    setLoading(true); 
+    setStatusMessage(''); 
 
     const settings = {
       action: 'pvv_save_settings',
@@ -85,17 +85,21 @@ const GeneralSettings = () => {
 
         <Grid2 item xs={12}>
           <Box mt={2} display="flex" alignItems="center">
-            <button
+            <Button
               onClick={handleSave}
               disabled={loading}
-              style={{
-                cursor: loading ? 'progress' : 'pointer',
-                marginRight: '10px',
+              variant="contained"
+              color="primary"
+              sx={{
+                textTransform: 'none',
+                fontWeight: 'bold',
+                borderRadius: '8px',
+                padding: '10px 20px',
               }}
             >
               {loading ? 'Saving...' : 'Save Settings'}
-            </button>
-            {loading && <CircularProgress size={20} />}
+            </Button>
+            {loading && <CircularProgress size={20} sx={{ marginLeft: '10px' }} />}
           </Box>
         </Grid2>
 
