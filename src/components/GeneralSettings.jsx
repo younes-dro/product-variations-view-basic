@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Switch, FormControlLabel, Checkbox, Grid2 } from '@mui/material';
+import { Box, Switch, FormControlLabel, Checkbox, Grid2, CircularProgress, Typography } from '@mui/material';
 
 const GeneralSettings = () => {
   const [isEnabled, setIsEnabled] = useState(true);
   const [showPrice, setShowPrice] = useState(true);
   const [showDescription, setShowDescription] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
 
   const handleSave = async () => {
+    setLoading(true); // Start loading
+    setStatusMessage(''); // Clear previous message
+
     const settings = {
       action: 'pvv_save_settings',
       security: pvv_ajax_params.nonce,
@@ -27,13 +32,15 @@ const GeneralSettings = () => {
       const result = await response.json();
 
       if (result.success) {
-        alert('Settings saved successfully!');
+        setStatusMessage('Settings saved successfully!');
       } else {
-        alert('Failed to save settings: ' + result.data.message);
+        setStatusMessage('Failed to save settings: ' + result.data.message);
       }
     } catch (error) {
-      alert('Error check the console');
       console.error('Error saving settings:', error);
+      setStatusMessage('An error occurred. Please try again.');
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -77,9 +84,30 @@ const GeneralSettings = () => {
         </Grid2>
 
         <Grid2 item xs={12}>
-          <Box mt={2}>
-            <button onClick={handleSave}>Save Settings</button>
+          <Box mt={2} display="flex" alignItems="center">
+            <button
+              onClick={handleSave}
+              disabled={loading}
+              style={{
+                cursor: loading ? 'progress' : 'pointer',
+                marginRight: '10px',
+              }}
+            >
+              {loading ? 'Saving...' : 'Save Settings'}
+            </button>
+            {loading && <CircularProgress size={20} />}
           </Box>
+        </Grid2>
+
+        <Grid2 item xs={12}>
+          {statusMessage && (
+            <Typography
+              variant="body2"
+              color={statusMessage.includes('success') ? 'green' : 'red'}
+            >
+              {statusMessage}
+            </Typography>
+          )}
         </Grid2>
       </Grid2>
     </Box>
