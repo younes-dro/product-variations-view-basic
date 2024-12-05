@@ -1,14 +1,21 @@
 <?php
-
+/**
+ * Handles plugin initialization and main functionality.
+ *
+ * @package ProductVariationsViewPro
+ * @author Younes DRO
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
+
 /**
- * Product_Variations_View_Pro class.
  *
- * The main instance of the plugin.
+ * Main Product Variations View Pro class.
  *
  * @since 1.0.0
  */
@@ -56,7 +63,6 @@ class Product_Variations_View_Pro {
 		self::$dependencies = $dependencies;
 		// register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, array( $this, 'activation_check' ) );
 
-
 		add_action( 'admin_init', array( $this, 'check_environment' ) );
 
 		add_action( 'admin_init', array( $this, 'add_plugin_notices' ) );
@@ -65,7 +71,7 @@ class Product_Variations_View_Pro {
 
 		add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
 
-        add_action( 'init', array( $this, 'load_textdomain' ) );
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 
 		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
 	}
@@ -200,9 +206,9 @@ class Product_Variations_View_Pro {
 		if ( ! self::$dependencies->is_compatible() ) {
 			return;
 		}
-		
-		if ( ! is_admin() ) {
-			new Product_Variations_View_Pro_Display();
+		if ( is_admin() ) {
+			// TODO: Implement singleton pattern.
+			new Product_Variations_View_Pro_Admin();
 		}
 	}
 
@@ -210,23 +216,35 @@ class Product_Variations_View_Pro {
 	 * Include template functions and hooks.
 	 */
 	public function frontend_includes() {
-		
-		require_once  INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
+		if( $this->is_frontend_enabled() ) {
+		// TODO: Implement singleton pattern.
+		new Product_Variations_View_Pro_Display();
+		require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 		require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
+		}
 	}
 	/*
 	-----------------------------------------------------------------------------------*/
 	/*
 		Helper Functions                                                                 */
 	/*-----------------------------------------------------------------------------------*/
+	/**
+	 * Checks whether the frontend functionality is enabled.
+	 *
+	 * @return bool True if frontend functionality is enabled, false otherwise.
+	 */
+	private function is_frontend_enabled() {
+		$is_enabled = get_option( 'pvv_is_enabled', true );
+		return filter_var( $is_enabled, FILTER_VALIDATE_BOOLEAN );
+	}
 
-		/**
-		 * Get the plugin url.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @return string
-		 */
+	/**
+	 * Get the plugin url.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
 	public function plugin_url() {
 		return untrailingslashit( plugins_url( '/', PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
 	}
@@ -253,8 +271,7 @@ class Product_Variations_View_Pro {
 		return plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE );
 	}
 
-    public function load_textdomain(){
-        load_plugin_textdomain( 'product-variations-view', false, $this->plugin_path().'/languages');
-    }
-
+	public function load_textdomain() {
+		load_plugin_textdomain( 'product-variations-view', false, $this->plugin_path() . '/languages' );
+	}
 }

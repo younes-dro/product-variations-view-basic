@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 		?>
 		<div class="row">
 			<div class="col-6">
-				<span class="cvp-total">Total</span>
+				<span class="cvp-total"><?php esc_html_e( 'Total: ', 'product-variations-view' )?></span>
 			</div>
 		</div>
 		<div class="row">
@@ -38,8 +38,9 @@ defined( 'ABSPATH' ) || exit;
 				?>
 
 				<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" />
-
-				<button type="submit" class="single_add_to_cart_button cvp_add_to_cart_button button alt"><?php echo $product->single_add_to_cart_text(); ?></button>        
+		
+				<div class="cvp-error"></div>
+				<button type="submit" id="cvp-add-to-cart-button" class="button single_add_to_cart_button alt"><?php echo $product->single_add_to_cart_text(); ?></button>        
 
 				<?php
 				/**
@@ -52,7 +53,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 	} else {
 
-		printf( '<div class="row"><div class="col-12"><p class="woocommerce-info">%s</p></div></div>', esc_html__( 'This product is currently unavailable.', 'dro-wcvc' ) );
+		printf( '<div class="row"><div class="col-12"><p class="woocommerce-info">%s</p></div></div>', esc_html__( 'This product is currently unavailable.', 'product-variations-view' ) );
 	}
 	?>
 

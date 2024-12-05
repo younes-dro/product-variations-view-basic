@@ -68,7 +68,7 @@ if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 			// Any
 		} else {
 			$html  = '<select id="' . esc_attr( $attribute_name ) . '">';
-			$html .= '<option value="">' . esc_html__( 'Choose an option', 'dro-wcvc' ) . '</option>';
+			$html .= '<option value="">' . esc_html__( 'Choose an option', 'product-variations-view' ) . '</option>';
 
 			// $tax = str_replace('attribute_', '', $key_attribute);
 

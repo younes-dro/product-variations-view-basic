@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
-		<a href="#" id="cvp-reset" class="col-12 cvp-reset"><?php esc_html_e( 'Reset', 'dro-wcvc' ); ?></a>
+		<a href="#" id="cvp-reset" class="col-12 cvp-reset"><?php esc_html_e( 'Reset', 'product-variations-view' ); ?></a>
 		</div>
 	</div>
 </div>
