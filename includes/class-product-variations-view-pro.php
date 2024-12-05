@@ -216,11 +216,11 @@ class Product_Variations_View_Pro {
 	 * Include template functions and hooks.
 	 */
 	public function frontend_includes() {
-		if( $this->is_frontend_enabled() ) {
-		// TODO: Implement singleton pattern.
-		new Product_Variations_View_Pro_Display();
-		require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
-		require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
+		if ( $this->is_frontend_enabled() ) {
+			// TODO: Implement singleton pattern.
+			new Product_Variations_View_Pro_Display();
+			require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
+			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
 		}
 	}
 	/*

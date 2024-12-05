@@ -100,6 +100,7 @@ class Product_Variations_View_Pro_Display {
 			'currency_format_trim_zeros'   => get_option( 'woocommerce_price_trim_zeros', 'no' ),
 			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 			'cvp_nonce'                    => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
+			'pvv_show_product_gallery'     => (bool) get_option( 'pvv_show_product_gallery', true ),
 		);
 
 		wp_localize_script( 'wc-add-to-cart-cvp', 'wc_cvp_params', $params );
@@ -190,7 +191,7 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function remove_variable_price_range_on_product_page( $price, $product ) {
 
-		$show_price      = (bool) get_option( 'pvv_show_range_price', true );
+		$show_price = (bool) get_option( 'pvv_show_range_price', true );
 		if ( ! $show_price && $product->get_type() === 'variable' && is_product() ) {
 			return '';
 		}

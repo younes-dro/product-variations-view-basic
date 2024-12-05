@@ -5,12 +5,13 @@ const GeneralSettings = () => {
   const [isEnabled, setIsEnabled] = useState(pvv_ajax_params.settings.is_enabled);
   const [showPrice, setShowPrice] = useState(pvv_ajax_params.settings.show_price);
   const [showDescription, setShowDescription] = useState(pvv_ajax_params.settings.show_description);
+  const [showProductGallery, setShowProductGallery] = useState(pvv_ajax_params.settings.show_product_gallery);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
   const handleSave = async () => {
-    setLoading(true); 
-    setStatusMessage(''); 
+    setLoading(true);
+    setStatusMessage('');
 
     const settings = {
       action: 'pvv_save_settings',
@@ -18,6 +19,7 @@ const GeneralSettings = () => {
       is_enabled: isEnabled,
       show_price: showPrice,
       show_description: showDescription,
+      show_product_gallery: showProductGallery,
     };
 
     try {
@@ -80,6 +82,18 @@ const GeneralSettings = () => {
               />
             }
             label="Show Short Description"
+          />
+        </Grid2>
+
+        <Grid2 item xs={12}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={showProductGallery}
+                onChange={() => setShowProductGallery(!showProductGallery)}
+              />
+            }
+            label="Toggle Product Gallery Visibility"
           />
         </Grid2>
 

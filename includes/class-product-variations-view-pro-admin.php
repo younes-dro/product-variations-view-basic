@@ -73,13 +73,15 @@ class Product_Variations_View_Pro_Admin {
 
 		check_ajax_referer( 'pvv_settings_nonce', 'security' );
 
-		$is_enabled       = isset( $_POST['is_enabled'] ) ? filter_var( $_POST['is_enabled'], FILTER_VALIDATE_BOOLEAN ) : false;
-		$show_price       = isset( $_POST['show_price'] ) ? filter_var( $_POST['show_price'], FILTER_VALIDATE_BOOLEAN ) : false;
-		$show_description = isset( $_POST['show_description'] ) ? filter_var( $_POST['show_description'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$is_enabled           = isset( $_POST['is_enabled'] ) ? filter_var( $_POST['is_enabled'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_price           = isset( $_POST['show_price'] ) ? filter_var( $_POST['show_price'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_description     = isset( $_POST['show_description'] ) ? filter_var( $_POST['show_description'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_product_gallery = isset( $_POST['show_product_gallery'] ) ? filter_var( $_POST['show_product_gallery'], FILTER_VALIDATE_BOOLEAN ) : false;
 
 		update_option( 'pvv_is_enabled', $is_enabled );
 		update_option( 'pvv_show_range_price', $show_price );
 		update_option( 'pvv_show_main_product_short_description', $show_description );
+		update_option( 'pvv_show_product_gallery', $show_product_gallery );
 
 		wp_send_json_success( array( 'message' => 'Settings saved successfully.' ) );
 	}
@@ -124,9 +126,10 @@ class Product_Variations_View_Pro_Admin {
 		);
 
 		$current_settings = array(
-			'is_enabled'       => (bool) get_option( 'pvv_is_enabled', true ),
-			'show_price'       => (bool) get_option( 'pvv_show_range_price', true ),
-			'show_description' => (bool) get_option( 'pvv_show_main_product_short_description', true ),
+			'is_enabled'           => (bool) get_option( 'pvv_is_enabled', true ),
+			'show_price'           => (bool) get_option( 'pvv_show_range_price', true ),
+			'show_description'     => (bool) get_option( 'pvv_show_main_product_short_description', true ),
+			'show_product_gallery' => (bool) get_option( 'pvv_show_product_gallery', true ),
 		);
 
 		wp_localize_script(
