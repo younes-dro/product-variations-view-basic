@@ -190,7 +190,8 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function remove_variable_price_range_on_product_page( $price, $product ) {
 
-		if ( $product->get_type() == 'variable' && is_product() ) {
+		$show_price      = (bool) get_option( 'pvv_show_range_price', true );
+		if ( ! $show_price && $product->get_type() === 'variable' && is_product() ) {
 			return '';
 		}
 
@@ -205,9 +206,10 @@ class Product_Variations_View_Pro_Display {
 	public function remove_short_description_from_product_page() {
 
 		if ( is_product() ) {
+			$show_short_description = (bool) get_option( 'pvv_show_main_product_short_description', true );
 			global $post;
 			$product = wc_get_product( $post->ID );
-			if ( $product && $product->is_type( 'variable' ) ) {
+			if ( ! $show_short_description && $product && $product->is_type( 'variable' ) ) {
 				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
 			}
 		}
