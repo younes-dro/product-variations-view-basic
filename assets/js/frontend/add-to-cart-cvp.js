@@ -217,3 +217,25 @@ function parsePrice(price) {
         });
     });
 })(jQuery);
+
+(function ( $){
+    
+    const showProductGallery = wc_cvp_params.pvv_show_product_gallery;
+
+    if (!showProductGallery) {
+        $('.woocommerce-product-gallery').hide();
+        $('.entry-summary').css({
+            'width': '100%',
+            'float': 'none'
+        });
+    } else {
+        $('.woocommerce-product-gallery').show();
+        $('.entry-summary').css({
+            'width': '',
+            'float': ''
+        });
+    }
+
+})(jQuery);
+
+
