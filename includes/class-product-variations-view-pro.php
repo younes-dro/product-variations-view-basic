@@ -216,24 +216,35 @@ class Product_Variations_View_Pro {
 	 * Include template functions and hooks.
 	 */
 	public function frontend_includes() {
+		if( $this->is_frontend_enabled() ) {
 		// TODO: Implement singleton pattern.
 		new Product_Variations_View_Pro_Display();
 		require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 		require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
+		}
 	}
 	/*
 	-----------------------------------------------------------------------------------*/
 	/*
 		Helper Functions                                                                 */
 	/*-----------------------------------------------------------------------------------*/
+	/**
+	 * Checks whether the frontend functionality is enabled.
+	 *
+	 * @return bool True if frontend functionality is enabled, false otherwise.
+	 */
+	private function is_frontend_enabled() {
+		$is_enabled = get_option( 'pvv_is_enabled', true );
+		return filter_var( $is_enabled, FILTER_VALIDATE_BOOLEAN );
+	}
 
-		/**
-		 * Get the plugin url.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @return string
-		 */
+	/**
+	 * Get the plugin url.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
 	public function plugin_url() {
 		return untrailingslashit( plugins_url( '/', PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
 	}

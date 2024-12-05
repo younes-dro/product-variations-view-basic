@@ -32,8 +32,105 @@ class Product_Variations_View_Pro_Admin {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_pvv_settings_script' ) );
+		add_action( 'admin_menu', array( $this, 'add_pvv_menu' ) );
+		add_action( 'wp_ajax_pvv_save_settings', array( $this, 'save_pvv_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
 	}
+
+	/**
+	 * Adds a top-level menu for the plugin settings.
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_pvv_menu() {
+		add_menu_page(
+			esc_html__( 'Product Variations View', 'product-variations-view' ),
+			esc_html__( 'Variations View', 'product-variations-view' ),
+			'manage_options',
+			'product-variations-view',
+			array( $this, 'render_pvv_settings' ),
+			'dashicons-admin-generic',
+			26
+		);
+	}
+
+	/**
+	 * Saves Product Variations View plugin settings via AJAX.
+	 *
+	 * This function handles the AJAX request to save plugin settings.
+	 * The settings are saved in the WordPress options table.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void Outputs a JSON response indicating success or failure.
+	 */
+	public function save_pvv_settings() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => 'Unauthorized.' ), 403 );
+		}
+
+		check_ajax_referer( 'pvv_settings_nonce', 'security' );
+
+		$is_enabled       = isset( $_POST['is_enabled'] ) ? filter_var( $_POST['is_enabled'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_price       = isset( $_POST['show_price'] ) ? filter_var( $_POST['show_price'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_description = isset( $_POST['show_description'] ) ? filter_var( $_POST['show_description'], FILTER_VALIDATE_BOOLEAN ) : false;
+
+		update_option( 'pvv_is_enabled', $is_enabled );
+		update_option( 'pvv_show_range_price', $show_price );
+		update_option( 'pvv_show_main_product_short_description', $show_description );
+
+		wp_send_json_success( array( 'message' => 'Settings saved successfully.' ) );
+	}
+
+
+	/**
+	 * Renders the plugin settings page.
+	 *
+	 * This function will display the ReactJS-based UI in the future.
+	 *
+	 * @since 1.0.0
+	 */
+	public function render_pvv_settings() {
+		wp_enqueue_script( 'product-variations-view-settings' );
+		echo '<div id="pvv-app"></div>';
+	}
+
+
+
+	function register_pvv_settings_script( $hook ) {
+
+		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings.js' )
+		? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings.js' )
+		: '1.0.0';
+
+		wp_register_script(
+			'product-variations-view-settings',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings.js',
+			array( 'wp-element' ),
+			$settings_version,
+			true
+		);
+
+		wp_register_style(
+			'product-variations-view-settings',
+			plugin_dir_url( __DIR__ ) . 'assets/css/admin/settings.css',
+			array(),
+			$settings_version
+		);
+
+		wp_localize_script(
+			'product-variations-view-settings',
+			'pvv_ajax_params',
+			array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'pvv_settings_nonce' ),
+			)
+		);
+	}
+
+
 
 	/**
 	 * Displays a warning in the Variations tab for variations with missing attributes.
