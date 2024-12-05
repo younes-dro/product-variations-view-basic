@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Box, Switch, FormControlLabel, Checkbox, Grid2, CircularProgress, Typography, Button } from '@mui/material';
 
 const GeneralSettings = () => {
-  const [isEnabled, setIsEnabled] = useState(true);
-  const [showPrice, setShowPrice] = useState(true);
-  const [showDescription, setShowDescription] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(pvv_ajax_params.settings.is_enabled);
+  const [showPrice, setShowPrice] = useState(pvv_ajax_params.settings.show_price);
+  const [showDescription, setShowDescription] = useState(pvv_ajax_params.settings.show_description);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
@@ -40,7 +40,7 @@ const GeneralSettings = () => {
       console.error('Error saving settings:', error);
       setStatusMessage('An error occurred. Please try again.');
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
