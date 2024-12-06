@@ -114,9 +114,6 @@ class Product_Variations_View_Pro_Display {
 	 * @since 1.0.0
 	 */
 	public function cvp_add_bulk_variation() {
-		// var_dump( $_POST);
-		// error_log( print_r( $_POST, true));
-		// exit();
 		if ( ! isset( $_POST['cvp_nonce'] ) || ! wp_verify_nonce( $_POST['cvp_nonce'], 'cvp_add_to_cart_nonce' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid nonce.', 'product-variations-view' ) ) );
 		}
@@ -129,36 +126,32 @@ class Product_Variations_View_Pro_Display {
 		$cart_items_added = array();
 
 		foreach ( $products as $product ) {
-			if ( isset( $product['variation_id'], $product['quantity'] ) ) {
+			if ( isset( $product['variation_id'], $product['quantity'], $product['attributes'] ) ) {
 				$variation_id = intval( $product['variation_id'] );
 				$quantity     = intval( $product['quantity'] );
+				$attributes   = $product['attributes']; 
 				$variation    = wc_get_product( $variation_id );
 
 				if ( ! $variation || 'variation' !== $variation->get_type() ) {
 					continue;
 				}
 
-				// Check if any attribute is set to "Any" (undefined attribute).
-				$variation_attributes = $variation->get_attributes();
-				$missing_attributes   = array();
-				foreach ( $variation_attributes as $attribute => $value ) {
-					if ( strtolower( $value ) === 'any' || empty( $value ) ) {
-						$missing_attributes[] = wc_attribute_label( $attribute, $variation );
+				$parent_id = $variation->get_parent_id();
+				$product   = wc_get_product( $parent_id );
+
+				$variations = array();
+				foreach ( $product->get_attributes() as $attribute_name => $attribute ) {
+					$taxonomy = 'attribute_' . sanitize_title( $attribute_name );
+
+					if ( isset( $attributes[ $taxonomy ] ) ) {
+						$variations[ $taxonomy ] = sanitize_text_field( $attributes[ $taxonomy ] );
+					} elseif ( $attribute->is_variation() && ! array_key_exists( $taxonomy, $variations ) ) {
+						wp_send_json_error( array( 'message' => sprintf( __( 'Missing attribute: %s', 'product-variations-view' ), wc_attribute_label( $attribute_name ) ) ) );
 					}
 				}
 
-				if ( ! empty( $missing_attributes ) ) {
-					wp_send_json_error(
-						array(
-							'message' => sprintf(
-								__( 'The following attributes are missing: %s. Please contact the administrator.', 'product-variations-view' ),
-								implode( ', ', $missing_attributes )
-							),
-						)
-					);
-				}
+				$added = WC()->cart->add_to_cart( $parent_id, $quantity, $variation_id, $variations );
 
-				$added = WC()->cart->add_to_cart( $variation->get_parent_id(), $quantity, $variation_id );
 				if ( $added ) {
 					$cart_items_added[] = array(
 						'variation_id'  => $variation_id,
@@ -180,6 +173,7 @@ class Product_Variations_View_Pro_Display {
 			wp_send_json_error( array( 'message' => __( 'No products were added to the cart.', 'product-variations-view' ) ) );
 		}
 	}
+
 
 	/**
 	 * Removes the price range display for variable products on the single product detail page.

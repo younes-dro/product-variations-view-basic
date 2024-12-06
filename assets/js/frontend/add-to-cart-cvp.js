@@ -139,19 +139,47 @@ function parsePrice(price) {
 (function ($) {
     $('#cvp-add-to-cart-button').on('click', function (e) {
         e.preventDefault();
+
         var itemsToAdd = [];
         $('input[name^="cvp-quantity"]').each(function () {
             var qty = parseInt($(this).val(), 10);
+
             if (qty > 0) {
+                var $variationRow = $(this).closest('.carousel-content'); // Locate the parent variation row
+                var attributes = {};
+
+                // Handle attributes from <select> elements
+                $variationRow.find('select[name^="attribute_"]').each(function () {
+                    var attrName = $(this).attr('name'); // e.g., "attribute_pa_size"
+                    var attrValue = $(this).val(); // e.g., "medium"
+                    
+                    if (attrValue) {
+                        attributes[attrName] = attrValue;
+                    }
+                });
+
+                // Handle attributes from <span> elements
+                $variationRow.find('span[name^="attribute_"]').each(function () {
+                    var attrName = $(this).attr('name'); // e.g., "attribute_pa_color"
+                    var attrValue = $(this).text().trim(); // Get the text inside the span
+                    
+                    if (attrValue) {
+                        attributes[attrName] = attrValue;
+                    }
+                });
+
+                // Add the variation with its attributes
                 itemsToAdd.push({
                     variation_id: $(this).attr('data-variation-id'),
-                    quantity: qty
+                    quantity: qty,
+                    attributes: attributes, // Attach the selected and pre-defined attributes
                 });
             }
         });
+
         $('.cvp-error').html('');
         if (itemsToAdd.length > 0) {
-            $thisbutton = $(this);
+            var $thisbutton = $(this);
             $.ajax({
                 url: wc_cvp_params.ajax_url,
                 type: 'POST',
@@ -160,20 +188,18 @@ function parsePrice(price) {
                     products: itemsToAdd,
                     'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
-                beforeSend: function(resposnse){
-                    $thisbutton.prop('disabled',true);
+                beforeSend: function () {
+                    $thisbutton.prop('disabled', true);
                     $thisbutton.addClass('loading');
                 },
-                complete:function(resposnse){
-                    $thisbutton.prop('disabled',false);
+                complete: function () {
+                    $thisbutton.prop('disabled', false);
                     $thisbutton.removeClass('loading');
                 },
                 success: function (response) {
-                    
-                    
                     if (response.success) {
                         alert('Added to cart!');
-                        $( document.body ).trigger( 'wc_fragment_refresh' );
+                        $(document.body).trigger('wc_fragment_refresh');
                     } else {
                         $('.cvp-error').html('<p class="woocommerce-error">' + response.data.message + '</p>');
                         $('input[name^="cvp-quantity"]').val('');
@@ -189,6 +215,8 @@ function parsePrice(price) {
         }
     });
 })(jQuery);
+
+
 
 (function ($) {
     $('#cvp-reset').on('click', function (e) {

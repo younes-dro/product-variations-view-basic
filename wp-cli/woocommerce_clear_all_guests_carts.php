@@ -3,7 +3,7 @@
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 	WP_CLI::add_command(
-		'woocommerce_clear_all_guest_carts',
+		'woocommerce_clear_all_guests_carts',
 		function () {
 			global $wpdb;
 			

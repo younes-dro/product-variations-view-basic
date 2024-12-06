@@ -46,7 +46,7 @@ if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 			foreach ( $variation_attributes as $key_attribute => $value ) {
 
 				if ( $selected_key === $key_attribute && ! empty( $value ) ) {
-					echo '<span class="attribute-name">';
+					echo '<span name="attribute_' . $attribute_name. '" class="attribute-name">';
 					$tax = str_replace( 'attribute_', '', $key_attribute );
 					if ( $product && taxonomy_exists( $attribute_name ) && get_term_by( 'slug', $value, $tax ) ) {
 
@@ -67,7 +67,7 @@ if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 			}
 			// Any
 		} else {
-			$html  = '<select id="' . esc_attr( $attribute_name ) . '">';
+			$html  = '<select name="attribute_' . $attribute_name. '" id="' . esc_attr( $attribute_name ) . '">';
 			$html .= '<option value="">' . esc_html__( 'Choose an option', 'product-variations-view' ) . '</option>';
 
 			// $tax = str_replace('attribute_', '', $key_attribute);
