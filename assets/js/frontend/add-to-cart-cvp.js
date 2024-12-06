@@ -141,43 +141,56 @@ function parsePrice(price) {
         e.preventDefault();
 
         var itemsToAdd = [];
+        var hasError = false;
+
         $('input[name^="cvp-quantity"]').each(function () {
             var qty = parseInt($(this).val(), 10);
 
             if (qty > 0) {
-                var $variationRow = $(this).closest('.carousel-content'); // Locate the parent variation row
+                var $variationRow = $(this).closest('.carousel-content');
                 var attributes = {};
 
-                // Handle attributes from <select> elements
+                
                 $variationRow.find('select[name^="attribute_"]').each(function () {
-                    var attrName = $(this).attr('name'); // e.g., "attribute_pa_size"
-                    var attrValue = $(this).val(); // e.g., "medium"
-                    
-                    if (attrValue) {
+                    var attrName = $(this).attr('name'); 
+                    var attrValue = $(this).val(); 
+
+                    if (!attrValue) {
+                        hasError = true;
+                        $(this).addClass('error'); 
+                    } else {
+                        $(this).removeClass('error');
                         attributes[attrName] = attrValue;
                     }
                 });
 
-                // Handle attributes from <span> elements
+                
                 $variationRow.find('span[name^="attribute_"]').each(function () {
-                    var attrName = $(this).attr('name'); // e.g., "attribute_pa_color"
-                    var attrValue = $(this).text().trim(); // Get the text inside the span
-                    
+                    var attrName = $(this).attr('name'); 
+                    var attrValue = $(this).text().trim();
+
                     if (attrValue) {
                         attributes[attrName] = attrValue;
                     }
                 });
 
-                // Add the variation with its attributes
-                itemsToAdd.push({
-                    variation_id: $(this).attr('data-variation-id'),
-                    quantity: qty,
-                    attributes: attributes, // Attach the selected and pre-defined attributes
-                });
+                
+                if (!hasError) {
+                    itemsToAdd.push({
+                        variation_id: $(this).attr('data-variation-id'),
+                        quantity: qty,
+                        attributes: attributes, 
+                    });
+                }
             }
         });
 
         $('.cvp-error').html('');
+        if (hasError) {
+            $('.cvp-error').html('<p class="woocommerce-error">Some variations missed attribute values. Please check.</p>');
+            return; 
+        }
+
         if (itemsToAdd.length > 0) {
             var $thisbutton = $(this);
             $.ajax({
@@ -200,9 +213,10 @@ function parsePrice(price) {
                     if (response.success) {
                         alert('Added to cart!');
                         $(document.body).trigger('wc_fragment_refresh');
+                        $('input[name^="cvp-quantity"]').val('');
                     } else {
                         $('.cvp-error').html('<p class="woocommerce-error">' + response.data.message + '</p>');
-                        $('input[name^="cvp-quantity"]').val('');
+                        $('input[name^="cvp-quantity"]').val(''); 
                     }
                 },
                 error: function (error) {
@@ -215,6 +229,7 @@ function parsePrice(price) {
         }
     });
 })(jQuery);
+
 
 
 
