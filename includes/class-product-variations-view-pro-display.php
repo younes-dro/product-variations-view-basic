@@ -145,7 +145,7 @@ class Product_Variations_View_Pro_Display {
 
 					if ( isset( $attributes[ $taxonomy ] ) ) {
 						$variations[ $taxonomy ] = sanitize_text_field( $attributes[ $taxonomy ] );
-					} elseif ( $attribute->is_variation() && ! array_key_exists( $taxonomy, $variations ) ) {
+					} elseif ( $attribute->get_variation() && ! array_key_exists( $taxonomy, $variations ) ) {
 						wp_send_json_error( array( 'message' => sprintf( __( 'Missing attribute: %s', 'product-variations-view' ), wc_attribute_label( $attribute_name ) ) ) );
 					}
 				}
