@@ -122,14 +122,16 @@ class Product_Variations_View_Pro_Display {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view' ) ) );
 		}
 
-		$products         = $_POST['products'];
+		$products          = $_POST['products'];
+		$product_parent_id = $_POST['parent_id'];
+		error_log( 'POSTS: ' . print_r( $_POST, true ) );
 		$cart_items_added = array();
 
 		foreach ( $products as $product ) {
 			if ( isset( $product['variation_id'], $product['quantity'], $product['attributes'] ) ) {
 				$variation_id = intval( $product['variation_id'] );
 				$quantity     = intval( $product['quantity'] );
-				$attributes   = $product['attributes']; 
+				$attributes   = $product['attributes'];
 				$variation    = wc_get_product( $variation_id );
 
 				if ( ! $variation || 'variation' !== $variation->get_type() ) {
@@ -140,14 +142,37 @@ class Product_Variations_View_Pro_Display {
 				$product   = wc_get_product( $parent_id );
 
 				$variations = array();
-				foreach ( $product->get_attributes() as $attribute_name => $attribute ) {
-					$taxonomy = 'attribute_' . sanitize_title( $attribute_name );
-
-					if ( isset( $attributes[ $taxonomy ] ) ) {
-						$variations[ $taxonomy ] = sanitize_text_field( $attributes[ $taxonomy ] );
-					} elseif ( $attribute->is_variation() && ! array_key_exists( $taxonomy, $variations ) ) {
-						wp_send_json_error( array( 'message' => sprintf( __( 'Missing attribute: %s', 'product-variations-view' ), wc_attribute_label( $attribute_name ) ) ) );
+				foreach ( $attributes as $key => $value ) {
+					if ( 'attribute_' !== substr( $key, 0, 10 ) ) {
+						continue;
 					}
+
+					$variations[ sanitize_title( wp_unslash( $key ) ) ] = wp_unslash( $value );
+				}
+				// error_log( 'Attributes : ' . print_r( $product->get_attributes(), true));
+				// foreach ( $product->get_attributes() as $attribute_name => $attribute ) {
+				// $taxonomy = 'attribute_' . sanitize_title( $attribute_name );
+				// error_log( print_r( $attributes[ $taxonomy ], true));
+				// if ( isset( $attributes[ $taxonomy ] ) ) {
+				// $variations[ $taxonomy ] = sanitize_text_field( $attributes[ $taxonomy ] );
+				// } elseif ( $attribute->get_variation() && ! array_key_exists( $taxonomy, $variations ) ) {
+				// wp_send_json_error( array( 'message' => sprintf( __( 'Missing attribute: %s', 'product-variations-view' ), wc_attribute_label( $attribute_name ) ) ) );
+				// }
+				// }
+				// error_log( __METHOD__ .  ' : Variationss: '  . print_r( $variations, true) );
+				// error_log("Parent ID: $parent_id, Quantity: $quantity, Variation ID: $variation_id, Variations: " . print_r($variations, true));
+
+				$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_parent_id, $quantity, $variation_id, $variations );
+				error_log( 'PAssed Validation: ' . print_r( $passed_validation, true ) );
+				if ( ! $passed_validation ) {
+					return false;
+				}
+						// Prevent parent variable product from being added to cart.
+				if ( empty( $variation_id ) && $product && $product->is_type( 'variable' ) ) {
+					/* translators: 1: product link, 2: product name */
+					wc_add_notice( sprintf( __( 'Please choose product options by visiting <a href="%1$s" title="%2$s">%2$s</a>.', 'woocommerce' ), esc_url( get_permalink( $product_id ) ), esc_html( $product->get_name() ) ), 'error' );
+
+					return false;
 				}
 
 				$added = WC()->cart->add_to_cart( $parent_id, $quantity, $variation_id, $variations );
