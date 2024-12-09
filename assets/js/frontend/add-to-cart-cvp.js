@@ -198,6 +198,7 @@ function parsePrice(price) {
                 type: 'POST',
                 data: {
                     action: 'wc_cvp_add_to_cart',
+                    parent_id: $('input[name="cvp-product-parent-id"]').val(),
                     products: itemsToAdd,
                     'cvp_nonce': wc_cvp_params.cvp_nonce
                 },
