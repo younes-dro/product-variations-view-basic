@@ -26,6 +26,16 @@ defined( 'ABSPATH' ) || exit;
  */
 class Product_Variations_View_Pro_Admin {
 
+
+	/**
+	 * Instance of the Product_Variations_View_Pro_Admin class.
+	 *
+	 * Verify the requirements
+	 *
+	 * @var obj Product_Variations_View_Pro_Admin object
+	 */
+	private static $instance;
+
 	/**
 	 * Constructor.
 	 * Initializes the class and hooks admin-specific actions.
@@ -37,6 +47,21 @@ class Product_Variations_View_Pro_Admin {
 		add_action( 'admin_menu', array( $this, 'add_pvv_menu' ) );
 		add_action( 'wp_ajax_pvv_save_settings', array( $this, 'save_pvv_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
+	}
+
+	/**
+	 * Gets the Product_Variations_View_Pro_Admin instance.
+	 *
+	 * Ensures only one instance of Product_Variations_View_Pro_Admin is loaded or can be loaded.
+	 *
+	 * @since 1.0.0
+	 * @return Product_Variations_View_Pro_Admin instance
+	 */
+	public static function start_admin(){
+
+		self::$instance ??= new self;
+
+		return self::$instance;
 	}
 
 	/**

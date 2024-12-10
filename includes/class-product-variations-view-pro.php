@@ -87,9 +87,8 @@ class Product_Variations_View_Pro {
 	 * @return Product_Variations_View_Pro instance
 	 */
 	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ) {
-		if ( null === self::$instance ) {
-			self::$instance = new self( $dependencies );
-		}
+
+		self::$instance ??= new self( $dependencies );
 
 		return self::$instance;
 	}
@@ -198,19 +197,19 @@ class Product_Variations_View_Pro {
 		}
 	}
 
-		/**
-		 * Initializes the plugin.
-		 *
-		 * @since 1.0.0
-		 */
+	/**
+	 * Initializes the plugin.
+	 *
+	 * @since 1.0.0
+	 */
 	public function init_plugin() {
 
 		if ( ! self::$dependencies->is_compatible() ) {
 			return;
 		}
 		if ( is_admin() ) {
-			// TODO: Implement singleton pattern.
-			new Product_Variations_View_Pro_Admin();
+			
+			Product_Variations_View_Pro_Admin::start_admin();
 		}
 	}
 
@@ -219,7 +218,6 @@ class Product_Variations_View_Pro {
 	 */
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
-			// TODO: Implement singleton pattern.
 			new Product_Variations_View_Pro_Display();
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';

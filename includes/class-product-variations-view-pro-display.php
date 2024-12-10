@@ -26,6 +26,15 @@ use function DRO\ProductVariationsViewPro\product_variations_view_pro;
 class Product_Variations_View_Pro_Display {
 
 	/**
+	 * Instance of the Product_Variations_View_Pro_Display class.
+	 *
+	 * Verify the requirements
+	 *
+	 * @var obj Product_Variations_View_Pro_Display object
+	 */
+	private static $instance;	
+
+	/**
 	 * Constructor.
 	 *
 	 * Sets up actions and filters for the front-end functionality.
@@ -39,6 +48,14 @@ class Product_Variations_View_Pro_Display {
 		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
 		add_filter( 'woocommerce_get_price_html', array( $this, 'remove_variable_price_range_on_product_page' ), 10, 2 );
 		add_action( 'wp', array( $this, 'remove_short_description_from_product_page' ) );
+	}
+
+	public static function start_display(){
+
+		self::$instance ??= new self();
+		
+		return self::$instance;
+
 	}
 
 	/**
