@@ -30,7 +30,7 @@ class Product_Variations_View_Pro_Display {
 	 *
 	 * Verify the requirements
 	 *
-	 * @var obj Product_Variations_View_Pro_Display object
+	 * @var Product_Variations_View_Pro_Display|null
 	 */
 	private static $instance;	
 
@@ -50,7 +50,14 @@ class Product_Variations_View_Pro_Display {
 		add_action( 'wp', array( $this, 'remove_short_description_from_product_page' ) );
 	}
 
-	public static function start_display(){
+	/**
+	 * Gets the Product_Variations_View_Pro_Disaply instance.
+	 *
+	 *
+	 * @since 1.0.0
+	 * @return Product_Variations_View_Pro_Display instance
+	 */
+	public static function start_display(): Product_Variations_View_Pro_Display {
 
 		self::$instance ??= new self();
 		

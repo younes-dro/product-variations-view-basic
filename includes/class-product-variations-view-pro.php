@@ -26,7 +26,7 @@ class Product_Variations_View_Pro {
 	/**
 	 * The Single instance of the class.
 	 *
-	 * @var obj Product_Variations_View_Pro object
+	 * @var Product_Variations_View_Pro|null
 	 */
 	protected static $instance;
 
@@ -86,7 +86,7 @@ class Product_Variations_View_Pro {
 	 * @since 1.0.0
 	 * @return Product_Variations_View_Pro instance
 	 */
-	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ) {
+	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ): Product_Variations_View_Pro {
 
 		self::$instance ??= new self( $dependencies );
 

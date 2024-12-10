@@ -32,7 +32,7 @@ class Product_Variations_View_Pro_Admin {
 	 *
 	 * Verify the requirements
 	 *
-	 * @var obj Product_Variations_View_Pro_Admin object
+	 * @var Product_Variations_View_Pro_Admin|null
 	 */
 	private static $instance;
 
@@ -57,7 +57,7 @@ class Product_Variations_View_Pro_Admin {
 	 * @since 1.0.0
 	 * @return Product_Variations_View_Pro_Admin instance
 	 */
-	public static function start_admin(){
+	public static function start_admin(): Product_Variations_View_Pro_Admin {
 
 		self::$instance ??= new self;
 
