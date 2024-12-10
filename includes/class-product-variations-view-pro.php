@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+ namespace DRO\ProductVariationsViewPro\Includes;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -61,7 +63,7 @@ class Product_Variations_View_Pro {
 	public function __construct( Product_Variations_View_Pro_Dependencies $dependencies ) {
 
 		self::$dependencies = $dependencies;
-		// register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, array( $this, 'activation_check' ) );
+		
 
 		add_action( 'admin_init', array( $this, 'check_environment' ) );
 

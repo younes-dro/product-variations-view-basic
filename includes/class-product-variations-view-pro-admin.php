@@ -10,6 +10,7 @@
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
+namespace DRO\ProductVariationsViewPro\Includes;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;

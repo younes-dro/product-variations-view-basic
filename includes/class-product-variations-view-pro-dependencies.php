@@ -14,7 +14,7 @@
  * @version 1.0.0
  * @since 1.0.0
  */
-
+namespace DRO\ProductVariationsViewPro\Includes;
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Product_Variations_View_Pro_Dependencies {
 
     /** minimum PHP version required by this plugin */
-    const MINIMUM_PHP_VERSION = '5.3';
+    const MINIMUM_PHP_VERSION = '7.4';
 
     /** minimum WordPress version required by this plugin */
     const MINIMUM_WP_VERSION = '5.3.2';

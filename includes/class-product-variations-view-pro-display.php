@@ -10,11 +10,13 @@
  * @email    younesdro@gmail.com
  */
 
-
+namespace DRO\ProductVariationsViewPro\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+use function DRO\ProductVariationsViewPro\product_variations_view_pro;
 
 /**
  * Handles the front-end display and functionality for Product Variations View Pro.

@@ -35,7 +35,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 ?>
 
 <form class="cart cvp-form dro-variable-products-form" action="<?php echo esc_url( $product->add_to_cart_url() ); ?>" method="post" enctype="multipart/form-data">
-	<input type="texy" name="cvp-product-parent-id" value="<?php echo esc_attr( $post->ID)?>">
+	<input type="hidden" name="cvp-product-parent-id" value="<?php echo esc_attr( $post->ID)?>">
 	<?php
 	/**
 	 * woocommerce_before_variations_form hook.
