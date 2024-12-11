@@ -10,11 +10,13 @@
  * @email    younesdro@gmail.com
  */
 
-
+namespace DRO\ProductVariationsViewPro\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+use function DRO\ProductVariationsViewPro\product_variations_view_pro;
 
 /**
  * Handles the front-end display and functionality for Product Variations View Pro.
@@ -22,6 +24,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  */
 class Product_Variations_View_Pro_Display {
+
+	/**
+	 * Instance of the Product_Variations_View_Pro_Display class.
+	 *
+	 * Verify the requirements
+	 *
+	 * @var Product_Variations_View_Pro_Display|null
+	 */
+	private static $instance;	
 
 	/**
 	 * Constructor.
@@ -37,6 +48,21 @@ class Product_Variations_View_Pro_Display {
 		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
 		add_filter( 'woocommerce_get_price_html', array( $this, 'remove_variable_price_range_on_product_page' ), 10, 2 );
 		add_action( 'wp', array( $this, 'remove_short_description_from_product_page' ) );
+	}
+
+	/**
+	 * Gets the Product_Variations_View_Pro_Disaply instance.
+	 *
+	 *
+	 * @since 1.0.0
+	 * @return Product_Variations_View_Pro_Display instance
+	 */
+	public static function start_display(): Product_Variations_View_Pro_Display {
+
+		self::$instance ??= new self();
+		
+		return self::$instance;
+
 	}
 
 	/**

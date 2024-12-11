@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+ namespace DRO\ProductVariationsViewPro\Includes;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -24,7 +26,7 @@ class Product_Variations_View_Pro {
 	/**
 	 * The Single instance of the class.
 	 *
-	 * @var obj Product_Variations_View_Pro object
+	 * @var Product_Variations_View_Pro|null
 	 */
 	protected static $instance;
 
@@ -61,7 +63,7 @@ class Product_Variations_View_Pro {
 	public function __construct( Product_Variations_View_Pro_Dependencies $dependencies ) {
 
 		self::$dependencies = $dependencies;
-		// register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, array( $this, 'activation_check' ) );
+		
 
 		add_action( 'admin_init', array( $this, 'check_environment' ) );
 
@@ -84,10 +86,9 @@ class Product_Variations_View_Pro {
 	 * @since 1.0.0
 	 * @return Product_Variations_View_Pro instance
 	 */
-	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ) {
-		if ( null === self::$instance ) {
-			self::$instance = new self( $dependencies );
-		}
+	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ): Product_Variations_View_Pro {
+
+		self::$instance ??= new self( $dependencies );
 
 		return self::$instance;
 	}
@@ -196,19 +197,19 @@ class Product_Variations_View_Pro {
 		}
 	}
 
-		/**
-		 * Initializes the plugin.
-		 *
-		 * @since 1.0.0
-		 */
+	/**
+	 * Initializes the plugin.
+	 *
+	 * @since 1.0.0
+	 */
 	public function init_plugin() {
 
 		if ( ! self::$dependencies->is_compatible() ) {
 			return;
 		}
 		if ( is_admin() ) {
-			// TODO: Implement singleton pattern.
-			new Product_Variations_View_Pro_Admin();
+			
+			Product_Variations_View_Pro_Admin::start_admin();
 		}
 	}
 
@@ -217,7 +218,6 @@ class Product_Variations_View_Pro {
 	 */
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
-			// TODO: Implement singleton pattern.
 			new Product_Variations_View_Pro_Display();
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';

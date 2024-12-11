@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use function DRO\ProductVariationsViewPro\product_variations_view_pro;
+
 if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 
 	/**
