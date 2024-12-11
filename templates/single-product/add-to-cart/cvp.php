@@ -16,6 +16,7 @@
  * @since   1.0.0
  * @version 1.0.0
  */
+
 defined( 'ABSPATH' ) || exit;
 
 global $product, $post;
@@ -24,26 +25,21 @@ $variations = $product->get_available_variations();
 
 $product_attributes = $product->get_variation_attributes();
 
-// echo '<pre>';
-// var_dump($product_attributes);
-// echo '</pre>';
-
 /**
- * woocommerce_before_add_to_cart_form hook.
+ * Woocommerce_before_add_to_cart_form hook.
  */
 do_action( 'woocommerce_before_add_to_cart_form' );
 ?>
 
 <form class="cart cvp-form dro-variable-products-form" action="<?php echo esc_url( $product->add_to_cart_url() ); ?>" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="cvp-product-parent-id" value="<?php echo esc_attr( $post->ID)?>">
+	<input type="hidden" name="cvp-product-parent-id" value="<?php echo esc_attr( $post->ID ); ?>">
 	<?php
 	/**
-	 * woocommerce_before_variations_form hook.
+	 * Woocommerce_before_variations_form hook.
 	 */
 	do_action( 'woocommerce_before_variations_form' );
 	?>
 	<div id="variable-products-carousel" class="carousel slide" data-interval="false" data-ride="carousel">
-
 
 		<?php apply_filters( 'woocommerce_cvp_carousel_indicators', count( $variations ) ); ?>
 		<div class="carousel-inner" role="listbox">
@@ -51,8 +47,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 			foreach ( $variations as $variation ) {
 				$active = ( $variation === reset( $variations ) ) ? 'active' : '';
 				?>
-				<div class="carousel-item  <?php echo $active; ?>">
-					<!--<div class="container">--> 
+				<div class="carousel-item  <?php echo esc_attr( $active ); ?>">
 					<div class="carousel-content">
 						<div class="row">                          
 							<div class=" col-6 col-sm-8" style="text-align: left">
@@ -136,13 +131,13 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						<div class="row">
 							<div class="col-12">
 							<?php
-								$input_id = uniqid( 'quantity_' ); // Unique ID for the input field
+								$input_id = uniqid( 'quantity_' );
 
-								// TODO : use product name 
-								$label = ! empty( $variation['attributes'] ) 
+								// TODO : use product name
+								$label = ! empty( $variation['attributes'] )
 									? sprintf( esc_html__( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $attribute_name ) )
 									: esc_html__( 'Quantity', 'woocommerce' );
-								?>
+							?>
 
 								<div class="quantity">
 									<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $label ); ?></label>
@@ -172,42 +167,6 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							$current_variation = wc_get_product( $variation['variation_id'] );
 							do_action( 'woocommerce_cvp_variation_data', $current_variation );
 						?>
-<!--                        <div class="row">
-							<div class="col-12">
-								<?php
-								// var_dump(wc_get_price_to_display($current_variation, array('price'=>$current_variation->get_regular_price())));
-								?>
-								<br>
-								<?php
-								// var_dump(wc_get_price_to_display($current_variation, array('price'=>$current_variation->get_price())));
-								?>
-								<br>
-								<?php
-								// var_dump(wc_get_price_including_tax($current_variation));
-								?>
-								<br>
-								<?php
-								// var_dump(wc_get_price_excluding_tax($current_variation));
-								?>
-								<?php
-								// echo wc_get_formatted_variation($current_variation);
-								?>
-							</div>
-						</div>-->
-<!--                        <div class="row carousel-nav-bottom">
-							<div class="col-6 carousel-nav">
-								<a  class="float-left carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
-									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view' ); ?></span>
-								</a>
-							</div>
-							<div class="col-6  carousel-nav">
-								<a  class="float-right carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
-									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view' ); ?></span>
-								</a>
-							</div>
-						</div>                        -->
 					</div><!-- .carousel-content -->
 				</div>
 				<?php
