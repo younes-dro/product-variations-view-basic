@@ -47,7 +47,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 			foreach ( $variations as $variation ) {
 				$active = ( $variation === reset( $variations ) ) ? 'active' : '';
 				?>
-				<div class="carousel-item  <?php echo esc_attr( $active ); ?>">
+				<div class="carousel-item  <?php echo esc_attr( $active); ?>">
 					<div class="carousel-content">
 						<div class="row">                          
 							<div class=" col-6 col-sm-8" style="text-align: left">
