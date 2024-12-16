@@ -2,35 +2,35 @@
 /**
  * Front-End Display
  *
- * @class    Product_Variations_View_Pro_Display
+ * @class    PvvFront
  * @version  1.0.0
  * @since    1.0.0
- * @package  Product_Variations_View_Pro
+ * @package  Pvv
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\Pvv;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-use function DRO\ProductVariationsViewPro\product_variations_view_pro;
+use function DRO\Pvv\Pvv;
 
 /**
  * Handles the front-end display and functionality for Product Variations View Pro.
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Display {
+class PvvFront {
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Display class.
+	 * Instance of the PvvFront class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var Product_Variations_View_Pro_Display|null
+	 * @var PvvFront|null
 	 */
 	private static $instance;	
 
@@ -51,13 +51,13 @@ class Product_Variations_View_Pro_Display {
 	}
 
 	/**
-	 * Gets the Product_Variations_View_Pro_Disaply instance.
+	 * Gets the Pvv_Disaply instance.
 	 *
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro_Display instance
+	 * @return PvvFront instance
 	 */
-	public static function start_display(): Product_Variations_View_Pro_Display {
+	public static function start_display(): PvvFront {
 
 		self::$instance ??= new self();
 		
@@ -89,7 +89,7 @@ class Product_Variations_View_Pro_Display {
 				'container' => $product,
 			),
 			'',
-			Product_Variations_View_Pro()->plugin_path() . '/templates/'
+			Pvv()->plugin_path() . '/templates/'
 		);
 	}
 
@@ -105,16 +105,16 @@ class Product_Variations_View_Pro_Display {
 			return;
 		}
 
-		wp_register_style( 'wc-cvp-frontend', Product_Variations_View_Pro()->plugin_url() . '/assets/css/frontend/cvp-frontend.css', array(), Product_Variations_View_Pro()->version );
+		wp_register_style( 'wc-cvp-frontend', Pvv()->plugin_url() . '/assets/css/frontend/cvp-frontend.css', array(), Pvv()->version );
 		wp_enqueue_style( 'wc-cvp-frontend' );
 
-		wp_register_style( 'bootstrap-css', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap.css', array(), Product_Variations_View_Pro()->version );
+		wp_register_style( 'bootstrap-css', Pvv()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap.css', array(), Pvv()->version );
 		wp_enqueue_style( 'bootstrap-css' );
 
-		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
+		wp_register_script( 'bootstrap-js', Pvv()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap.js', array( 'jquery' ), Pvv()->version, true );
 		wp_enqueue_script( 'bootstrap-js' );
 
-		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
+		wp_register_script( 'wc-add-to-cart-cvp', Pvv()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
 		wp_enqueue_script( 'wc-add-to-cart-cvp' );
 
 		$params = array(

@@ -14,7 +14,7 @@
  * @version 1.0.0
  * @since 1.0.0
  */
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\Pvv;
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -22,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Check the compatibility of the environment.
  *
- * @class Product_Variations_View_Pro_Dependencies
+ * @class PvvEnvChecker
  * @version 1.0.0
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Dependencies {
+class PvvEnvChecker {
 
     /** minimum PHP version required by this plugin */
     const MINIMUM_PHP_VERSION = '7.4';
@@ -76,7 +76,7 @@ class Product_Variations_View_Pro_Dependencies {
     public static function get_wp_notice() {
         return sprintf(
             esc_html__( '%1$s is not active, as it requires WordPress version %2$s or higher. Please %3$supdate WordPress &raquo;%4$s', 'product-variations-view' ),
-            '<strong>' . Product_Variations_View_Pro()->plugin_name . '</strong>',
+            '<strong>' . Pvv()->plugin_name . '</strong>',
             self::MINIMUM_WP_VERSION,
             '<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">',
             '</a>'
@@ -98,7 +98,7 @@ class Product_Variations_View_Pro_Dependencies {
     public function get_wc_notice() {
         return sprintf(
             esc_html__( '%1$s is not active, as it requires WooCommerce version %2$s or higher. Please %3$supdate WooCommerce &raquo;%4$s', 'product-variations-view' ),
-            '<strong>' . Product_Variations_View_Pro()->plugin_name . '</strong>',
+            '<strong>' . Pvv()->plugin_name . '</strong>',
             self::MINIMUM_WC_VERSION,
             '<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">',
             '</a>'

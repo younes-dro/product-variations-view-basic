@@ -8,7 +8,9 @@
  * @since 1.0.0
  */
 
- namespace DRO\ProductVariationsViewPro\Includes;
+ namespace DRO\Pvv;
+
+ use DRO\Pvv\PvvFront;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -21,12 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro {
+class Pvv {
 
 	/**
 	 * The Single instance of the class.
 	 *
-	 * @var Product_Variations_View_Pro|null
+	 * @var Pvv|null
 	 */
 	protected static $instance;
 
@@ -42,14 +44,14 @@ class Product_Variations_View_Pro {
 	 *
 	 * @var String
 	 */
-	public $plugin_name = PRODUCT_VARIATIONS_VIEW_PRO_NAME;
+	public $plugin_name = PVV_NAME;
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Dependencies class.
+	 * Instance of the PvvEnvChecker class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var obj Product_Variations_View_Pro_Dependencies object
+	 * @var obj PvvEnvChecker object
 	 */
 	protected static $dependencies;
 
@@ -58,9 +60,9 @@ class Product_Variations_View_Pro {
 
 	/**
 	 *
-	 * @param Product_Variations_View_Pro_Dependencies $dependencies
+	 * @param PvvEnvChecker $dependencies
 	 */
-	public function __construct( Product_Variations_View_Pro_Dependencies $dependencies ) {
+	public function __construct( PvvEnvChecker $dependencies ) {
 
 		self::$dependencies = $dependencies;
 		
@@ -79,14 +81,14 @@ class Product_Variations_View_Pro {
 	}
 
 	/**
-	 * Gets the main Product_Variations_View_Pro instance.
+	 * Gets the main Pvv instance.
 	 *
-	 * Ensures only one instance of Product_Variations_View_Pro is loaded or can be loaded.
+	 * Ensures only one instance of Pvv is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro instance
+	 * @return Pvv instance
 	 */
-	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ): Product_Variations_View_Pro {
+	public static function start( PvvEnvChecker $dependencies ): Pvv {
 
 		self::$instance ??= new self( $dependencies );
 
@@ -127,7 +129,7 @@ class Product_Variations_View_Pro {
 	 */
 	public function check_environment() {
 
-		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) ) ) {
+		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( PVV_FILE ) ) ) {
 
 			$this->deactivate_plugin();
 			$this->add_admin_notice(
@@ -145,7 +147,7 @@ class Product_Variations_View_Pro {
 	 */
 	protected function deactivate_plugin() {
 
-		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		deactivate_plugins( plugin_basename( PVV_FILE ) );
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -183,7 +185,7 @@ class Product_Variations_View_Pro {
 	}
 
 	/**
-	 * Displays any admin notices added with \Product_Variations_View_Pro::add_admin_notice()
+	 * Displays any admin notices added with \Pvv::add_admin_notice()
 	 *
 	 * @since 1.0.0
 	 */
@@ -209,7 +211,7 @@ class Product_Variations_View_Pro {
 		}
 		if ( is_admin() ) {
 			
-			Product_Variations_View_Pro_Admin::start_admin();
+			PvvAdmin::start_admin();
 		}
 	}
 
@@ -218,7 +220,7 @@ class Product_Variations_View_Pro {
 	 */
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
-			new Product_Variations_View_Pro_Display();
+			new PvvFront();
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
 		}
@@ -246,7 +248,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		return untrailingslashit( plugins_url( '/', PVV_FILE ) );
 	}
 
 	/**
@@ -257,7 +259,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		return untrailingslashit( plugin_dir_path( PVV_FILE ) );
 	}
 
 	/**
@@ -268,7 +270,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_basename() {
-		return plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE );
+		return plugin_basename( PVV_FILE );
 	}
 
 	public function load_textdomain() {

@@ -6,17 +6,17 @@
  *
  * @version  1.0.0
  * @since    1.0.0
- * @package  Product_Variations_View_Pro
+ * @package  Pvv
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\Pvv;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class Product_Variations_View_Pro_Admin
+ * Class PvvAdmin
  *
  * This class encapsulates all the admin-specific functionality for the plugin.
  * It manages tasks like handling missing attribute warnings, adding admin notices,
@@ -24,15 +24,15 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Admin {
+class PvvAdmin {
 
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Admin class.
+	 * Instance of the PvvAdmin class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var Product_Variations_View_Pro_Admin|null
+	 * @var PvvAdmin|null
 	 */
 	private static $instance;
 
@@ -50,14 +50,14 @@ class Product_Variations_View_Pro_Admin {
 	}
 
 	/**
-	 * Gets the Product_Variations_View_Pro_Admin instance.
+	 * Gets the PvvAdmin instance.
 	 *
-	 * Ensures only one instance of Product_Variations_View_Pro_Admin is loaded or can be loaded.
+	 * Ensures only one instance of PvvAdmin is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro_Admin instance
+	 * @return PvvAdmin instance
 	 */
-	public static function start_admin(): Product_Variations_View_Pro_Admin {
+	public static function start_admin(): PvvAdmin {
 
 		self::$instance ??= new self;
 
