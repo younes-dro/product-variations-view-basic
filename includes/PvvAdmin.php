@@ -6,16 +6,17 @@
  *
  * @version  1.0.0
  * @since    1.0.0
- * @package  Product_Variations_View_Pro
+ * @package  Pvv
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
+namespace DRO\Pvv;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class Product_Variations_View_Pro_Admin
+ * Class PvvAdmin
  *
  * This class encapsulates all the admin-specific functionality for the plugin.
  * It manages tasks like handling missing attribute warnings, adding admin notices,
@@ -23,7 +24,17 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Admin {
+class PvvAdmin {
+
+
+	/**
+	 * Instance of the PvvAdmin class.
+	 *
+	 * Verify the requirements
+	 *
+	 * @var PvvAdmin|null
+	 */
+	private static $instance;
 
 	/**
 	 * Constructor.
@@ -36,6 +47,21 @@ class Product_Variations_View_Pro_Admin {
 		add_action( 'admin_menu', array( $this, 'add_pvv_menu' ) );
 		add_action( 'wp_ajax_pvv_save_settings', array( $this, 'save_pvv_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
+	}
+
+	/**
+	 * Gets the PvvAdmin instance.
+	 *
+	 * Ensures only one instance of PvvAdmin is loaded or can be loaded.
+	 *
+	 * @since 1.0.0
+	 * @return PvvAdmin instance
+	 */
+	public static function start_admin(): PvvAdmin {
+
+		self::$instance ??= new self();
+
+		return self::$instance;
 	}
 
 	/**

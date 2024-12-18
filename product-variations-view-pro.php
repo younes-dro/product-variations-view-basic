@@ -17,12 +17,24 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+namespace DRO\Pvv;
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Inpsyde\Modularity\{Package, Properties};
+use DRO\Pvv\Modules\Env\CheckEnvModule;
+use DRO\Pvv\Modules\Env\CheckEnvService;
+use DRO\Pvv\Modules\Utility\HelperModule;
+use DRO\Pvv\Modules\Utility\HelperService;
+
+
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'PRODUCT_VARIATIONS_VIEW_PRO_FILE', __FILE__ );
-define( 'PRODUCT_VARIATIONS_VIEW_PRO_NAME', 'Product Variations View Pro' );
+define( 'PVV_FILE', __FILE__ );
+define( 'PVV_NAME', 'Product Variations View Pro' );
 define( 'INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/' );
 
 /**
@@ -31,41 +43,61 @@ define( 'INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/
  * @since 1.0.0
  */
 function activation_check() {
-	$dependencies = new Product_Variations_View_Pro_Dependencies();
-	if ( ! $dependencies->check_php_version() ) {
+	$envChecker = new CheckEnvService();
 
-		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+	if ( ! $envChecker->check_php_version() ) {
+		deactivate_plugins( plugin_basename( PVV_FILE ) );
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
 
-		wp_die( esc_html__( PRODUCT_VARIATIONS_VIEW_PRO_NAME . ' could not be activated. ', 'product-variations-view' ) . $dependencies->get_php_notice() );
-
+		wp_die( esc_html__( PVV_NAME . ' could not be activated. ', 'product-variations-view' ) . $envChecker->get_php_notice() );
 	}
 }
+register_activation_hook( PVV_FILE, __NAMESPACE__ . '\\activation_check' );
 
-/**
- * Register the built-in autoloader
- */
-function register_autoloader() {
-	spl_autoload_register(
-		function ( $class_name ) {
-			$class = strtolower( str_replace( '_', '-', $class_name ) );
-			$file  = plugin_dir_path( __FILE__ ) . '/includes/class-' . $class . '.php';
-			if ( file_exists( $file ) ) {
-				require_once $file;
-			}
-		}
-	);
+
+
+function initPackage(): Package {
+	static $package;
+	if ( ! $package ) {
+
+		$properties = Properties\PluginProperties::new( __FILE__ );
+		$package    = Package::new( $properties )
+			->addModule( new CheckEnvModule() )
+			->addModule( new HelperModule() );
+	}
+	return $package;
 }
 
+add_action(
+	'plugins_loaded',
+	function () {
+		initPackage()->build();
+		initPackage()->boot();
+	}
+);
+
 /**
- * Returns the main instance of Product_Variations_View_Pro.
+ * Returns the main instance of Pvv.
  */
-function product_variations_view_pro() {
-	register_autoloader();
-	return Product_Variations_View_Pro::start( new Product_Variations_View_Pro_Dependencies() );
+function Pvv() {
+	static $instance = null;
+
+	if ( null === $instance ) {
+		$container  = initPackage()->container();
+		$envChecker = $container->get( CheckEnvService::class );
+		$helper     = $container->get( HelperService::class );
+		$instance   = Pvv::start( $envChecker, $helper );
+	}
+
+	return $instance;
 }
 
-product_variations_view_pro();
+add_action(
+	'plugins_loaded',
+	function () {
+		Pvv();
+	}
+);

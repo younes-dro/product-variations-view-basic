@@ -16,13 +16,15 @@
  * @since   1.0.0
  * @version 1.0.0
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 $available_variations = sprintf( '%1$s %2$s %3$s', esc_html__( 'Available in ', 'product-variations-view' ), $indicators, esc_html__( 'variations', 'product-variations-view' ) );
-echo '<h6 class="available-variations">' . $available_variations . '</h6>';
+echo '<h6 class="available-variations">' . esc_html( $available_variations ) . '</h6>'; // WPCS: XSS OK.
+
 
 ?>
 
@@ -30,12 +32,12 @@ echo '<h6 class="available-variations">' . $available_variations . '</h6>';
 	<?php
 	for ( $indicator = 0; $indicator < $indicators; $indicator++ ) :
 
-		$defaultActive = ( $indicator === 0 ) ? 'active' : '';
+		$default_active = ( $indicator === 0 ) ? 'active' : '';
 		?>
 		<li 
 			data-target="#variable-products-carousel" 
 			data-slide-to="<?php esc_attr_e( $indicator ); ?>" 
-			class="<?php esc_attr_e( $defaultActive ); ?>">
+			class="<?php esc_attr_e( $default_active ); ?>">
 			<span><?php esc_html_e( $indicator + 1 ); ?></span>
 		</li>
 	<?php endfor; ?>  

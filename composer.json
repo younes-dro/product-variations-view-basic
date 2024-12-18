@@ -1,0 +1,17 @@
+{
+    "name": "dro/pvv",
+    "autoload": {
+        "psr-4": {
+            "DRO\\Pvv\\": "includes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Younes DRO",
+            "email": "younesdro@gmail.com"
+        }
+    ],
+    "require": {
+        "inpsyde/modularity": "^1.11"
+    }
+}
