@@ -19,10 +19,14 @@
 
 namespace DRO\Pvv;
 
-require __DIR__. '/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
-use DRO\Pvv\Pvv;
-use DRO\Pvv\PvvEnvChecker;
+use Inpsyde\Modularity\{Package, Properties};
+use DRO\Pvv\Modules\Env\CheckEnvModule;
+use DRO\Pvv\Modules\Env\CheckEnvService;
+use DRO\Pvv\Modules\Utility\HelperModule;
+use DRO\Pvv\Modules\Utility\HelperService;
+
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,27 +43,61 @@ define( 'INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/
  * @since 1.0.0
  */
 function activation_check() {
-	$dependencies = new PvvEnvChecker();
-	if ( ! $dependencies->check_php_version() ) {
+	$envChecker = new CheckEnvService();
 
+	if ( ! $envChecker->check_php_version() ) {
 		deactivate_plugins( plugin_basename( PVV_FILE ) );
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
 
-		wp_die( esc_html__( PVV_NAME . ' could not be activated. ', 'product-variations-view' ) . $dependencies->get_php_notice() );
-
+		wp_die( esc_html__( PVV_NAME . ' could not be activated. ', 'product-variations-view' ) . $envChecker->get_php_notice() );
 	}
 }
-register_activation_hook( PVV_FILE, __NAMESPACE__ .'\\activation_check' );
+register_activation_hook( PVV_FILE, __NAMESPACE__ . '\\activation_check' );
+
+
+
+function initPackage(): Package {
+	static $package;
+	if ( ! $package ) {
+
+		$properties = Properties\PluginProperties::new( __FILE__ );
+		$package    = Package::new( $properties )
+			->addModule( new CheckEnvModule() )
+			->addModule( new HelperModule() );
+	}
+	return $package;
+}
+
+add_action(
+	'plugins_loaded',
+	function () {
+		initPackage()->build();
+		initPackage()->boot();
+	}
+);
 
 /**
  * Returns the main instance of Pvv.
  */
 function Pvv() {
-	// register_autoloader();
-	return Pvv::start( new PvvEnvChecker() );
+	static $instance = null;
+
+	if ( null === $instance ) {
+		$container  = initPackage()->container();
+		$envChecker = $container->get( CheckEnvService::class );
+		$helper     = $container->get( HelperService::class );
+		$instance   = Pvv::start( $envChecker, $helper );
+	}
+
+	return $instance;
 }
 
-Pvv();
+add_action(
+	'plugins_loaded',
+	function () {
+		Pvv();
+	}
+);

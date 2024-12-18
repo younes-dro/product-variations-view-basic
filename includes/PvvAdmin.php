@@ -59,7 +59,7 @@ class PvvAdmin {
 	 */
 	public static function start_admin(): PvvAdmin {
 
-		self::$instance ??= new self;
+		self::$instance ??= new self();
 
 		return self::$instance;
 	}

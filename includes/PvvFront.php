@@ -32,7 +32,7 @@ class PvvFront {
 	 *
 	 * @var PvvFront|null
 	 */
-	private static $instance;	
+	private static $instance;
 
 	/**
 	 * Constructor.
@@ -53,16 +53,14 @@ class PvvFront {
 	/**
 	 * Gets the Pvv_Disaply instance.
 	 *
-	 *
 	 * @since 1.0.0
 	 * @return PvvFront instance
 	 */
 	public static function start_display(): PvvFront {
 
 		self::$instance ??= new self();
-		
-		return self::$instance;
 
+		return self::$instance;
 	}
 
 	/**
@@ -150,7 +148,7 @@ class PvvFront {
 
 		$products          = $_POST['products'];
 		$product_parent_id = $_POST['parent_id'];
-		error_log( 'POSTS: ' . print_r( $_POST, true ) );
+		// error_log( 'POSTS: ' . print_r( $_POST, true ) );
 		$cart_items_added = array();
 
 		foreach ( $products as $product ) {
@@ -189,7 +187,7 @@ class PvvFront {
 				// error_log("Parent ID: $parent_id, Quantity: $quantity, Variation ID: $variation_id, Variations: " . print_r($variations, true));
 
 				$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_parent_id, $quantity, $variation_id, $variations );
-				error_log( 'PAssed Validation: ' . print_r( $passed_validation, true ) );
+				// error_log( 'PAssed Validation: ' . print_r( $passed_validation, true ) );
 				if ( ! $passed_validation ) {
 					return false;
 				}

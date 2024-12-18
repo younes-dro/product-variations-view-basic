@@ -14,7 +14,9 @@
  * @version 1.0.0
  * @since 1.0.0
  */
-namespace DRO\Pvv;
+namespace DRO\Pvv\Modules\Env;
+
+use function DRO\Pvv\Pvv;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -27,13 +29,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @version 1.0.0
  * @since 1.0.0
  */
-class PvvEnvChecker {
+class CheckEnvService {
 
 	/** minimum PHP version required by this plugin */
 	const MINIMUM_PHP_VERSION = '7.4';
 
 	/** minimum WordPress version required by this plugin */
-	const MINIMUM_WP_VERSION = '7';
+	const MINIMUM_WP_VERSION = '6';
 
 	/** minimum WooCommerce version required by this plugin */
 	const MINIMUM_WC_VERSION = '3.7.0';

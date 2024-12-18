@@ -8,9 +8,12 @@
  * @since 1.0.0
  */
 
- namespace DRO\Pvv;
+namespace DRO\Pvv;
 
- use DRO\Pvv\PvvFront;
+use DRO\Pvv\Modules\Env\CheckEnvService;
+use DRO\Pvv\Modules\Utility\HelperService;
+use DRO\Pvv\PvvAdmin;
+use DRO\Pvv\PvvFront;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -47,37 +50,32 @@ class Pvv {
 	public $plugin_name = PVV_NAME;
 
 	/**
-	 * Instance of the PvvEnvChecker class.
+	 * Instance of the CheckEnvService class.
 	 *
-	 * Verify the requirements
+	 * Verify the requirements.
 	 *
-	 * @var obj PvvEnvChecker object
+	 * @var obj CheckEnvService object
 	 */
-	protected static $dependencies;
+	private $envChecker;
+
+	/**
+	 * Instance of the HelperService class.
+	 *
+	 * @var obj HelperService object
+	 */
+	private $helper;
 
 	/** @var array the admin notices to add */
 	protected $notices = array();
 
 	/**
 	 *
-	 * @param PvvEnvChecker $dependencies
+	 * @param CheckEnvService $envChecker
 	 */
-	public function __construct( PvvEnvChecker $dependencies ) {
+	public function __construct( CheckEnvService $envChecker, HelperService $helper ) {
 
-		self::$dependencies = $dependencies;
-		
-
-		add_action( 'admin_init', array( $this, 'check_environment' ) );
-
-		add_action( 'admin_init', array( $this, 'add_plugin_notices' ) );
-
-		add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
-
-		add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
-
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
-		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
+		$this->envChecker = $envChecker;
+		$this->helper     = $helper;
 	}
 
 	/**
@@ -88,12 +86,25 @@ class Pvv {
 	 * @since 1.0.0
 	 * @return Pvv instance
 	 */
-	public static function start( PvvEnvChecker $dependencies ): Pvv {
+	public static function start( CheckEnvService $envChecker, HelperService $helper ): Pvv {
+		if ( null === self::$instance ) {
+			self::$instance = new self( $envChecker, $helper );
 
-		self::$instance ??= new self( $dependencies );
+			self::$instance->register_hooks();
+		}
 
 		return self::$instance;
 	}
+
+	private function register_hooks() {
+		add_action( 'init', array( $this, 'init_plugin' ) );
+		add_action( 'init', array( $this, 'load_textdomain' ) );
+		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
+		add_action( 'admin_init', array( $this, 'check_environment' ) );
+		add_action( 'admin_init', array( $this, 'add_plugin_notices' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
+	}
+
 
 	/**
 	 * Cloning is forbidden due to singleton pattern.
@@ -129,13 +140,13 @@ class Pvv {
 	 */
 	public function check_environment() {
 
-		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( PVV_FILE ) ) ) {
+		if ( ! $this->envChecker->check_php_version() && is_plugin_active( plugin_basename( PVV_FILE ) ) ) {
 
 			$this->deactivate_plugin();
 			$this->add_admin_notice(
 				'bad_environment',
 				'error',
-				$this->plugin_name . esc_html__( ' has been deactivated. ', 'product-variations-view' ) . self::$dependencies->get_php_notice()
+				$this->plugin_name . esc_html__( ' has been deactivated. ', 'product-variations-view' ) . $this->envChecker->get_php_notice()
 			);
 		}
 	}
@@ -173,14 +184,14 @@ class Pvv {
 
 	public function add_plugin_notices() {
 
-		if ( ! self::$dependencies->check_wp_version() ) {
+		if ( ! $this->envChecker->check_wp_version() ) {
 
-			$this->add_admin_notice( 'update_wordpress', 'error', self::$dependencies->get_wp_notice() );
+			$this->add_admin_notice( 'update_wordpress', 'error', $this->envChecker->get_wp_notice() );
 		}
 
-		if ( ! self::$dependencies->check_wc_version() ) {
+		if ( ! $this->envChecker->check_wc_version() ) {
 
-			$this->add_admin_notice( 'update_woocommerce', 'error', self::$dependencies->get_wc_notice() );
+			$this->add_admin_notice( 'update_woocommerce', 'error', $this->envChecker->get_wc_notice() );
 		}
 	}
 
@@ -193,9 +204,12 @@ class Pvv {
 
 		foreach ( (array) $this->notices as $notice_key => $notice ) {
 
-			echo "<div class='" . esc_attr( $notice['class'] ) . "'><p>";
-			echo wp_kses( $notice['message'], array( 'a' => array( 'href' => array() ) ) );
-			echo '</p></div>';
+			printf(
+				'<div class="%s"><p>%s</p></div>',
+				esc_attr( $notice['class'] ),
+				wp_kses( $notice['message'], array( 'a' => array( 'href' => array( array() ) ) ) )
+			);
+
 		}
 	}
 
@@ -206,11 +220,12 @@ class Pvv {
 	 */
 	public function init_plugin() {
 
-		if ( ! self::$dependencies->is_compatible() ) {
+		if ( ! $this->envChecker->is_compatible() ) {
 			return;
 		}
+
 		if ( is_admin() ) {
-			
+
 			PvvAdmin::start_admin();
 		}
 	}
@@ -225,11 +240,6 @@ class Pvv {
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
 		}
 	}
-	/*
-	-----------------------------------------------------------------------------------*/
-	/*
-		Helper Functions                                                                 */
-	/*-----------------------------------------------------------------------------------*/
 	/**
 	 * Checks whether the frontend functionality is enabled.
 	 *
@@ -240,40 +250,14 @@ class Pvv {
 		return filter_var( $is_enabled, FILTER_VALIDATE_BOOLEAN );
 	}
 
-	/**
-	 * Get the plugin url.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string
-	 */
-	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', PVV_FILE ) );
-	}
-
-	/**
-	 * Get the plugin path.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string
-	 */
-	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( PVV_FILE ) );
-	}
-
-	/**
-	 * Get the plugin base path name.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string
-	 */
-	public function plugin_basename() {
-		return plugin_basename( PVV_FILE );
-	}
 
 	public function load_textdomain() {
 		load_plugin_textdomain( 'product-variations-view', false, $this->plugin_path() . '/languages' );
+	}
+	public function plugin_path() {
+		return $this->helper->get_plugin_path();
+	}
+	public function plugin_url() {
+		return $this->helper->get_plugin_url();
 	}
 }
