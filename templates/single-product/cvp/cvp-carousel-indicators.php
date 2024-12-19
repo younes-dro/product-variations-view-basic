@@ -16,13 +16,15 @@
  * @since   1.0.0
  * @version 1.0.0
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$available_variations = sprintf( '%1$s %2$s %3$s', esc_html__( 'Available in ', 'product-variations-view' ), $indicators, esc_html__( 'variations', 'product-variations-view' ) );
-echo '<h6 class="available-variations">' . $available_variations . '</h6>';
+$available_variations = sprintf( '%1$s %2$s %3$s', esc_html__( 'Available in ', 'product-variations-view-pro' ), $indicators, esc_html__( 'variations', 'product-variations-view-pro' ) );
+echo '<h6 class="available-variations">' . esc_html( $available_variations ) . '</h6>'; // WPCS: XSS OK.
+
 
 ?>
 
@@ -30,13 +32,13 @@ echo '<h6 class="available-variations">' . $available_variations . '</h6>';
 	<?php
 	for ( $indicator = 0; $indicator < $indicators; $indicator++ ) :
 
-		$defaultActive = ( $indicator === 0 ) ? 'active' : '';
+		$default_active = ( 0 === $indicator ) ? 'active' : '';
 		?>
 		<li 
 			data-target="#variable-products-carousel" 
-			data-slide-to="<?php esc_attr_e( $indicator ); ?>" 
-			class="<?php esc_attr_e( $defaultActive ); ?>">
-			<span><?php esc_html_e( $indicator + 1 ); ?></span>
+			data-slide-to="<?php echo esc_attr( $indicator ); ?>" 
+			class="<?php echo esc_attr( $default_active ); ?>">
+			<span><?php echo esc_html( $indicator + 1 ); ?></span>
 		</li>
 	<?php endfor; ?>  
 

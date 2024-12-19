@@ -16,7 +16,8 @@
  * @since   1.0.0
  * @version 1.0.0
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -26,11 +27,11 @@ $price_excl_tax = wc_get_price_excluding_tax( $variation );
 
 ?>
 <div class="cvp-variation-data" 
-	 data-cvp_variation_id="<?php echo esc_attr( $variation->get_ID() ); ?>" 
-	 data-regular_price="<?php echo esc_attr( wc_get_price_to_display( $variation, array( 'price' => $variation->get_regular_price() ) ) ); ?>" 
-	 data-price="<?php echo esc_attr( wc_get_price_to_display( $variation, array( 'price' => $variation->get_price() ) ) ); ?>" 
-	 data-price_incl_tax="<?php echo esc_attr( $price_incl_tax ); ?>" 
-	 data-price_excl_tax="<?php echo esc_attr( $price_excl_tax ); ?>" >
+	data-cvp_variation_id="<?php echo esc_attr( $variation->get_ID() ); ?>" 
+	data-regular_price="<?php echo esc_attr( wc_get_price_to_display( $variation, array( 'price' => $variation->get_regular_price() ) ) ); ?>" 
+	data-price="<?php echo esc_attr( wc_get_price_to_display( $variation, array( 'price' => $variation->get_price() ) ) ); ?>" 
+	data-price_incl_tax="<?php echo esc_attr( $price_incl_tax ); ?>" 
+	data-price_excl_tax="<?php echo esc_attr( $price_excl_tax ); ?>" >
 </div>
 
 
