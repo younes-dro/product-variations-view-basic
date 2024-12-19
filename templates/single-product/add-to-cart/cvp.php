@@ -45,9 +45,9 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 		<div class="carousel-inner" role="listbox">
 			<?php
 			foreach ( $variations as $variation ) {
-				$active = ( $variation === reset( $variations ) ) ? 'active' : '';
+				$active = ( reset( $variations ) === $variation ) ? 'active' : '';
 				?>
-				<div class="carousel-item  <?php echo esc_attr( $active); ?>">
+				<div class="carousel-item  <?php echo esc_attr( $active ); ?>">
 					<div class="carousel-content">
 						<div class="row">                          
 							<div class=" col-6 col-sm-8" style="text-align: left">
@@ -75,7 +75,14 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								<?php foreach ( $product_attributes as $attribute_name => $options ) : ?>
 									<div class="row attibutes-wrapper">
 										<div class="col-12 col-md-4 attribute-title-col">
-											<label for="" class="attribute-title"><?php echo wc_attribute_label( $attribute_name ); ?>:</label>
+											<label for="" class="attribute-title">
+												<?php
+												/* translators: %s : attribute label */
+												printf( esc_html__( '%s:', 'product-variations-view' ), esc_html( wc_attribute_label( $attribute_name ) ) );
+
+
+												?>
+												</label>
 										</div>
 										<div class="col-12 col-md-8 attribute-name-col">
 
@@ -110,10 +117,14 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 
 						<div class="row">
 							<div class="col-12">
-								<?php echo $variation['price_html']; ?>
-								<input type="hidden" class="display_regular_price" value="<?php print_r( $variation['display_regular_price'] ); ?>" />
-								<input type="hidden" class="display_price" value="<?php print_r( $variation['display_price'] ); ?>" />
-								<input type="hidden" name="variation_id[]" value="<?php echo $variation['variation_id']; ?>" />
+								<?php
+								$price_html = wp_kses_post( $variation['price_html'] );
+								printf( '%s', $price_html );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is already sanitized with wp_kses_post().
+
+								?>
+								<input type="hidden" class="display_regular_price" value="<?php echo esc_attr( $variation['display_regular_price'] ); ?>" />
+								<input type="hidden" class="display_price" value="<?php echo esc_attr( $variation['display_price'] ); ?>" />
+								<input type="hidden" name="variation_id[]" value="<?php echo esc_attr( $variation['variation_id'] ); ?>" />
 								<input type="hidden" name="product_id[]" value="<?php echo esc_attr( $post->ID ); ?>" />
 								<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $post->ID ); ?>" />
 								
@@ -121,7 +132,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								if ( ! empty( $variation['attributes'] ) ) {
 									foreach ( $variation['attributes'] as $attr_key => $attr_value ) {
 										?>
-										<input type="hidden" name="<?php echo $attr_key; ?>" value="<?php echo $attr_value; ?>">
+										<input type="text" name="<?php echo esc_attr( $attr_key ); ?>" value="<?php echo esc_attr( $attr_value ); ?>">
 										<?php
 									}
 								}
@@ -133,10 +144,8 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							<?php
 								$input_id = uniqid( 'quantity_' );
 
-								// TODO : use product name
-								$label = ! empty( $variation['attributes'] )
-									? sprintf( esc_html__( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $attribute_name ) )
-									: esc_html__( 'Quantity', 'woocommerce' );
+								/* translators: %s : attribute name */
+								$label = ! empty( $variation['attributes'] ) ? sprintf( esc_html__( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $attribute_name ) ) : esc_html__( 'Quantity', 'woocommerce' );
 							?>
 
 								<div class="quantity">
@@ -161,7 +170,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						<?php
 
 							/**
-							 * woocommerce_cvp_variation_data hook
+							 * Woocommerce_cvp_variation_data hook
 							 */
 							global $current_variation;
 							$current_variation = wc_get_product( $variation['variation_id'] );
@@ -182,7 +191,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 
 <?php
 /**
- * woocommerce_after_add_to_cart_form hook.
+ * Woocommerce_after_add_to_cart_form hook.
  */
 do_action( 'woocommerce_after_add_to_cart_form' );
 

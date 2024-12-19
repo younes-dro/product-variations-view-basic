@@ -32,13 +32,13 @@ echo '<h6 class="available-variations">' . esc_html( $available_variations ) . '
 	<?php
 	for ( $indicator = 0; $indicator < $indicators; $indicator++ ) :
 
-		$default_active = ( $indicator === 0 ) ? 'active' : '';
+		$default_active = ( 0 === $indicator ) ? 'active' : '';
 		?>
 		<li 
 			data-target="#variable-products-carousel" 
-			data-slide-to="<?php esc_attr_e( $indicator ); ?>" 
-			class="<?php esc_attr_e( $default_active ); ?>">
-			<span><?php esc_html_e( $indicator + 1 ); ?></span>
+			data-slide-to="<?php echo esc_attr( $indicator ); ?>" 
+			class="<?php echo esc_attr( $default_active ); ?>">
+			<span><?php echo esc_html( $indicator + 1 ); ?></span>
 		</li>
 	<?php endfor; ?>  
 
