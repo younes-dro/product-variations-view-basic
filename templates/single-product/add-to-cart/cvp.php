@@ -49,24 +49,25 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 				?>
 				<div class="carousel-item  <?php echo esc_attr( $active ); ?>">
 					<div class="carousel-content">
-						<div class="row">                          
-							<div class=" col-6 col-sm-8" style="text-align: left">
-								<div class="attribute-thumb-container">
-								<img class="  attribute-thumb" src="<?php echo esc_url( $variation['image']['url'] ); ?>"  alt="<?php echo esc_attr( $variation['image']['alt'] ); ?>" />
-								</div>
-							</div>
-							<div class="col-6 col-sm-4 carousel-nav" >
-								
+					<div class="row pr-4">
+						<div class="col-12">
+							<div class="col-6 col-sm-4 carousel-nav ml-auto">
 								<a class="carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
 									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									
 									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view' ); ?></span>
-								   
 								</a>
 								<a class="carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
 									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view' ); ?></span>
 								</a>                                
+							</div>
+						</div>
+					</div>
+						<div class="row">                          
+							<div class=" col-6 col-sm-8" style="text-align: left">
+								<div class="attribute-thumb-container">
+								<img class="  attribute-thumb" src="<?php echo esc_url( $variation['image']['url'] ); ?>"  alt="<?php echo esc_attr( $variation['image']['alt'] ); ?>" />
+								</div>
 							</div>                          
 						</div>
 						<div class="row">                                                               
@@ -132,7 +133,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								if ( ! empty( $variation['attributes'] ) ) {
 									foreach ( $variation['attributes'] as $attr_key => $attr_value ) {
 										?>
-										<input type="text" name="<?php echo esc_attr( $attr_key ); ?>" value="<?php echo esc_attr( $attr_value ); ?>">
+										<input type="hidden" name="<?php echo esc_attr( $attr_key ); ?>" value="<?php echo esc_attr( $attr_value ); ?>">
 										<?php
 									}
 								}

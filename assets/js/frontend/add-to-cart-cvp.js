@@ -214,6 +214,7 @@
 								alert( 'Added to cart!' );
 								$( document.body ).trigger( 'wc_fragment_refresh' );
 								$( 'input[name^="cvp-quantity"]' ).val( '' );
+								$( '.cvp-total' ).text( '' );
 							} else {
 								$( '.cvp-error' ).html( '<p class="woocommerce-error">' + response.data.message + '</p>' );
 								$( 'input[name^="cvp-quantity"]' ).val( '' );

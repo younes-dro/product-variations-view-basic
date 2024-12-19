@@ -239,7 +239,25 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
 body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset {
   font-size: 14px;
   padding: 5px 10px;
-  /*border:1px solid #f00;*/
+  text-decoration: none;
+  background-color: #f44336;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset {
+  margin-top: 10px;
 }
 
 /*# sourceMappingURL=cvp-frontend.css.map */
