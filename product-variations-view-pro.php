@@ -13,8 +13,8 @@
  * WC tested up to: 5.3.0
  *
  * Copyright: © 2024 Younes DRO
- * License: GNU General Public License v3.0
- * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * License: GNU General Public License v2.0 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 namespace DRO\ProductVariationsViewPro;

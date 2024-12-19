@@ -1,52 +1,54 @@
-=== Product Variations View Pro - Free Version ===
-Contributors: yourname
-Tags: woocommerce, product variations, variable product, carousel, product display
-Requires at least: 5.0
-Tested up to: 6.x
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+=== Product Variations View Pro ===  
+Contributors: vanbom  
+Tags: woocommerce, product variations, variable product, carousel, product display  
+Requires at least: 5.0  
+Tested up to: 6.x  
+Stable tag: 1.0.0  
+License: GPLv2 or later  
+License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-Product Variations View Pro - Free Version enhances the display of WooCommerce variable products with a basic carousel and manual add-to-cart functionality.
+Product Variations View Pro enhances the display of WooCommerce variable products with a basic carousel and manual add-to-cart functionality.  
 
-== Description ==
+== Description ==  
 
-Product Variations View Pro (Free) allows you to create a sleek, simple carousel for WooCommerce variable products, enhancing the user experience by displaying product variations in a more intuitive way.
+**Product Variations View Pro** lets you create an interactive, user-friendly carousel for WooCommerce variable products, improving customer engagement and shopping experience.  
 
-**Key Features:**
-- Simple carousel for WooCommerce variable products.
-- Basic quantity selection for each variation.
-- Manual add-to-cart for individual variations.
-- Mobile responsive design.
+**Key Features:**  
+- Interactive carousel for WooCommerce variable products.  
+- Quantity selection for each variation.  
+- Manual add-to-cart functionality for individual variations.  
+- Mobile-responsive design for seamless usage.  
 
-**Why use Product Variations View Pro (Free)?**
-This plugin is ideal for small stores looking to enhance their variable product displays without needing advanced customizations. The simple interface makes it easy for customers to browse through product variations in an interactive carousel.
+**Why use Product Variations View Pro?**  
+Ideal for small to medium-sized stores, this plugin enhances your WooCommerce variable product displays. Its intuitive interface simplifies the shopping experience, making it easier for customers to explore and purchase product variations.  
 
-**Upgrade to the Pro Version**
-The Pro version offers advanced features, including multi-variation add-to-cart with AJAX, more customization options, and priority support. Learn more at [Pro Version Link].
+== Installation ==  
 
-== Installation ==
+1. Download the plugin from the WordPress plugin repository.  
+2. Upload the plugin files to the `/wp-content/plugins/` directory or install it directly through the WordPress plugins screen.  
+3. Activate the plugin via the 'Plugins' screen in WordPress.  
+4. Go to your WooCommerce products and start enhancing variation displays.  
 
-1. Download the plugin from WordPress.org.
-2. Upload the plugin files to the `/wp-content/plugins/` directory, or install the plugin through the WordPress plugins screen directly.
-3. Activate the plugin through the 'Plugins' screen in WordPress.
-4. Go to WooCommerce products, and start using the new variation display.
+== Frequently Asked Questions ==  
 
-== Frequently Asked Questions ==
+= Can I use this plugin with other WooCommerce extensions? =  
+Yes, Product Variations View Pro is compatible with most WooCommerce extensions.  
 
-= Can I use this plugin with other WooCommerce extensions? =
-Yes, Product Variations View Pro is fully compatible with most WooCommerce extensions.
+= Is this plugin compatible with my theme? =  
+The plugin works with most WooCommerce-compatible themes. For advanced styling, CSS customizations may be required.  
 
-= Does this plugin support all themes? =
-This plugin is compatible with most WooCommerce-compatible themes. For advanced styling, you may need to customize CSS.
+== Screenshots ==  
 
-== Changelog ==
+1. **Carousel View** - Display variable product variations in a sleek carousel.  
+2. **Mobile Friendly** - Optimized for responsive mobile viewing.  
+3. **Add-to-Cart Options** - Add individual variations to the cart easily.  
 
-= 1.0.0 =
-* Initial release of the plugin with basic carousel functionality.
+== Changelog ==  
 
-== Upgrade Notice ==
+= 1.0.0 =  
+* Initial release of the plugin with basic carousel functionality.  
 
-= 1.0.0 =
-First release.
+== Upgrade Notice ==  
 
+= 1.0.0 =  
+First release with essential features to enhance WooCommerce variable product displays.  
