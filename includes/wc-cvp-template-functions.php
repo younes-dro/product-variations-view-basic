@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Template Functions
  *
@@ -11,6 +10,7 @@
  * @since    1.0.0
  * @version  1.0.0
  */
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,55 +32,37 @@ if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 		$attribute_name       = $args['attribute_name'];
 		$options              = $args['options'];
 		$variation_attributes = $args['variation_attributes'];
-
-		$selected_key = 'attribute_' . sanitize_title( $attribute_name );
-
-		// echo '<pre>' . var_dump($variation_attributes).'</pre><hr>';
-		// echo '<pre>' . var_dump($options).'</pre>';
-		// var_dump($variation_attributes[ $selected_key]);
-
-		$current_attribute = $variation_attributes[ $selected_key ];
-
-		// var_dump( $current_attribute );
+		$selected_key         = 'attribute_' . sanitize_title( $attribute_name );
+		$current_attribute    = $variation_attributes[ $selected_key ];
 
 		if ( isset( $current_attribute ) && ! empty( $current_attribute ) ) {
 
 			foreach ( $variation_attributes as $key_attribute => $value ) {
 
 				if ( $selected_key === $key_attribute && ! empty( $value ) ) {
-					echo '<span name="attribute_' . $attribute_name. '" class="attribute-name">';
+					echo '<span name="attribute_' . esc_html( $attribute_name ) . '" class="attribute-name">';
 					$tax = str_replace( 'attribute_', '', $key_attribute );
 					if ( $product && taxonomy_exists( $attribute_name ) && get_term_by( 'slug', $value, $tax ) ) {
 
-						// echo get_term_by('slug', $value, $tax)->name;
 						$attr_name = esc_html( apply_filters( 'woocommerce_variation_option_name', get_term_by( 'slug', $value, $tax )->name, get_term_by( 'slug', $value, $tax ), $attribute_name, $product ) );
-						echo $attr_name;
-						// var_dump(get_term_by('slug', $value, $tax));
-						// return;
+						echo esc_html( $attr_name );
 					} else {
 						$attr_name = esc_html( apply_filters( 'woocommerce_variation_option_name', $value, null, $attribute_name, $product ) );
-						echo $attr_name;
-						// echo wc_attribute_label($value, $product);
-						// return;
+						echo esc_html( $attr_name );
 					}
 					echo '</span>';
 					return;
 				}
 			}
-			// Any
+			// Any.
 		} else {
-			$html  = '<select name="attribute_' . $attribute_name. '" id="' . esc_attr( $attribute_name ) . '">';
+			$html  = '<select name="attribute_' . $attribute_name . '" id="' . esc_attr( $attribute_name ) . '">';
 			$html .= '<option value="">' . esc_html__( 'Choose an option', 'product-variations-view-pro' ) . '</option>';
-
-			// $tax = str_replace('attribute_', '', $key_attribute);
 
 			foreach ( $options as $key_option => $option ) {
 
 				if ( $product && taxonomy_exists( $attribute_name ) && get_term_by( 'slug', $option, $attribute_name ) ) {
-
 					$attr_name = esc_html( apply_filters( 'woocommerce_variation_option_name', get_term_by( 'slug', $option, $attribute_name )->name, get_term_by( 'slug', $option, $attribute_name ), $attribute_name, $product ) );
-
-					// $attr_name =  get_term_by('slug', $option, $attribute_name)->name ;
 
 				} else {
 					$attr_name = esc_html( apply_filters( 'woocommerce_variation_option_name', $option, null, $attribute_name, $product ) );
@@ -89,7 +71,19 @@ if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 				$html .= '<option value="' . esc_attr( $option ) . '">' . $attr_name . '</option>';
 			}
 			$html .= '</select>';
-			echo $html;
+			echo wp_kses(
+				$html,
+				array(
+					'select' => array(
+						'name' => array(),
+						'id'   => array(),
+					),
+					'option' => array(
+						'value' => array(),
+					),
+				)
+			);
+
 		}
 	}
 }
@@ -146,7 +140,7 @@ if ( ! function_exists( 'wc_cvp_template_add_to_cart_wrap' ) ) {
 	function wc_cvp_template_add_to_cart_wrap() {
 
 		global $product;
-		// consider to use wc_get_template_html()
+		// Consider to use wc_get_template_html().
 		wc_get_template(
 			'single-product/add-to-cart/cvp-add-to-cart-wrap.php',
 			array(
@@ -157,4 +151,3 @@ if ( ! function_exists( 'wc_cvp_template_add_to_cart_wrap' ) ) {
 		);
 	}
 }
-

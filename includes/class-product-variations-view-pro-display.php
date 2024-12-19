@@ -32,7 +32,7 @@ class Product_Variations_View_Pro_Display {
 	 *
 	 * @var Product_Variations_View_Pro_Display|null
 	 */
-	private static $instance;	
+	private static $instance;
 
 	/**
 	 * Constructor.
@@ -53,16 +53,14 @@ class Product_Variations_View_Pro_Display {
 	/**
 	 * Gets the Product_Variations_View_Pro_Disaply instance.
 	 *
-	 *
 	 * @since 1.0.0
 	 * @return Product_Variations_View_Pro_Display instance
 	 */
 	public static function start_display(): Product_Variations_View_Pro_Display {
 
 		self::$instance ??= new self();
-		
-		return self::$instance;
 
+		return self::$instance;
 	}
 
 	/**
@@ -140,17 +138,19 @@ class Product_Variations_View_Pro_Display {
 	 * @since 1.0.0
 	 */
 	public function cvp_add_bulk_variation() {
-		if ( ! isset( $_POST['cvp_nonce'] ) || ! wp_verify_nonce( $_POST['cvp_nonce'], 'cvp_add_to_cart_nonce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
+		$cvp_nonce = isset( $_POST['cvp_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['cvp_nonce'] ) ) : null;
+		if ( ! isset( $cvp_nonce ) || ! wp_verify_nonce( $cvp_nonce, 'cvp_add_to_cart_nonce' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
 		}
 
-		if ( ! isset( $_POST['products'] ) || ! is_array( $_POST['products'] ) ) {
+		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
+
+		if ( ! isset( $products ) || ! is_array( $products ) ) {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );
 		}
 
-		$products          = $_POST['products'];
-		$product_parent_id = $_POST['parent_id'];
-		error_log( 'POSTS: ' . print_r( $_POST, true ) );
+		$product_parent_id = isset( $_POST['parent_id'] ) ? sanitize_text_field( wp_unslash( $_POST['parent_id'] ) ) : '';
+
 		$cart_items_added = array();
 
 		foreach ( $products as $product ) {
@@ -175,25 +175,13 @@ class Product_Variations_View_Pro_Display {
 
 					$variations[ sanitize_title( wp_unslash( $key ) ) ] = wp_unslash( $value );
 				}
-				// error_log( 'Attributes : ' . print_r( $product->get_attributes(), true));
-				// foreach ( $product->get_attributes() as $attribute_name => $attribute ) {
-				// $taxonomy = 'attribute_' . sanitize_title( $attribute_name );
-				// error_log( print_r( $attributes[ $taxonomy ], true));
-				// if ( isset( $attributes[ $taxonomy ] ) ) {
-				// $variations[ $taxonomy ] = sanitize_text_field( $attributes[ $taxonomy ] );
-				// } elseif ( $attribute->get_variation() && ! array_key_exists( $taxonomy, $variations ) ) {
-				// wp_send_json_error( array( 'message' => sprintf( __( 'Missing attribute: %s', 'product-variations-view-pro' ), wc_attribute_label( $attribute_name ) ) ) );
-				// }
-				// }
-				// error_log( __METHOD__ .  ' : Variationss: '  . print_r( $variations, true) );
-				// error_log("Parent ID: $parent_id, Quantity: $quantity, Variation ID: $variation_id, Variations: " . print_r($variations, true));
 
 				$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_parent_id, $quantity, $variation_id, $variations );
-				error_log( 'PAssed Validation: ' . print_r( $passed_validation, true ) );
+
 				if ( ! $passed_validation ) {
 					return false;
 				}
-						// Prevent parent variable product from being added to cart.
+				// Prevent parent variable product from being added to cart.
 				if ( empty( $variation_id ) && $product && $product->is_type( 'variable' ) ) {
 					/* translators: 1: product link, 2: product name */
 					wc_add_notice( sprintf( __( 'Please choose product options by visiting <a href="%1$s" title="%2$s">%2$s</a>.', 'product-variations-view-pro' ), esc_url( get_permalink( $product_id ) ), esc_html( $product->get_name() ) ), 'error' );

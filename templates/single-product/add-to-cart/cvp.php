@@ -146,7 +146,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								$input_id = uniqid( 'quantity_' );
 
 								/* translators: %s : attribute name */
-								$label = ! empty( $variation['attributes'] ) ? sprintf( esc_html__( '%s quantity', 'product-variations-view-pro' ), wp_strip_all_tags( $attribute_name ) ) : esc_html__( 'Quantity', 'woocommerce' );
+								$label = ! empty( $variation['attributes'] ) ? sprintf( esc_html__( '%s quantity', 'product-variations-view-pro' ), wp_strip_all_tags( $attribute_name ) ) : esc_html__( 'Quantity', 'product-variations-view-pro' );
 							?>
 
 								<div class="quantity">

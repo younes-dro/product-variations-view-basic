@@ -41,7 +41,7 @@ function activation_check() {
 	if ( ! $dependencies->check_php_version() ) {
 
 		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
