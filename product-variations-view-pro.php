@@ -46,11 +46,17 @@ function activation_check() {
 			unset( $_GET['activate'] );
 		}
 
-		wp_die( esc_html__( PRODUCT_VARIATIONS_VIEW_PRO_NAME . ' could not be activated. ', 'product-variations-view-pro' ) . $dependencies->get_php_notice() );
+		wp_die(
+			sprintf(
+				/* translators: %s is the plugin name. */
+				esc_html__( '%s could not be activated.', 'product-variations-view-pro' ),
+				PRODUCT_VARIATIONS_VIEW_PRO_NAME
+			) . $dependencies->get_php_notice()
+		);
 
 	}
 }
-register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, 'activation_check' );
+register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, __NAMESPACE__ .'\\activation_check' );
 /**
  * Register the built-in autoloader
  */
