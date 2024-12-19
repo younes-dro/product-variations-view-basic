@@ -6,7 +6,7 @@
  * Version: 1.0.0
  * Author: Younes DRO
  * Author URI: https://github.com/younes-dro
- * Text Domain: product-variations-view
+ * Text Domain: product-variations-view-pro
  * Domain Path: /languages
  *
  * WC requires at least: 3.7.0
@@ -46,7 +46,7 @@ function activation_check() {
 			unset( $_GET['activate'] );
 		}
 
-		wp_die( esc_html__( PRODUCT_VARIATIONS_VIEW_PRO_NAME . ' could not be activated. ', 'product-variations-view' ) . $dependencies->get_php_notice() );
+		wp_die( esc_html__( PRODUCT_VARIATIONS_VIEW_PRO_NAME . ' could not be activated. ', 'product-variations-view-pro' ) . $dependencies->get_php_notice() );
 
 	}
 }

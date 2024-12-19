@@ -54,11 +54,11 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							<div class="col-6 col-sm-4 carousel-nav ml-auto">
 								<a class="carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
 									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view-pro' ); ?></span>
 								</a>
 								<a class="carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view' ); ?></span>
+									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view-pro' ); ?></span>
 								</a>                                
 							</div>
 						</div>
@@ -79,7 +79,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 											<label for="" class="attribute-title">
 												<?php
 												/* translators: %s : attribute label */
-												printf( esc_html__( '%s:', 'product-variations-view' ), esc_html( wc_attribute_label( $attribute_name ) ) );
+												printf( esc_html__( '%s:', 'product-variations-view-pro' ), esc_html( wc_attribute_label( $attribute_name ) ) );
 
 
 												?>
@@ -108,7 +108,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						<?php if ( ! empty( trim( $variation['variation_description'] ) ) ) : ?>
 							<div class="row description-variation-wrapper">
 								<div class="col-12">
-									<a href="#" class="description-toggle"><?php esc_html_e( 'Description', 'product-variations-view' ); ?><span class="toggle"></span></a>
+									<a href="#" class="description-toggle"><?php esc_html_e( 'Description', 'product-variations-view-pro' ); ?><span class="toggle"></span></a>
 								</div>
 								<div class="col-12 description-variation-container">
 									<p class="description-variation"><?php echo wp_kses( $variation['variation_description'], array( '' ) ); ?></p>
@@ -146,7 +146,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 								$input_id = uniqid( 'quantity_' );
 
 								/* translators: %s : attribute name */
-								$label = ! empty( $variation['attributes'] ) ? sprintf( esc_html__( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $attribute_name ) ) : esc_html__( 'Quantity', 'woocommerce' );
+								$label = ! empty( $variation['attributes'] ) ? sprintf( esc_html__( '%s quantity', 'product-variations-view-pro' ), wp_strip_all_tags( $attribute_name ) ) : esc_html__( 'Quantity', 'woocommerce' );
 							?>
 
 								<div class="quantity">

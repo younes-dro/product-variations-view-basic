@@ -141,11 +141,11 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function cvp_add_bulk_variation() {
 		if ( ! isset( $_POST['cvp_nonce'] ) || ! wp_verify_nonce( $_POST['cvp_nonce'], 'cvp_add_to_cart_nonce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid nonce.', 'product-variations-view' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
 		}
 
 		if ( ! isset( $_POST['products'] ) || ! is_array( $_POST['products'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );
 		}
 
 		$products          = $_POST['products'];
@@ -182,7 +182,7 @@ class Product_Variations_View_Pro_Display {
 				// if ( isset( $attributes[ $taxonomy ] ) ) {
 				// $variations[ $taxonomy ] = sanitize_text_field( $attributes[ $taxonomy ] );
 				// } elseif ( $attribute->get_variation() && ! array_key_exists( $taxonomy, $variations ) ) {
-				// wp_send_json_error( array( 'message' => sprintf( __( 'Missing attribute: %s', 'product-variations-view' ), wc_attribute_label( $attribute_name ) ) ) );
+				// wp_send_json_error( array( 'message' => sprintf( __( 'Missing attribute: %s', 'product-variations-view-pro' ), wc_attribute_label( $attribute_name ) ) ) );
 				// }
 				// }
 				// error_log( __METHOD__ .  ' : Variationss: '  . print_r( $variations, true) );
@@ -196,7 +196,7 @@ class Product_Variations_View_Pro_Display {
 						// Prevent parent variable product from being added to cart.
 				if ( empty( $variation_id ) && $product && $product->is_type( 'variable' ) ) {
 					/* translators: 1: product link, 2: product name */
-					wc_add_notice( sprintf( __( 'Please choose product options by visiting <a href="%1$s" title="%2$s">%2$s</a>.', 'woocommerce' ), esc_url( get_permalink( $product_id ) ), esc_html( $product->get_name() ) ), 'error' );
+					wc_add_notice( sprintf( __( 'Please choose product options by visiting <a href="%1$s" title="%2$s">%2$s</a>.', 'product-variations-view-pro' ), esc_url( get_permalink( $product_id ) ), esc_html( $product->get_name() ) ), 'error' );
 
 					return false;
 				}
@@ -216,12 +216,12 @@ class Product_Variations_View_Pro_Display {
 		if ( ! empty( $cart_items_added ) ) {
 			wp_send_json_success(
 				array(
-					'message'    => __( 'Products added to cart successfully.', 'product-variations-view' ),
+					'message'    => __( 'Products added to cart successfully.', 'product-variations-view-pro' ),
 					'cart_items' => $cart_items_added,
 				)
 			);
 		} else {
-			wp_send_json_error( array( 'message' => __( 'No products were added to the cart.', 'product-variations-view' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No products were added to the cart.', 'product-variations-view-pro' ) ) );
 		}
 	}
 

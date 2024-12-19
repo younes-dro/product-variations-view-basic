@@ -100,7 +100,7 @@ class Product_Variations_View_Pro {
 	 */
 	public function __clone() {
 		$cloning_message = sprintf(
-			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view' ),
+			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
 		_doing_it_wrong( __FUNCTION__, $cloning_message, $this->version );
@@ -113,7 +113,7 @@ class Product_Variations_View_Pro {
 	 */
 	public function __wakeup() {
 		$unserializing_message = sprintf(
-			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view' ),
+			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
 		_doing_it_wrong( __FUNCTION__, $unserializing_message, $this->version );
@@ -133,7 +133,7 @@ class Product_Variations_View_Pro {
 			$this->add_admin_notice(
 				'bad_environment',
 				'error',
-				$this->plugin_name . esc_html__( ' has been deactivated. ', 'product-variations-view' ) . self::$dependencies->get_php_notice()
+				$this->plugin_name . esc_html__( ' has been deactivated. ', 'product-variations-view-pro' ) . self::$dependencies->get_php_notice()
 			);
 		}
 	}
@@ -272,6 +272,6 @@ class Product_Variations_View_Pro {
 	}
 
 	public function load_textdomain() {
-		load_plugin_textdomain( 'product-variations-view', false, $this->plugin_path() . '/languages' );
+		load_plugin_textdomain( 'product-variations-view-pro', false, $this->plugin_path() . '/languages' );
 	}
 }

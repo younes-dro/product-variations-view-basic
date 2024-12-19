@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$available_variations = sprintf( '%1$s %2$s %3$s', esc_html__( 'Available in ', 'product-variations-view' ), $indicators, esc_html__( 'variations', 'product-variations-view' ) );
+$available_variations = sprintf( '%1$s %2$s %3$s', esc_html__( 'Available in ', 'product-variations-view-pro' ), $indicators, esc_html__( 'variations', 'product-variations-view-pro' ) );
 echo '<h6 class="available-variations">' . esc_html( $available_variations ) . '</h6>'; // WPCS: XSS OK.
 
 

@@ -10,6 +10,7 @@
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
+
 namespace DRO\ProductVariationsViewPro\Includes;
 
 // Exit if accessed directly.
@@ -59,7 +60,7 @@ class Product_Variations_View_Pro_Admin {
 	 */
 	public static function start_admin(): Product_Variations_View_Pro_Admin {
 
-		self::$instance ??= new self;
+		self::$instance ??= new self();
 
 		return self::$instance;
 	}
@@ -71,10 +72,10 @@ class Product_Variations_View_Pro_Admin {
 	 */
 	public function add_pvv_menu() {
 		add_menu_page(
-			esc_html__( 'Product Variations View', 'product-variations-view' ),
-			esc_html__( 'Variations View', 'product-variations-view' ),
+			esc_html__( 'Product Variations View', 'product-variations-view-pro' ),
+			esc_html__( 'Variations View', 'product-variations-view-pro' ),
 			'manage_options',
-			'product-variations-view',
+			'product-variations-view-pro',
 			array( $this, 'render_pvv_settings' ),
 			'dashicons-admin-generic',
 			26
@@ -99,10 +100,10 @@ class Product_Variations_View_Pro_Admin {
 
 		check_ajax_referer( 'pvv_settings_nonce', 'security' );
 
-		$is_enabled           = isset( $_POST['is_enabled'] ) ? filter_var( $_POST['is_enabled'], FILTER_VALIDATE_BOOLEAN ) : false;
-		$show_price           = isset( $_POST['show_price'] ) ? filter_var( $_POST['show_price'], FILTER_VALIDATE_BOOLEAN ) : false;
-		$show_description     = isset( $_POST['show_description'] ) ? filter_var( $_POST['show_description'], FILTER_VALIDATE_BOOLEAN ) : false;
-		$show_product_gallery = isset( $_POST['show_product_gallery'] ) ? filter_var( $_POST['show_product_gallery'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$is_enabled           = isset( $_POST['is_enabled'] ) ? filter_var( wp_unslash( $_POST['is_enabled'] ), FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_price           = isset( $_POST['show_price'] ) ? filter_var( wp_unslash( $_POST['show_price'] ), FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_description     = isset( $_POST['show_description'] ) ? filter_var( wp_unslash( $_POST['show_description'] ), FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_product_gallery = isset( $_POST['show_product_gallery'] ) ? filter_var( wp_unslash( $_POST['show_product_gallery'] ), FILTER_VALIDATE_BOOLEAN ) : false;
 
 		update_option( 'pvv_is_enabled', $is_enabled );
 		update_option( 'pvv_show_range_price', $show_price );
@@ -193,8 +194,10 @@ class Product_Variations_View_Pro_Admin {
 		// Check for missing attributes (e.g., set to "Any" or empty).
 		foreach ( $attributes as $key => $value ) {
 			if ( strtolower( $value ) === 'any' || empty( $value ) ) {
+
 				$warnings[] = sprintf(
-					__( 'Variation #%1$d has an undefined attribute: %2$s', 'product-variations-view' ),
+					/* translators: %1$d is the variation ID, %2$s is the attribute label. */
+					__( 'Variation #%1$d has an undefined attribute: %2$s', 'product-variations-view-pro' ),
 					$variation_id,
 					wc_attribute_label( $key, $product )
 				);
