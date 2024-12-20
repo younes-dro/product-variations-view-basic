@@ -50,8 +50,8 @@ function activation_check() {
 			sprintf(
 				/* translators: %s is the plugin name. */
 				esc_html__( '%s could not be activated.', 'product-variations-view-pro' ),
-				PRODUCT_VARIATIONS_VIEW_PRO_NAME
-			) . $dependencies->get_php_notice()
+				esc_html( PRODUCT_VARIATIONS_VIEW_PRO_NAME )
+			) . esc_html( $dependencies->get_php_notice() )
 		);
 
 	}

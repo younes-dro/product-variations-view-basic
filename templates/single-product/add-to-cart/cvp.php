@@ -66,7 +66,29 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						<div class="row">                          
 							<div class=" col-6 col-sm-8" style="text-align: left">
 								<div class="attribute-thumb-container">
-								<img class="  attribute-thumb" src="<?php echo esc_url( $variation['image']['url'] ); ?>"  alt="<?php echo esc_attr( $variation['image']['alt'] ); ?>" />
+							<?php
+
+							$image_url = esc_url( $variation['image']['url'] );
+							$image_alt = esc_attr( $variation['image']['alt'] );
+							$image_id  = attachment_url_to_postid( $image_url );
+							if ( $image_id ) {
+								$attachment_variation = wp_get_attachment_image(
+									$image_id,
+									'thumbnail',
+									false,
+									array(
+										'class' => 'attribute-thumb',
+										'alt'   => $image_alt,
+									)
+								);
+									echo $attachment_variation; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							} else {
+								?>
+								<img class="attribute-thumb" alt="No image defined" />
+								<?php
+							}
+							?>
+																
 								</div>
 							</div>                          
 						</div>

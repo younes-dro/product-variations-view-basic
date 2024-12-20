@@ -143,7 +143,7 @@ class Product_Variations_View_Pro_Display {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
 		}
 
-		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
+		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		if ( ! isset( $products ) || ! is_array( $products ) ) {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );

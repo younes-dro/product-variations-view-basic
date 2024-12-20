@@ -115,7 +115,7 @@ class Product_Variations_View_Pro {
 			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
-		_doing_it_wrong( __FUNCTION__, esc_html( $cloning_message ), $this->version );
+		_doing_it_wrong( __FUNCTION__, esc_html( $cloning_message ), esc_html( $this->version ) );
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Product_Variations_View_Pro {
 			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
-		_doing_it_wrong( __FUNCTION__, esc_html( $unserializing_message ), $this->version );
+		_doing_it_wrong( __FUNCTION__, esc_html( $unserializing_message ), esc_xml( $this->version ) );
 	}
 
 
