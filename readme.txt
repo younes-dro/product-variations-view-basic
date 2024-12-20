@@ -1,6 +1,6 @@
 === Product Variations View Pro ===  
 Contributors: vanbom  
-Donate link: paypal.me/younesdro
+Donate link: https://paypal.me/younesdro 
 Tags: woocommerce, product variations, variable product, carousel, product display  
 Requires at least: 5.3.2
 Tested up to: 6.7
