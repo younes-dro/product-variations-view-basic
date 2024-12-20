@@ -16,6 +16,7 @@
  * @since   1.0.0
  * @version 1.0.0
  */
+
 defined( 'ABSPATH' ) || exit;
 ?>
 <div class="cvp-add-cart container-fluid ">
@@ -25,14 +26,14 @@ defined( 'ABSPATH' ) || exit;
 		?>
 		<div class="row">
 			<div class="col-6">
-				<span class="cvp-total"><?php esc_html_e( 'Total: ', 'product-variations-view' )?></span>
+				<span class="cvp-total"><?php esc_html_e( 'Total: ', 'product-variations-view-pro' ); ?></span>
 			</div>
 		</div>
 		<div class="row">
 			<div  class="col-12">
 				<?php
 				/**
-				 * woocommerce_before_add_to_cart_button hook.
+				 * Woocommerce_before_add_to_cart_button hook.
 				 */
 				do_action( 'woocommerce_before_add_to_cart_button' );
 				?>
@@ -40,11 +41,11 @@ defined( 'ABSPATH' ) || exit;
 				<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" />
 		
 				<div class="cvp-error"></div>
-				<button type="submit" id="cvp-add-to-cart-button" class="button single_add_to_cart_button alt"><?php echo $product->single_add_to_cart_text(); ?></button>        
+				<button type="submit" id="cvp-add-to-cart-button" class="button single_add_to_cart_button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>        
 
 				<?php
 				/**
-				 * woocommerce_after_add_to_cart_button hook.
+				 * Woocommerce_after_add_to_cart_button hook.
 				 */
 				do_action( 'woocommerce_after_add_to_cart_button' );
 				?>
@@ -53,7 +54,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 	} else {
 
-		printf( '<div class="row"><div class="col-12"><p class="woocommerce-info">%s</p></div></div>', esc_html__( 'This product is currently unavailable.', 'product-variations-view' ) );
+		printf( '<div class="row"><div class="col-12"><p class="woocommerce-info">%s</p></div></div>', esc_html__( 'This product is currently unavailable.', 'product-variations-view-pro' ) );
 	}
 	?>
 

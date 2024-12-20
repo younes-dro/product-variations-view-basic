@@ -16,7 +16,8 @@
  * @since   1.0.0
  * @version 1.0.0
  */
-// Exit if accessed directly
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -24,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
-		<a href="#" id="cvp-reset" class="col-12 cvp-reset"><?php esc_html_e( 'Reset', 'product-variations-view' ); ?></a>
+		<a href="#" id="cvp-reset" class="col-12 cvp-reset"><?php esc_html_e( 'Reset', 'product-variations-view-pro' ); ?></a>
 		</div>
 	</div>
 </div>

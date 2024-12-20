@@ -2,11 +2,16 @@
 /**
  * Handles plugin initialization and main functionality.
  *
+ * This class is responsible for initializing the plugin, checking dependencies,
+ * loading the plugin textdomain, handling admin notices, and more.
+ *
  * @package ProductVariationsViewPro
  * @author Younes DRO
  * @version 1.0.0
  * @since 1.0.0
  */
+
+namespace DRO\ProductVariationsViewPro\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -24,7 +29,7 @@ class Product_Variations_View_Pro {
 	/**
 	 * The Single instance of the class.
 	 *
-	 * @var obj Product_Variations_View_Pro object
+	 * @var Product_Variations_View_Pro|null
 	 */
 	protected static $instance;
 
@@ -51,8 +56,17 @@ class Product_Variations_View_Pro {
 	 */
 	protected static $dependencies;
 
-	/** @var array the admin notices to add */
+	/**
+	 * An array of admin notices to be displayed.
+	 *
+	 * This property stores the notices that need to be displayed in the WordPress admin.
+	 * Each notice can be a string containing the HTML content or an array of parameters
+	 * that define the type of notice (e.g., error, warning, success) and the message.
+	 *
+	 * @var array
+	 */
 	protected $notices = array();
+
 
 	/**
 	 *
@@ -61,7 +75,6 @@ class Product_Variations_View_Pro {
 	public function __construct( Product_Variations_View_Pro_Dependencies $dependencies ) {
 
 		self::$dependencies = $dependencies;
-		// register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, array( $this, 'activation_check' ) );
 
 		add_action( 'admin_init', array( $this, 'check_environment' ) );
 
@@ -84,10 +97,9 @@ class Product_Variations_View_Pro {
 	 * @since 1.0.0
 	 * @return Product_Variations_View_Pro instance
 	 */
-	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ) {
-		if ( null === self::$instance ) {
-			self::$instance = new self( $dependencies );
-		}
+	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ): Product_Variations_View_Pro {
+
+		self::$instance ??= new self( $dependencies );
 
 		return self::$instance;
 	}
@@ -99,10 +111,11 @@ class Product_Variations_View_Pro {
 	 */
 	public function __clone() {
 		$cloning_message = sprintf(
-			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view' ),
+			/* translators: %s is the class name that cannot be cloned */
+			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
-		_doing_it_wrong( __FUNCTION__, $cloning_message, $this->version );
+		_doing_it_wrong( __FUNCTION__, esc_html( $cloning_message ), esc_html( $this->version ) );
 	}
 
 	/**
@@ -112,10 +125,11 @@ class Product_Variations_View_Pro {
 	 */
 	public function __wakeup() {
 		$unserializing_message = sprintf(
-			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view' ),
+			/* translators: %s is the class name that cannot be unserialized */
+			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
-		_doing_it_wrong( __FUNCTION__, $unserializing_message, $this->version );
+		_doing_it_wrong( __FUNCTION__, esc_html( $unserializing_message ), esc_xml( $this->version ) );
 	}
 
 
@@ -132,7 +146,7 @@ class Product_Variations_View_Pro {
 			$this->add_admin_notice(
 				'bad_environment',
 				'error',
-				$this->plugin_name . esc_html__( ' has been deactivated. ', 'product-variations-view' ) . self::$dependencies->get_php_notice()
+				$this->plugin_name . esc_html__( ' has been deactivated. ', 'product-variations-view-pro' ) . self::$dependencies->get_php_notice()
 			);
 		}
 	}
@@ -145,7 +159,7 @@ class Product_Variations_View_Pro {
 	protected function deactivate_plugin() {
 
 		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
@@ -196,19 +210,19 @@ class Product_Variations_View_Pro {
 		}
 	}
 
-		/**
-		 * Initializes the plugin.
-		 *
-		 * @since 1.0.0
-		 */
+	/**
+	 * Initializes the plugin.
+	 *
+	 * @since 1.0.0
+	 */
 	public function init_plugin() {
 
 		if ( ! self::$dependencies->is_compatible() ) {
 			return;
 		}
 		if ( is_admin() ) {
-			// TODO: Implement singleton pattern.
-			new Product_Variations_View_Pro_Admin();
+
+			Product_Variations_View_Pro_Admin::start_admin();
 		}
 	}
 
@@ -217,7 +231,6 @@ class Product_Variations_View_Pro {
 	 */
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
-			// TODO: Implement singleton pattern.
 			new Product_Variations_View_Pro_Display();
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
 			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
@@ -272,6 +285,6 @@ class Product_Variations_View_Pro {
 	}
 
 	public function load_textdomain() {
-		load_plugin_textdomain( 'product-variations-view', false, $this->plugin_path() . '/languages' );
+		load_plugin_textdomain( 'product-variations-view-pro', false, $this->plugin_path() . '/languages' );
 	}
 }
