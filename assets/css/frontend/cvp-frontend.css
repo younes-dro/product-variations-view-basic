@@ -1,7 +1,7 @@
 body.single-product .woocommerce-product-gallery__image img {
   transition: opacity 0.3s ease-in-out;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form {
+body.single-product form.cart.dro-variable-products-form {
   box-shadow: 0px 0px 4px #bebebe;
   padding: 10px 5px;
   margin-top: 10px;
@@ -12,30 +12,30 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   -------------------------------------------------- */
   /* Carousel base class */
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel {
+body.single-product form.cart.dro-variable-products-form .carousel {
   background-color: #fff !important;
   margin-bottom: 10px;
   /*border:1px solid #0f0;*/
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel h6.available-variations {
+body.single-product form.cart.dro-variable-products-form .carousel h6.available-variations {
   text-align: center;
   font-size: 1rem;
   color: #999;
   margin-bottom: 1rem;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel ol.carousel-indicators {
+body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators {
   /*border: 1px solid #f00;*/
   min-height: 20px;
   margin-bottom: 3px !important;
   position: relative;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li.active {
+body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li.active {
   background-color: #eee !important;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li.active > span {
+body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li.active > span {
   color: #544f4f !important;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li {
+body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li {
   border: 1px solid #ccc;
   min-height: 30px;
   text-align: center;
@@ -46,18 +46,18 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   background-color: #fff !important;
   text-indent: 0;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li:hover {
+body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li:hover {
   background-color: #eee !important;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li > span {
+body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li > span {
   color: #000 !important;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner {
   border-top: 1px solid #dcdcdc;
   margin-bottom: 0px;
   margin-top: 0px;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item {
   min-height: 24rem;
   margin: 0 auto;
   /*padding-left: 5%;*/
@@ -65,17 +65,17 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   padding-bottom: 5px;
   /*background-color: antiquewhite;*/
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item div.attribute-thumb-container {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item div.attribute-thumb-container {
   width: 50px;
   height: 50px;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item div.attribute-thumb-container img.attribute-thumb {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item div.attribute-thumb-container img.attribute-thumb {
   max-width: 100%;
   height: auto;
   box-shadow: 0px 0px 6px #d2d2d2;
   border-radius: 50%;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content {
   text-align: center;
   /*margin-right: 45px;*/
   /*margin-left: 45px;*/
@@ -87,13 +87,13 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   max-width: 100% !important;
   width: 100%;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row {
   margin-bottom: 1rem;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav {
   position: relative;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-prev, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-next, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-prev, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-next {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-prev, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-next, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-prev, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-next {
   width: 40px;
   height: 40px;
   box-shadow: 0px 0px 6px #d2d2d2;
@@ -101,20 +101,20 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   opacity: 0.8;
   border-radius: 50%;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-prev, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-prev {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-prev, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-prev {
   right: 50px !important;
   left: auto !important;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-prev span, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-prev span {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-prev span, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-prev span {
   background-image: url(data:image/png;charset=utf8;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIABAMAAAAGVsnJAAAAKlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKE86IAAAADXRSTlMAECAwYJ+gv8DP0O/wJyLz6AAAAulJREFUeNrs0rFtQgEQBFEcOHdmuYvfkEtz4BquAkQTCLheCLcAMvZNByO9kyRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJ0ot9H93/H39zqu5n70c3gN3pBrAhUApgd6oBhEAtgN0pBhACxQB2pxZACFQD2J1WACHQCSBNK4AQ6ASQphVACHQCSNMKIATaAJQSCIAUAo0A0rQCCIFOAGlaAYRAJ4A0NQC6CfzuVhP43K0mEAApTSuAEOgEkKYTQLqWA9j/cgC3LwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACANwBwLgfwOMoBXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHiyS8dEDQQAFAWPhpqSoUJCjCAFMQhJhQRMwEC8UD4HKe7valgBBBBAAAEEEEAAAQQQQAABBBBAgPt42wyQ91uSz+PkHm9Jfi8KKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCpy1wOt6gY/1Aj9PCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKDBX4PsYLfB3bBf4ux+ldNwPkZTNAHq6jASqwGqACowEqsBqgAqMBKrAaoAKjASqwGqACowEqsBqgAqMBKrAaoALbASpQgM0CBdgrsBIgqUABNgsUYLNAAUYLFGC0QAFGCxRgtUABRgsUYLVAAUYLFGC1QAE2PV8OAAAAAAAAAAAAAAAAAAAA+G8HDgQAAAAABPlbD3IBAAAAAAAAAHAXLJpCHfo8SnUAAAAASUVORK5CYII=);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-next span, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-next span {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-4.carousel-nav .carousel-control-next span, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.col-6.carousel-nav .carousel-control-next span {
   background-image: url(data:image/png;charset=utf8;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIABAMAAAAGVsnJAAAALVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADBoCg+AAAADnRSTlMAEDBggJ+gr7/Az9Dv8HfgN3AAAAL2SURBVHja7NJBTQNQAAVBqALuBAfgBUsYIakRJCCBG2nSw9fQ4xOxsxI28yRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkvJdvuID3u8vbQC/59oGcM4INAGcc20DGIEogBFoAhiBKIARaAIYgSiAEWgCGIEogBGoAhiBKIARqAIYgSiAEagCGIEogBGoAagSGIA1AkkAIxAFMAJNAOsWBbA+mwDWfxXACEQBjEAVwAhEAYxAFcAIFAC0CXyf0ybweuIEnn8QQAABBBBAAAEEEEAAAQQQQAABBBBAAAEEEEAAAQQQQAABBBBAAAEEEEAAAQQQQCBF4K1O4PJXJ/CBAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAgg82KdjmggCAIiiCwqo0cAlSMISBpBAghEk0EBICMlpoPwKaHber6d8gwACCCCAAAIIIIAAAggggAACqwS+5gk8rhP4PE7ew7Wqvs9+gfdrVT0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8e/fjAG5eAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgFP0sgmgLpsA6vZjFUAEqgIwSiAAmwQCMEogANMEftpsEnhrM0ng9+4YJRCAUQIB2CQQgFECAdgkEIBRAgHYJBCAUQIB2CQQgFECAdgkEIBRAgHYJBCAUQIB2CQQgM0uAVglEIBRAgFYJRCAUQIBWCUQgFECARgl8HxIkiRJkiRJkiRJkiRJkiRJkiRJkiRJkvTXDhwSAAAAAAj6/9oRVgAAAAAAAAAAgCdv2p0AyDct7wAAAABJRU5ErkJggg==);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav {
   position: relative;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-prev, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-next, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-prev, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-next {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-prev, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-next, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-prev, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-next {
   width: 40px;
   height: 40px;
   box-shadow: 0px 0px 6px #d2d2d2;
@@ -122,28 +122,28 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   opacity: 0.8;
   border-radius: 50%;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-prev, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-prev {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-prev, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-prev {
   right: 50px !important;
   left: auto !important;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-prev span, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-prev span {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-prev span, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-prev span {
   background-image: url(data:image/png;charset=utf8;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIABAMAAAAGVsnJAAAAKlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKE86IAAAADXRSTlMAECAwYJ+gv8DP0O/wJyLz6AAAAulJREFUeNrs0rFtQgEQBFEcOHdmuYvfkEtz4BquAkQTCLheCLcAMvZNByO9kyRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJ0ot9H93/H39zqu5n70c3gN3pBrAhUApgd6oBhEAtgN0pBhACxQB2pxZACFQD2J1WACHQCSBNK4AQ6ASQphVACHQCSNMKIATaAJQSCIAUAo0A0rQCCIFOAGlaAYRAJ4A0NQC6CfzuVhP43K0mEAApTSuAEOgEkKYTQLqWA9j/cgC3LwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACANwBwLgfwOMoBXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHiyS8dEDQQAFAWPhpqSoUJCjCAFMQhJhQRMwEC8UD4HKe7valgBBBBAAAEEEEAAAQQQQAABBBBAgPt42wyQ91uSz+PkHm9Jfi8KKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCpy1wOt6gY/1Aj9PCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKKKCAAgoooIACCiiggAIKDBX4PsYLfB3bBf4ux+ldNwPkZTNAHq6jASqwGqACowEqsBqgAqMBKrAaoAKjASqwGqACowEqsBqgAqMBKrAaoALbASpQgM0CBdgrsBIgqUABNgsUYLNAAUYLFGC0QAFGCxRgtUABRgsUYLVAAUYLFGC1QAE2PV8OAAAAAAAAAAAAAAAAAAAA+G8HDgQAAAAABPlbD3IBAAAAAAAAAHAXLJpCHfo8SnUAAAAASUVORK5CYII=);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-next span, body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-next span {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-4.carousel-nav .carousel-control-next span, body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.carousel-nav-bottom div.col-6.carousel-nav .carousel-control-next span {
   background-image: url(data:image/png;charset=utf8;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIABAMAAAAGVsnJAAAALVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADBoCg+AAAADnRSTlMAEDBggJ+gr7/Az9Dv8HfgN3AAAAL2SURBVHja7NJBTQNQAAVBqALuBAfgBUsYIakRJCCBG2nSw9fQ4xOxsxI28yRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkvJdvuID3u8vbQC/59oGcM4INAGcc20DGIEogBFoAhiBKIARaAIYgSiAEWgCGIEogBGoAhiBKIARqAIYgSiAEagCGIEogBGoAagSGIA1AkkAIxAFMAJNAOsWBbA+mwDWfxXACEQBjEAVwAhEAYxAFcAIFAC0CXyf0ybweuIEnn8QQAABBBBAAAEEEEAAAQQQQAABBBBAAAEEEEAAAQQQQAABBBBAAAEEEEAAAQQQQCBF4K1O4PJXJ/CBAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAggggAACCCCAAAIIIIAAAgg82KdjmggCAIiiCwqo0cAlSMISBpBAghEk0EBICMlpoPwKaHber6d8gwACCCCAAAIIIIAAAggggAACqwS+5gk8rhP4PE7ew7Wqvs9+gfdrVT0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8e/fjAG5eAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgFP0sgmgLpsA6vZjFUAEqgIwSiAAmwQCMEogANMEftpsEnhrM0ng9+4YJRCAUQIB2CQQgFECAdgkEIBRAgHYJBCAUQIB2CQQgFECAdgkEIBRAgHYJBCAUQIB2CQQgM0uAVglEIBRAgFYJRCAUQIBWCUQgFECARgl8HxIkiRJkiRJkiRJkiRJkiRJkiRJkiRJkvTXDhwSAAAAAAj6/9oRVgAAAAAAAAAAgCdv2p0AyDct7wAAAABJRU5ErkJggg==);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content h6.title-variation {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content h6.title-variation {
   margin-top: 0;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper {
   margin-bottom: 0.5rem;
   text-align: left;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-title-col {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-title-col {
   /*display: none;*/
   text-align: left;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-title-col label.attribute-title {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-title-col label.attribute-title {
   color: #6d6d6d;
   font-weight: normal;
   font-size: 14px;
@@ -151,10 +151,10 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   word-break: break-word;
   text-align: left;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-name-col {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-name-col {
   /*text-align: left;*/
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-name-col span.attribute-name {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-name-col span.attribute-name {
   display: inline-block;
   padding: 0.1em 0.4em;
   margin-bottom: 0.5em;
@@ -166,19 +166,19 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   font-size: 12px;
   background-color: #f8f8f8;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-name-col select {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.attibutes-wrapper div.attribute-name-col select {
   font-size: 12px;
   margin-bottom: 0.5em;
   max-width: 100% !important;
   min-width: 75%;
   margin-right: 1em;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper {
   border-top: 1px solid rgba(119, 119, 119, 0.17);
   border-bottom: 1px solid rgba(119, 119, 119, 0.17);
   margin-bottom: 10px;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper a.description-toggle {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper a.description-toggle {
   padding-top: 15px;
   padding-bottom: 15px;
   text-align: left;
@@ -188,7 +188,7 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   font-size: 14px;
   font-weight: 600;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper a.description-toggle span.toggle {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper a.description-toggle span.toggle {
   position: absolute;
   top: 50%;
   right: 0;
@@ -203,15 +203,15 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   background-position: center center;
   transition: all 0.5s;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper a.description-toggle span.toggle.active {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper a.description-toggle span.toggle.active {
   transform: rotate(90deg);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper div.description-variation-container {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper div.description-variation-container {
   display: none;
   position: relative;
   transition: all 0.5s;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper div.description-variation-container p.description-variation {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper div.description-variation-container p.description-variation {
   color: #4f4e4e;
   font-size: 100%;
   margin-bottom: 20px;
@@ -220,23 +220,23 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   padding: 0px 10px;
   text-align: left;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper div.description-variation-container.active {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.row.description-variation-wrapper div.description-variation-container.active {
   display: block;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content span.price {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content span.price {
   display: block;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.quantity {
+body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item .carousel-content div.quantity {
   /*float: none;*/
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form div.cvp-add-cart {
+body.single-product form.cart.dro-variable-products-form div.cvp-add-cart {
   /*background-color: #0000006b;*/
   margin-bottom: 10px;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form span.cvp-total {
+body.single-product form.cart.dro-variable-products-form span.cvp-total {
   color: #003c46;
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset {
+body.single-product form.cart.dro-variable-products-form a.cvp-reset {
   font-size: 14px;
   padding: 5px 10px;
   text-decoration: none;
@@ -248,15 +248,15 @@ body.single-product div.product-type-variable form.cart.dro-variable-products-fo
   transition: background-color 0.3s, transform 0.3s;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset:hover {
+body.single-product form.cart.dro-variable-products-form a.cvp-reset:hover {
   background-color: #d32f2f;
   transform: scale(1.05);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset:focus {
+body.single-product form.cart.dro-variable-products-form a.cvp-reset:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
-body.single-product div.product-type-variable form.cart.dro-variable-products-form a.cvp-reset {
+body.single-product form.cart.dro-variable-products-form a.cvp-reset {
   margin-top: 10px;
 }
 
