@@ -90,3 +90,15 @@ function product_variations_view_pro() {
 }
 
 product_variations_view_pro();
+
+/**
+ * Declare compatibility with WooCommerce Custom Order Tables.
+ */
+add_action(
+	'before_woocommerce_init',
+	function () {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	}
+);
