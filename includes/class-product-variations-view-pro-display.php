@@ -5,7 +5,7 @@
  * @class    Product_Variations_View_Pro_Display
  * @version  1.0.0
  * @since    1.0.0
- * @package  Product_Variations_View_Pro
+ * @package  Product Variations View Pro
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
@@ -143,7 +143,11 @@ class Product_Variations_View_Pro_Display {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
 		}
 
-		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		// $products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
+
+		error_log( 'Before : '. print_r( $_POST['products'], true ) );
+		
+		error_log( 'After : ' . print_r(  $products, true ) );
 
 		if ( ! isset( $products ) || ! is_array( $products ) ) {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );

@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce Custom Variable Product Variation Data.
+ * Product Variations View Pro Data.
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/single-product/cvp/cvp-variation-data.php.
  *
@@ -12,7 +12,7 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @author  Younes DRO
- * @package Variation Carousel for WooCommerce/Templates
+ * @package Product Variations View Pro
  * @since   1.0.0
  * @version 1.0.0
  */

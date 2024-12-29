@@ -6,7 +6,7 @@
  *
  * @version  1.0.0
  * @since    1.0.0
- * @package  Product_Variations_View_Pro
+ * @package  Product Variations View Pro
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */

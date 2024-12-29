@@ -2,11 +2,11 @@
 /**
  * Template Hooks
  *
- * Action/filter hooks used for Variation Carousel for WooCommerce functions/templates.
+ * Action/filter hooks used for Product Variations View Pro functions/templates.
  *
  * @author   Younes DRO
  * @category Core
- * @package  Variation Carousel for WooCommerce/Templates
+ * @package  Product Variations View Pro
  * @since    1.0.0
  * @version  1.0.0
  */
