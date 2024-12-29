@@ -18,6 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use function DRO\ProductVariationsViewPro\product_variations_view_pro;
 
+use Automattic\Jetpack\Forms\ContactForm\Util;
+use DRO\ProductVariationsViewPro\Includes\Product_Variations_View_Pro_Utils as Utils;
+
 /**
  * Handles the front-end display and functionality for Product Variations View Pro.
  *
@@ -143,11 +146,10 @@ class Product_Variations_View_Pro_Display {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
 		}
 
-		// $products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
-
-		error_log( 'Before : '. print_r( $_POST['products'], true ) );
-		
-		error_log( 'After : ' . print_r(  $products, true ) );
+		// Suppressing WPCS warning because sanitization is applied later using array_walk_recursive.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
+		array_walk_recursive( $products, array( Utils::class, 'pvv_sanitize_posted_product_variations' ) );
 
 		if ( ! isset( $products ) || ! is_array( $products ) ) {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );
