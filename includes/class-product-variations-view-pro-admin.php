@@ -132,14 +132,15 @@ class Product_Variations_View_Pro_Admin {
 	 * @since 1.0.0
 	 */
 	public function register_pvv_settings_script() {
+		$min_js = WP_DEBUG ? '.js' : '.min.js';
 
-		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings.js' )
-		? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings.js' )
+		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min_js )
+		? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min_js )
 		: '1.0.0';
 
 		wp_register_script(
 			'product-variations-view-settings',
-			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings.js',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings' . $min_js,
 			array( 'wp-element' ),
 			$settings_version,
 			true
