@@ -49,7 +49,7 @@ const GeneralSettings = () => {
   return (
     <Box>
       <Grid2 container spacing={2} direction="column">
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Switch
@@ -61,7 +61,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Checkbox
@@ -73,7 +73,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Checkbox
@@ -85,7 +85,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Checkbox
@@ -97,7 +97,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <Box mt={2} display="flex" alignItems="center">
             <Button
               onClick={handleSave}
@@ -117,7 +117,7 @@ const GeneralSettings = () => {
           </Box>
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           {statusMessage && (
             <Typography
               variant="body2"

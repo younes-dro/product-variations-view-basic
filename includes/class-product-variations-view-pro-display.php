@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use function DRO\ProductVariationsViewPro\product_variations_view_pro;
 
-use Automattic\Jetpack\Forms\ContactForm\Util;
 use DRO\ProductVariationsViewPro\Includes\Product_Variations_View_Pro_Utils as Utils;
 
 /**
@@ -106,7 +105,9 @@ class Product_Variations_View_Pro_Display {
 			return;
 		}
 
-		wp_register_style( 'wc-cvp-frontend', Product_Variations_View_Pro()->plugin_url() . '/assets/css/frontend/cvp-frontend.css', array(), Product_Variations_View_Pro()->version );
+		$min = WP_DEBUG ? '' : '.min';
+
+		wp_register_style( 'wc-cvp-frontend', Product_Variations_View_Pro()->plugin_url() . '/assets/css/frontend/cvp-frontend' . $min . '.css', array(), Product_Variations_View_Pro()->version );
 		wp_enqueue_style( 'wc-cvp-frontend' );
 
 		wp_register_style( 'bootstrap-css', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap.css', array(), Product_Variations_View_Pro()->version );
@@ -115,7 +116,7 @@ class Product_Variations_View_Pro_Display {
 		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
 		wp_enqueue_script( 'bootstrap-js' );
 
-		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
+		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp' . $min . '.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
 		wp_enqueue_script( 'wc-add-to-cart-cvp' );
 
 		$params = array(

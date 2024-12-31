@@ -26,6 +26,7 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   mode: process.env.NODE_ENV || 'development',
+  devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
   optimization: {
     minimize: process.env.NODE_ENV === 'production',
     minimizer: [
@@ -42,7 +43,7 @@ module.exports = {
   plugins: [
     new webpack.BannerPlugin({
       banner: `/*! 
- * Settings Script for WooCommerce
+ * Settings Script for Product Variations View add-on
  * 
  * Author: Younes DRO (younesdro@gmail.com)
  * Date: ${new Date().toLocaleString()}
