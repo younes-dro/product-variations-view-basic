@@ -2,11 +2,11 @@
 /**
  * Template Functions
  *
- * Functions for the Variation Carousel for WooCommerce templating system.
+ * Functions for the Product Variations View Pro templating system.
  *
  * @author   Younes DRO
  * @category Core
- * @package  Variation Carousel for WooCommerce/Functions
+ * @package  Product Variations View Pro
  * @since    1.0.0
  * @version  1.0.0
  */

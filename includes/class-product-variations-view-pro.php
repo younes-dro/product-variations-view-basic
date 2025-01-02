@@ -5,7 +5,7 @@
  * This class is responsible for initializing the plugin, checking dependencies,
  * loading the plugin textdomain, handling admin notices, and more.
  *
- * @package ProductVariationsViewPro
+ * @package Product Variations View Pro
  * @author Younes DRO
  * @version 1.0.0
  * @since 1.0.0
