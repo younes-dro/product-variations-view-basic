@@ -95,7 +95,7 @@ if ( ! function_exists( 'dro_pvvp_template_variation_data' ) ) {
 		global $current_variation;
 
 		wc_get_template(
-			'single-product/cvp/cvp-variation-data.php',
+			'single-product/pvvp/dro-pvvp-variation-data.php',
 			array( 'variation' => $current_variation ),
 			'woocommerce',
 			Product_Variations_View_Pro()->plugin_path() . '/templates/'
@@ -108,7 +108,7 @@ if ( ! function_exists( 'dro_pvvp_template_carousel_indicators' ) ) {
 	function dro_pvvp_template_carousel_indicators( $indicators ) {
 
 		wc_get_template(
-			'single-product/cvp/cvp-carousel-indicators.php',
+			'single-product/pvvp/dro-pvvp-carousel-indicators.php',
 			array(
 				'indicators' => $indicators,
 			),
@@ -125,7 +125,7 @@ if ( ! function_exists( 'dro_pvvp_template_reset_button' ) ) {
 		global $product;
 
 		wc_get_template(
-			'single-product/cvp/cvp-reset.php',
+			'single-product/pvvp/dro-pvvp-reset.php',
 			array(
 				'product' => $product,
 			),
@@ -142,7 +142,7 @@ if ( ! function_exists( 'dro_pvvp_template_add_to_cart_wrap' ) ) {
 		global $product;
 		// Consider to use wc_get_template_html().
 		wc_get_template(
-			'single-product/add-to-cart/cvp-add-to-cart-wrap.php',
+			'single-product/add-to-cart/dro-pvvp-add-to-cart-wrap.php',
 			array(
 				'product' => $product,
 			),

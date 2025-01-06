@@ -2,7 +2,7 @@
 /**
  * Product Variations View Pro add to cart
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/single-product/add-to-cart/cvp.php.
+ * This template can be overridden by copying it to yourtheme/woocommerce/single-product/add-to-cart/dro-pvvp.php.
  *
  * HOWEVER, on occasion Variation Carousel for WooCommerce will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to

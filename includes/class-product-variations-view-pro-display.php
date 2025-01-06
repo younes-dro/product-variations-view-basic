@@ -46,8 +46,8 @@ class Product_Variations_View_Pro_Display {
 	public function __construct() {
 		add_action( 'init', array( $this, 'remove_woocommerce_variable_add_to_cart' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
-		add_action( 'wp_ajax_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
-		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
+		add_action( 'wp_ajax_wc_cvp_add_to_cart', array( $this, 'dro_pvvp_add_bulk_variation' ) );
+		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'dro_pvvp_add_bulk_variation' ) );
 		add_filter( 'woocommerce_get_price_html', array( $this, 'remove_variable_price_range_on_product_page' ), 10, 2 );
 		add_action( 'wp', array( $this, 'remove_short_description_from_product_page' ) );
 	}
@@ -72,7 +72,7 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function remove_woocommerce_variable_add_to_cart() {
 		remove_action( 'woocommerce_variable_add_to_cart', 'woocommerce_variable_add_to_cart', 30 );
-		add_action( 'woocommerce_variable_add_to_cart', array( $this, 'cvp_variable_add_to_cart' ), 30 );
+		add_action( 'woocommerce_variable_add_to_cart', array( $this, 'dro_pvvp_variable_add_to_cart' ), 30 );
 	}
 
 	/**
@@ -80,11 +80,11 @@ class Product_Variations_View_Pro_Display {
 	 *
 	 * @since 1.0.0
 	 */
-	public function cvp_variable_add_to_cart() {
+	public function dro_pvvp_variable_add_to_cart() {
 		global $product;
 
 		wc_get_template(
-			'single-product/add-to-cart/cvp.php',
+			'single-product/add-to-cart/dro-pvvp.php',
 			array(
 				'container' => $product,
 			),
@@ -107,17 +107,17 @@ class Product_Variations_View_Pro_Display {
 
 		$min = WP_DEBUG ? '' : '.min';
 
-		wp_register_style( 'wc-cvp-frontend', Product_Variations_View_Pro()->plugin_url() . '/assets/css/frontend/cvp-frontend' . $min . '.css', array(), Product_Variations_View_Pro()->version );
-		wp_enqueue_style( 'wc-cvp-frontend' );
+		wp_register_style( 'dro-pvvp-frontend', Product_Variations_View_Pro()->plugin_url() . '/assets/css/frontend/dro-pvvp-frontend' . $min . '.css', array(), Product_Variations_View_Pro()->version );
+		wp_enqueue_style( 'dro-pvvp-frontend' );
 
-		wp_register_style( 'bootstrap-css', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap.css', array(), Product_Variations_View_Pro()->version );
+		wp_register_style( 'bootstrap-css', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap' . $min . '.css', array(), Product_Variations_View_Pro()->version );
 		wp_enqueue_style( 'bootstrap-css' );
 
-		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
+		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap' . $min . '.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
 		wp_enqueue_script( 'bootstrap-js' );
 
-		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp' . $min . '.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
-		wp_enqueue_script( 'wc-add-to-cart-cvp' );
+		wp_register_script( 'dro-pvvp-add-to-cart', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/dro-pvvp-add-to-cart' . $min . '.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
+		wp_enqueue_script( 'dro-pvvp-add-to-cart' );
 
 		$params = array(
 			'currency_symbol'              => get_woocommerce_currency_symbol(),
@@ -131,7 +131,7 @@ class Product_Variations_View_Pro_Display {
 			'pvv_show_product_gallery'     => (bool) get_option( 'pvv_show_product_gallery', true ),
 		);
 
-		wp_localize_script( 'wc-add-to-cart-cvp', 'dro_pvvp_params', $params );
+		wp_localize_script( 'dro-pvvp-add-to-cart', 'dro_pvvp_params', $params );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Product_Variations_View_Pro_Display {
 	 *
 	 * @since 1.0.0
 	 */
-	public function cvp_add_bulk_variation() {
+	public function dro_pvvp_add_bulk_variation() {
 		$cvp_nonce = isset( $_POST['cvp_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['cvp_nonce'] ) ) : null;
 		if ( ! isset( $cvp_nonce ) || ! wp_verify_nonce( $cvp_nonce, 'cvp_add_to_cart_nonce' ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'product-variations-view-pro' ) ) );

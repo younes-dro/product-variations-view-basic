@@ -45,7 +45,7 @@ class Product_Variations_View_Pro {
 	 *
 	 * @var String
 	 */
-	public $plugin_name = PRODUCT_VARIATIONS_VIEW_PRO_NAME;
+	public $plugin_name = DRO_PVVP_NAME;
 
 	/**
 	 * Instance of the Product_Variations_View_Pro_Dependencies class.
@@ -138,7 +138,7 @@ class Product_Variations_View_Pro {
 	 */
 	public function check_environment() {
 
-		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) ) ) {
+		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( DRO_PVVP_FILE ) ) ) {
 
 			$this->deactivate_plugin();
 			$this->add_admin_notice(
@@ -156,7 +156,7 @@ class Product_Variations_View_Pro {
 	 */
 	protected function deactivate_plugin() {
 
-		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		deactivate_plugins( plugin_basename( DRO_PVVP_FILE ) );
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -230,8 +230,8 @@ class Product_Variations_View_Pro {
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
 			new Product_Variations_View_Pro_Display();
-			require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
-			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
+			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-functions.php';
+			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-hooks.php';
 		}
 	}
 	/*
@@ -257,7 +257,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		return untrailingslashit( plugins_url( '/', DRO_PVVP_FILE ) );
 	}
 
 	/**
@@ -268,7 +268,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		return untrailingslashit( plugin_dir_path( DRO_PVVP_FILE ) );
 	}
 
 	/**
@@ -279,7 +279,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_basename() {
-		return plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE );
+		return plugin_basename( DRO_PVVP_FILE );
 	}
 
 }

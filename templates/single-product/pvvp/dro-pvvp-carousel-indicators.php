@@ -2,7 +2,7 @@
 /**
  * Product Variations View Pro Indicators
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/single-product/cvp/cvp-carousel-indicators.php.
+ * This template can be overridden by copying it to yourtheme/woocommerce/single-product/pvvp/dro-pvvp-carousel-indicators.php.
  *
  * HOWEVER, on occasion Variation Carousel for WooCommerce will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to
