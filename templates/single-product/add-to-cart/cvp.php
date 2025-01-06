@@ -41,7 +41,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 	?>
 	<div id="variable-products-carousel" class="carousel slide" data-interval="false" data-ride="carousel">
 
-		<?php apply_filters( 'woocommerce_cvp_carousel_indicators', count( $variations ) ); ?>
+		<?php apply_filters( 'dro_pvvp_carousel_indicators', count( $variations ) ); ?>
 		<div class="carousel-inner" role="listbox">
 			<?php
 			foreach ( $variations as $variation ) {
@@ -110,7 +110,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 										<div class="col-12 col-md-8 attribute-name-col">
 
 											<?php
-											wc_cvp_variation_attribute_options(
+											dro_pvvp_variation_attribute_options(
 												array(
 													'var_id'  => $variation['variation_id'],
 													'variation_attributes' => $variation['attributes'],
@@ -191,13 +191,9 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							</div>
 						</div>
 						<?php
-
-							/**
-							 * Woocommerce_cvp_variation_data hook
-							 */
 							global $current_variation;
 							$current_variation = wc_get_product( $variation['variation_id'] );
-							do_action( 'woocommerce_cvp_variation_data', $current_variation );
+							do_action( 'dro_pvvp_variation_data', $current_variation );
 						?>
 					</div><!-- .carousel-content -->
 				</div>
@@ -208,7 +204,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 		</div><!-- .carousel-inner -->
 	</div><!-- .carousel -->
 	<?php
-	do_action( 'woocommerce_cvp_add_to_cart_wrap', $product );
+	do_action( 'dro_pvvp_add_to_cart_wrap', $product );
 	?>
 </form>
 

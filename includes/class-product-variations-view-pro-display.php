@@ -131,7 +131,7 @@ class Product_Variations_View_Pro_Display {
 			'pvv_show_product_gallery'     => (bool) get_option( 'pvv_show_product_gallery', true ),
 		);
 
-		wp_localize_script( 'wc-add-to-cart-cvp', 'wc_cvp_params', $params );
+		wp_localize_script( 'wc-add-to-cart-cvp', 'dro_pvvp_params', $params );
 	}
 
 	/**

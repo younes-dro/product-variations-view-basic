@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use function DRO\ProductVariationsViewPro\product_variations_view_pro;
 
-if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
+if ( ! function_exists( 'dro_pvvp_variation_attribute_options' ) ) {
 
 	/**
 	 * Output a list of variation attributes for use in the cart forms.
@@ -26,7 +26,7 @@ if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 	 * @param array $args Arguments.
 	 * @since 1.0.0
 	 */
-	function wc_cvp_variation_attribute_options( $args = array() ) {
+	function dro_pvvp_variation_attribute_options( $args = array() ) {
 
 		$product              = $args['product'];
 		$attribute_name       = $args['attribute_name'];
@@ -88,9 +88,9 @@ if ( ! function_exists( 'wc_cvp_variation_attribute_options' ) ) {
 	}
 }
 
-if ( ! function_exists( 'wc_cvp_template_variation_data' ) ) {
+if ( ! function_exists( 'dro_pvvp_template_variation_data' ) ) {
 
-	function wc_cvp_template_variation_data( $current_variation ) {
+	function dro_pvvp_template_variation_data( $current_variation ) {
 
 		global $current_variation;
 
@@ -103,9 +103,9 @@ if ( ! function_exists( 'wc_cvp_template_variation_data' ) ) {
 	}
 }
 
-if ( ! function_exists( 'wc_cvp_template_carousel_indicators' ) ) {
+if ( ! function_exists( 'dro_pvvp_template_carousel_indicators' ) ) {
 
-	function wc_cvp_template_carousel_indicators( $indicators ) {
+	function dro_pvvp_template_carousel_indicators( $indicators ) {
 
 		wc_get_template(
 			'single-product/cvp/cvp-carousel-indicators.php',
@@ -118,9 +118,9 @@ if ( ! function_exists( 'wc_cvp_template_carousel_indicators' ) ) {
 	}
 }
 
-if ( ! function_exists( 'wc_cvp_template_reset_button' ) ) {
+if ( ! function_exists( 'dro_pvvp_template_reset_button' ) ) {
 
-	function wc_cvp_template_reset_button() {
+	function dro_pvvp_template_reset_button() {
 
 		global $product;
 
@@ -135,9 +135,9 @@ if ( ! function_exists( 'wc_cvp_template_reset_button' ) ) {
 	}
 }
 
-if ( ! function_exists( 'wc_cvp_template_add_to_cart_wrap' ) ) {
+if ( ! function_exists( 'dro_pvvp_template_add_to_cart_wrap' ) ) {
 
-	function wc_cvp_template_add_to_cart_wrap() {
+	function dro_pvvp_template_add_to_cart_wrap() {
 
 		global $product;
 		// Consider to use wc_get_template_html().
