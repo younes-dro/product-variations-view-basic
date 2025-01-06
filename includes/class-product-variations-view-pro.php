@@ -84,8 +84,6 @@ class Product_Variations_View_Pro {
 
 		add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
 
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
 		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
 	}
 
@@ -284,7 +282,4 @@ class Product_Variations_View_Pro {
 		return plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE );
 	}
 
-	public function load_textdomain() {
-		load_plugin_textdomain( 'product-variations-view-pro', false, $this->plugin_path() . '/languages' );
-	}
 }
