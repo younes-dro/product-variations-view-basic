@@ -27,9 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'PRODUCT_VARIATIONS_VIEW_PRO_FILE', __FILE__ );
-define( 'PRODUCT_VARIATIONS_VIEW_PRO_NAME', 'Product Variations View Pro' );
-define( 'INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/' );
+define( 'DRO_PVVP_FILE', __FILE__ );
+define( 'DRO_PVVP_NAME', 'Product Variations View Pro' );
+define( 'DRO_PVVP_INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/' );
 
 /**
  * Checks the server environment and deactivates plugins as necessary.
@@ -40,7 +40,7 @@ function activation_check() {
 	$dependencies = new Product_Variations_View_Pro_Dependencies();
 	if ( ! $dependencies->check_php_version() ) {
 
-		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		deactivate_plugins( plugin_basename( DRO_PVVP_FILE ) );
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -50,13 +50,13 @@ function activation_check() {
 			sprintf(
 				/* translators: %s is the plugin name. */
 				esc_html__( '%s could not be activated.', 'product-variations-view-pro' ),
-				esc_html( PRODUCT_VARIATIONS_VIEW_PRO_NAME )
+				esc_html( DRO_PVVP_NAME )
 			) . esc_html( $dependencies->get_php_notice() )
 		);
 
 	}
 }
-register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, __NAMESPACE__ .'\\activation_check' );
+register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ .'\\activation_check' );
 /**
  * Register the built-in autoloader
  */
