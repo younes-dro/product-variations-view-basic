@@ -69,8 +69,11 @@ class DRO_PVVP {
 
 
 	/**
+	 * Constructor for the class.
 	 *
-	 * @param DRO_PVVP_Dependencies $dependencies
+	 * Initializes the class with required dependencies.
+	 *
+	 * @param DRO_PVVP_Dependencies $dependencies The dependencies required for the class to function.
 	 */
 	public function __construct( DRO_PVVP_Dependencies $dependencies ) {
 
@@ -93,6 +96,7 @@ class DRO_PVVP {
 	 * Ensures only one instance of DRO_PVVP is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
+	 * @param DRO_PVVP_Dependencies $dependencies The dependencies required for the class to function.
 	 * @return DRO_PVVP instance
 	 */
 	public static function start( DRO_PVVP_Dependencies $dependencies ): DRO_PVVP {
@@ -168,18 +172,26 @@ class DRO_PVVP {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $slug message slug
-	 * @param string $class CSS classes
-	 * @param string $message notice message
+	 * @param string $slug message slug.
+	 * @param string $css_class CSS classes.
+	 * @param string $message notice message.
 	 */
-	public function add_admin_notice( $slug, $class, $message ) {
+	public function add_admin_notice( $slug, $css_class, $message ) {
 
 		$this->notices[ $slug ] = array(
-			'class'   => $class,
+			'class'   => $css_class,
 			'message' => $message,
 		);
 	}
-
+	/**
+	 * Adds plugin-related admin notices.
+	 *
+	 * Checks the WordPress and WooCommerce version compatibility.
+	 * If the versions do not meet the plugin requirements, it adds admin notices
+	 * to inform the user about necessary updates.
+	 *
+	 * @return void
+	 */
 	public function add_plugin_notices() {
 
 		if ( ! self::$dependencies->check_wp_version() ) {
@@ -234,11 +246,7 @@ class DRO_PVVP {
 			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-hooks.php';
 		}
 	}
-	/*
-	-----------------------------------------------------------------------------------*/
-	/*
-		Helper Functions                                                                 */
-	/*-----------------------------------------------------------------------------------*/
+
 	/**
 	 * Checks whether the frontend functionality is enabled.
 	 *
@@ -280,5 +288,4 @@ class DRO_PVVP {
 	public function plugin_basename() {
 		return plugin_basename( DRO_PVVP_FILE );
 	}
-
 }

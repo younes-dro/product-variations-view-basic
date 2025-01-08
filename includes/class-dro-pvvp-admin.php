@@ -154,12 +154,11 @@ class DRO_PVVP_Admin {
 		);
 
 		$current_settings = array(
-			'is_enabled'           => (bool) filter_var(get_option('dro_pvvp_is_enabled', true), FILTER_VALIDATE_BOOLEAN),
-			'show_price'           => (bool) filter_var(get_option('dro_pvvp_show_range_price', true), FILTER_VALIDATE_BOOLEAN),
-			'show_description'     => (bool) filter_var(get_option('dro_pvvp_show_main_product_short_description', true), FILTER_VALIDATE_BOOLEAN),
-			'show_product_gallery' => (bool) filter_var(get_option('dro_pvvp_show_product_gallery', true), FILTER_VALIDATE_BOOLEAN),
+			'is_enabled'           => (bool) filter_var( get_option( 'dro_pvvp_is_enabled', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_price'           => (bool) filter_var( get_option( 'dro_pvvp_show_range_price', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_description'     => (bool) filter_var( get_option( 'dro_pvvp_show_main_product_short_description', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_product_gallery' => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
 		);
-		
 
 		wp_localize_script(
 			'product-variations-view-settings',

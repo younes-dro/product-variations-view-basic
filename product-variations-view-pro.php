@@ -15,6 +15,8 @@
  * Copyright: © 2024 Younes DRO
  * License: GNU General Public License v2.0 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @package Product Variations View Pro
  */
 
 namespace DRO\PVVP;
@@ -56,7 +58,7 @@ function activation_check() {
 
 	}
 }
-register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ .'\\activation_check' );
+register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ . '\\activation_check' );
 /**
  * Register the built-in autoloader
  */
@@ -67,7 +69,7 @@ function register_autoloader() {
 			$base_dir = __DIR__ . '/includes/';
 			$len      = strlen( $prefix );
 			// Make sure the class name stats with 'DRO\PVVP' to load only our classes.
-			if ( strncmp( __NAMESPACE__ . '\\', $class_name, strlen( __NAMESPACE__) + 1 ) !== 0 ) {
+			if ( strncmp( __NAMESPACE__ . '\\', $class_name, strlen( __NAMESPACE__ ) + 1 ) !== 0 ) {
 				return;
 			}
 			$relative_class_name = substr( $class_name, $len );

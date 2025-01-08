@@ -148,7 +148,6 @@ class DRO_PVVP_Display {
 		}
 
 		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
-		$products = isset( $_POST['products'] ) ? wp_unslash( $_POST['products'] ) : null;
 
 		if ( is_array( $products ) ) {
 			$products = array_map(

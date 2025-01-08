@@ -53,13 +53,13 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 						<div class="col-12">
 							<div class="col-6 col-sm-4 carousel-nav ml-auto">
 							<button class="carousel-control-prev" type="button" data-bs-target="#variable-products-carousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#variable-products-carousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>                               
+	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	<span class="visually-hidden">Previous</span>
+	</button>
+	<button class="carousel-control-next" type="button" data-bs-target="#variable-products-carousel" data-bs-slide="next">
+	<span class="carousel-control-next-icon" aria-hidden="true"></span>
+	<span class="visually-hidden">Next</span>
+	</button>                               
 							</div>
 						</div>
 					</div>

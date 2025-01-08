@@ -89,7 +89,16 @@ if ( ! function_exists( 'dro_pvvp_variation_attribute_options' ) ) {
 }
 
 if ( ! function_exists( 'dro_pvvp_template_variation_data' ) ) {
-
+	/**
+	 * Renders the variation data template for a specific product variation.
+	 *
+	 * This function sets the global `$dro_pvvp_current_variation` variable and loads
+	 * a WooCommerce template to display the variation data.
+	 *
+	 * @param array $dro_pvvp_current_variation The current variation data to be displayed in the template.
+	 * @since 1.0.0
+	 * @return void
+	 */
 	function dro_pvvp_template_variation_data( $dro_pvvp_current_variation ) {
 
 		global $dro_pvvp_current_variation;
@@ -104,7 +113,15 @@ if ( ! function_exists( 'dro_pvvp_template_variation_data' ) ) {
 }
 
 if ( ! function_exists( 'dro_pvvp_template_carousel_indicators' ) ) {
-
+	/**
+	 * Renders the carousel indicators template.
+	 *
+	 * This function loads a WooCommerce template to display carousel indicators for product variations.
+	 *
+	 * @param array $indicators An array of indicators to be displayed in the carousel template.
+	 * @since 1.0.0
+	 * @return void
+	 */
 	function dro_pvvp_template_carousel_indicators( $indicators ) {
 
 		wc_get_template(
@@ -119,7 +136,16 @@ if ( ! function_exists( 'dro_pvvp_template_carousel_indicators' ) ) {
 }
 
 if ( ! function_exists( 'dro_pvvp_template_reset_button' ) ) {
-
+	/**
+	 * Renders the reset button template.
+	 *
+	 * This function loads a WooCommerce template to display a reset button for product variations.
+	 * It utilizes the global `$product` variable to provide product-specific data to the template.
+	 *
+	 * @global WC_Product $product The current WooCommerce product object.
+	 * @since 1.0.0
+	 * @return void
+	 */
 	function dro_pvvp_template_reset_button() {
 
 		global $product;
@@ -136,7 +162,16 @@ if ( ! function_exists( 'dro_pvvp_template_reset_button' ) ) {
 }
 
 if ( ! function_exists( 'dro_pvvp_template_add_to_cart_wrap' ) ) {
-
+	/**
+	 * Renders the custom add-to-cart wrapper template.
+	 *
+	 * This function loads a WooCommerce template to wrap the add-to-cart button for product variations.
+	 * It utilizes the global `$product` variable to provide product-specific data to the template.
+	 *
+	 * @global WC_Product $product The current WooCommerce product object.
+	 *
+	 * @return void
+	 */
 	function dro_pvvp_template_add_to_cart_wrap() {
 
 		global $product;

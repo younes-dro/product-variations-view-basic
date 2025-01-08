@@ -57,8 +57,11 @@ class DRO_PVVP_Utils {
 			case 'quantity':
 				$value = absint( $value );
 				break;
+			case 'attributes':
+				$value = sanitize_key( $value );
+				break;
 			default:
-				$value = sanitize_text_field( $value );
+				$value = null;
 
 		}
 	}
