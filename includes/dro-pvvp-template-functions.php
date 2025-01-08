@@ -90,13 +90,13 @@ if ( ! function_exists( 'dro_pvvp_variation_attribute_options' ) ) {
 
 if ( ! function_exists( 'dro_pvvp_template_variation_data' ) ) {
 
-	function dro_pvvp_template_variation_data( $current_variation ) {
+	function dro_pvvp_template_variation_data( $dro_pvvp_current_variation ) {
 
-		global $current_variation;
+		global $dro_pvvp_current_variation;
 
 		wc_get_template(
 			'single-product/pvvp/dro-pvvp-variation-data.php',
-			array( 'variation' => $current_variation ),
+			array( 'variation' => $dro_pvvp_current_variation ),
 			'woocommerce',
 			Product_Variations_View_Pro()->plugin_path() . '/templates/'
 		);

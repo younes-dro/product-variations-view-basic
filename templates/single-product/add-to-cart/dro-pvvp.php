@@ -191,9 +191,9 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							</div>
 						</div>
 						<?php
-							global $current_variation;
-							$current_variation = wc_get_product( $variation['variation_id'] );
-							do_action( 'dro_pvvp_variation_data', $current_variation );
+							global $dro_pvvp_current_variation;
+							$dro_pvvp_current_variation = wc_get_product( $variation['variation_id'] );
+							do_action( 'dro_pvvp_variation_data', $dro_pvvp_current_variation );
 						?>
 					</div><!-- .carousel-content -->
 				</div>
