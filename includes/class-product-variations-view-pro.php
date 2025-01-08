@@ -245,7 +245,7 @@ class Product_Variations_View_Pro {
 	 * @return bool True if frontend functionality is enabled, false otherwise.
 	 */
 	private function is_frontend_enabled() {
-		$is_enabled = get_option( 'pvv_is_enabled', true );
+		$is_enabled = get_option( 'dro_pvvp_is_enabled', true );
 		return filter_var( $is_enabled, FILTER_VALIDATE_BOOLEAN );
 	}
 
