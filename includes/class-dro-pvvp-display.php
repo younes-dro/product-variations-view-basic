@@ -2,7 +2,7 @@
 /**
  * Front-End Display
  *
- * @class    Product_Variations_View_Pro_Display
+ * @class    DRO_PVVP_Display
  * @version  1.0.0
  * @since    1.0.0
  * @package  Product Variations View Pro
@@ -10,29 +10,29 @@
  * @email    younesdro@gmail.com
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-use function DRO\ProductVariationsViewPro\product_variations_view_pro;
+use function DRO\PVVP\dro_pvvp;
 
-use DRO\ProductVariationsViewPro\Includes\Product_Variations_View_Pro_Utils as Utils;
+use DRO\PVVP\Includes\DRO_PVVP_Utils as Utils;
 
 /**
  * Handles the front-end display and functionality for Product Variations View Pro.
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Display {
+class DRO_PVVP_Display {
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Display class.
+	 * Instance of the DRO_PVVP_Display class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var Product_Variations_View_Pro_Display|null
+	 * @var DRO_PVVP_Display|null
 	 */
 	private static $instance;
 
@@ -53,12 +53,12 @@ class Product_Variations_View_Pro_Display {
 	}
 
 	/**
-	 * Gets the Product_Variations_View_Pro_Disaply instance.
+	 * Gets the DRO_PVVP_Disaply instance.
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro_Display instance
+	 * @return DRO_PVVP_Display instance
 	 */
-	public static function start_display(): Product_Variations_View_Pro_Display {
+	public static function start_display(): DRO_PVVP_Display {
 
 		self::$instance ??= new self();
 
@@ -89,7 +89,7 @@ class Product_Variations_View_Pro_Display {
 				'container' => $product,
 			),
 			'',
-			Product_Variations_View_Pro()->plugin_path() . '/templates/'
+			dro_pvvp()->plugin_path() . '/templates/'
 		);
 	}
 
@@ -107,16 +107,16 @@ class Product_Variations_View_Pro_Display {
 
 		$min = WP_DEBUG ? '' : '.min';
 
-		wp_register_style( 'dro-pvvp-frontend', Product_Variations_View_Pro()->plugin_url() . '/assets/css/frontend/dro-pvvp-frontend' . $min . '.css', array(), Product_Variations_View_Pro()->version );
+		wp_register_style( 'dro-pvvp-frontend', dro_pvvp()->plugin_url() . '/assets/css/frontend/dro-pvvp-frontend' . $min . '.css', array(), dro_pvvp()->version );
 		wp_enqueue_style( 'dro-pvvp-frontend' );
 
-		wp_register_style( 'bootstrap-css', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap' . $min . '.css', array(), Product_Variations_View_Pro()->version );
+		wp_register_style( 'bootstrap-css', dro_pvvp()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap' . $min . '.css', array(), dro_pvvp()->version );
 		wp_enqueue_style( 'bootstrap-css' );
 
-		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap' . $min . '.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
+		wp_register_script( 'bootstrap-js', dro_pvvp()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap' . $min . '.js', array( 'jquery' ), dro_pvvp()->version, true );
 		wp_enqueue_script( 'bootstrap-js' );
 
-		wp_register_script( 'dro-pvvp-add-to-cart', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/dro-pvvp-add-to-cart' . $min . '.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
+		wp_register_script( 'dro-pvvp-add-to-cart', dro_pvvp()->plugin_url() . '/assets/js/frontend/dro-pvvp-add-to-cart' . $min . '.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
 		wp_enqueue_script( 'dro-pvvp-add-to-cart' );
 
 		$params = array(
@@ -124,11 +124,11 @@ class Product_Variations_View_Pro_Display {
 			'currency_format_decimal_sep'  => wc_get_price_decimal_separator(),
 			'currency_format_thousand_sep' => wc_get_price_thousand_separator(),
 			'currency_format_num_decimals' => wc_get_price_decimals(),
-			'currency_position'            => get_option( 'woocommerce_currency_pos' ),
-			'currency_format_trim_zeros'   => get_option( 'woocommerce_price_trim_zeros', 'no' ),
+			'currency_position'            => sanitize_key( get_option( 'woocommerce_currency_pos' ) ),
+			'currency_format_trim_zeros'   => sanitize_key( get_option( 'woocommerce_price_trim_zeros', 'no' ) ),
 			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 			'cvp_nonce'                    => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
-			'dro_pvvp_show_product_gallery'     => (bool) get_option( 'dro_pvvp_show_product_gallery', true ),
+			'dro_pvvp_show_product_gallery'     => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
 		);
 
 		wp_localize_script( 'dro-pvvp-add-to-cart', 'dro_pvvp_params', $params );

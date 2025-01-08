@@ -271,7 +271,7 @@
 
 (function ( $) {
 
-	const showProductGallery = dro_pvvp_params.pvv_show_product_gallery;
+	const showProductGallery = dro_pvvp_params.dro_pvvp_show_product_gallery;
 
 	if ( ! showProductGallery) {
 		$( '.woocommerce-product-gallery' ).hide();

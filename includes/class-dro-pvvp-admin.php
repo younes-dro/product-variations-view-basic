@@ -11,13 +11,13 @@
  * @email    younesdro@gmail.com
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class Product_Variations_View_Pro_Admin
+ * Class DRO_PVVP_Admin
  *
  * This class encapsulates all the admin-specific functionality for the plugin.
  * It manages tasks like handling missing attribute warnings, adding admin notices,
@@ -25,15 +25,15 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Admin {
+class DRO_PVVP_Admin {
 
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Admin class.
+	 * Instance of the DRO_PVVP_Admin class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var Product_Variations_View_Pro_Admin|null
+	 * @var DRO_PVVP_Admin|null
 	 */
 	private static $instance;
 
@@ -51,14 +51,14 @@ class Product_Variations_View_Pro_Admin {
 	}
 
 	/**
-	 * Gets the Product_Variations_View_Pro_Admin instance.
+	 * Gets the DRO_PVVP_Admin instance.
 	 *
-	 * Ensures only one instance of Product_Variations_View_Pro_Admin is loaded or can be loaded.
+	 * Ensures only one instance of DRO_PVVP_Admin is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro_Admin instance
+	 * @return DRO_PVVP_Admin instance
 	 */
-	public static function start_admin(): Product_Variations_View_Pro_Admin {
+	public static function start_admin(): DRO_PVVP_Admin {
 
 		self::$instance ??= new self();
 
@@ -154,11 +154,12 @@ class Product_Variations_View_Pro_Admin {
 		);
 
 		$current_settings = array(
-			'is_enabled'           => (bool) get_option( 'dro_pvvp_is_enabled', true ),
-			'show_price'           => (bool) get_option( 'dro_pvvp_show_range_price', true ),
-			'show_description'     => (bool) get_option( 'dro_pvvp_show_main_product_short_description', true ),
-			'show_product_gallery' => (bool) get_option( 'dro_pvvp_show_product_gallery', true ),
+			'is_enabled'           => (bool) filter_var(get_option('dro_pvvp_is_enabled', true), FILTER_VALIDATE_BOOLEAN),
+			'show_price'           => (bool) filter_var(get_option('dro_pvvp_show_range_price', true), FILTER_VALIDATE_BOOLEAN),
+			'show_description'     => (bool) filter_var(get_option('dro_pvvp_show_main_product_short_description', true), FILTER_VALIDATE_BOOLEAN),
+			'show_product_gallery' => (bool) filter_var(get_option('dro_pvvp_show_product_gallery', true), FILTER_VALIDATE_BOOLEAN),
 		);
+		
 
 		wp_localize_script(
 			'product-variations-view-settings',

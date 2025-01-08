@@ -10,20 +10,20 @@
  * @author Younes DRO <younesdro@gmail.com>
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 /**
- * Class Product_Variations_View_Pro_Utils
+ * Class DRO_PVVP_Utils
  *
  * Utility class with static methods for data processing.
  *
  * @final
  */
-class Product_Variations_View_Pro_Utils {
+class DRO_PVVP_Utils {
 
 	/**
 	 * Private constructor to prevent instantiation.

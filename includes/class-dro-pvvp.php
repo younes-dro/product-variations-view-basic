@@ -11,7 +11,7 @@
  * @since 1.0.0
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -24,12 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro {
+class DRO_PVVP {
 
 	/**
 	 * The Single instance of the class.
 	 *
-	 * @var Product_Variations_View_Pro|null
+	 * @var DRO_PVVP|null
 	 */
 	protected static $instance;
 
@@ -48,11 +48,11 @@ class Product_Variations_View_Pro {
 	public $plugin_name = DRO_PVVP_NAME;
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Dependencies class.
+	 * Instance of the DRO_PVVP_Dependencies class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var obj Product_Variations_View_Pro_Dependencies object
+	 * @var obj DRO_PVVP_Dependencies object
 	 */
 	protected static $dependencies;
 
@@ -70,9 +70,9 @@ class Product_Variations_View_Pro {
 
 	/**
 	 *
-	 * @param Product_Variations_View_Pro_Dependencies $dependencies
+	 * @param DRO_PVVP_Dependencies $dependencies
 	 */
-	public function __construct( Product_Variations_View_Pro_Dependencies $dependencies ) {
+	public function __construct( DRO_PVVP_Dependencies $dependencies ) {
 
 		self::$dependencies = $dependencies;
 
@@ -88,14 +88,14 @@ class Product_Variations_View_Pro {
 	}
 
 	/**
-	 * Gets the main Product_Variations_View_Pro instance.
+	 * Gets the main DRO_PVVP instance.
 	 *
-	 * Ensures only one instance of Product_Variations_View_Pro is loaded or can be loaded.
+	 * Ensures only one instance of DRO_PVVP is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro instance
+	 * @return DRO_PVVP instance
 	 */
-	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ): Product_Variations_View_Pro {
+	public static function start( DRO_PVVP_Dependencies $dependencies ): DRO_PVVP {
 
 		self::$instance ??= new self( $dependencies );
 
@@ -194,7 +194,7 @@ class Product_Variations_View_Pro {
 	}
 
 	/**
-	 * Displays any admin notices added with \Product_Variations_View_Pro::add_admin_notice()
+	 * Displays any admin notices added with \DRO_PVVP::add_admin_notice()
 	 *
 	 * @since 1.0.0
 	 */
@@ -220,7 +220,7 @@ class Product_Variations_View_Pro {
 		}
 		if ( is_admin() ) {
 
-			Product_Variations_View_Pro_Admin::start_admin();
+			DRO_PVVP_Admin::start_admin();
 		}
 	}
 
@@ -229,7 +229,7 @@ class Product_Variations_View_Pro {
 	 */
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
-			new Product_Variations_View_Pro_Display();
+			new DRO_PVVP_Display();
 			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-functions.php';
 			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-hooks.php';
 		}
@@ -245,8 +245,7 @@ class Product_Variations_View_Pro {
 	 * @return bool True if frontend functionality is enabled, false otherwise.
 	 */
 	private function is_frontend_enabled() {
-		$is_enabled = get_option( 'dro_pvvp_is_enabled', true );
-		return filter_var( $is_enabled, FILTER_VALIDATE_BOOLEAN );
+		return (bool) filter_var( get_option( 'dro_pvvp_is_enabled', true ), FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**
