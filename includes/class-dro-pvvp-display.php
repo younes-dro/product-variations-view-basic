@@ -120,15 +120,15 @@ class DRO_PVVP_Display {
 		wp_enqueue_script( 'dro-pvvp-add-to-cart' );
 
 		$params = array(
-			'currency_symbol'              => get_woocommerce_currency_symbol(),
-			'currency_format_decimal_sep'  => wc_get_price_decimal_separator(),
-			'currency_format_thousand_sep' => wc_get_price_thousand_separator(),
-			'currency_format_num_decimals' => wc_get_price_decimals(),
-			'currency_position'            => sanitize_key( get_option( 'woocommerce_currency_pos' ) ),
-			'currency_format_trim_zeros'   => sanitize_key( get_option( 'woocommerce_price_trim_zeros', 'no' ) ),
-			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
-			'cvp_nonce'                    => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
-			'dro_pvvp_show_product_gallery'     => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
+			'currency_symbol'               => get_woocommerce_currency_symbol(),
+			'currency_format_decimal_sep'   => wc_get_price_decimal_separator(),
+			'currency_format_thousand_sep'  => wc_get_price_thousand_separator(),
+			'currency_format_num_decimals'  => wc_get_price_decimals(),
+			'currency_position'             => sanitize_key( get_option( 'woocommerce_currency_pos' ) ),
+			'currency_format_trim_zeros'    => sanitize_key( get_option( 'woocommerce_price_trim_zeros', 'no' ) ),
+			'ajax_url'                      => admin_url( 'admin-ajax.php' ),
+			'cvp_nonce'                     => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
+			'dro_pvvp_show_product_gallery' => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
 		);
 
 		wp_localize_script( 'dro-pvvp-add-to-cart', 'dro_pvvp_params', $params );
@@ -147,10 +147,26 @@ class DRO_PVVP_Display {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
 		}
 
-		// Suppressing WPCS warning because sanitization is applied later using array_walk_recursive.
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
-		array_walk_recursive( $products, array( Utils::class, 'dro_pvvp_sanitize_posted_product_variations' ) );
+		$products = isset( $_POST['products'] ) ? wp_unslash( $_POST['products'] ) : null;
+
+		if ( is_array( $products ) ) {
+			$products = array_map(
+				function ( $product ) {
+					// Sanitize individual product data.
+					return array(
+						'variation_id' => isset( $product['variation_id'] ) ? absint( $product['variation_id'] ) : 0,
+						'quantity'     => isset( $product['quantity'] ) ? absint( $product['quantity'] ) : 0,
+						'attributes'   => isset( $product['attributes'] ) && is_array( $product['attributes'] )
+							? array_map( 'sanitize_text_field', $product['attributes'] )
+							: array(),
+					);
+				},
+				$products
+			);
+		} else {
+			$products = array();
+		}
 
 		if ( ! isset( $products ) || ! is_array( $products ) ) {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );
