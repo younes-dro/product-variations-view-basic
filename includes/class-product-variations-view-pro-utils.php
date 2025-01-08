@@ -48,7 +48,7 @@ class Product_Variations_View_Pro_Utils {
 	 *
 	 * @return void
 	 */
-	public static function pvv_sanitize_posted_product_variations( int|string &$value, int|string $key ): void {
+	public static function dro_pvvp_sanitize_posted_product_variations( int|string &$value, int|string $key ): void {
 
 		switch ( $key ) {
 			case 'variation_id':

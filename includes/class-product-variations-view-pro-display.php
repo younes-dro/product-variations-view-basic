@@ -128,7 +128,7 @@ class Product_Variations_View_Pro_Display {
 			'currency_format_trim_zeros'   => get_option( 'woocommerce_price_trim_zeros', 'no' ),
 			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 			'cvp_nonce'                    => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
-			'pvv_show_product_gallery'     => (bool) get_option( 'pvv_show_product_gallery', true ),
+			'dro_pvvp_show_product_gallery'     => (bool) get_option( 'dro_pvvp_show_product_gallery', true ),
 		);
 
 		wp_localize_script( 'dro-pvvp-add-to-cart', 'dro_pvvp_params', $params );
@@ -150,7 +150,7 @@ class Product_Variations_View_Pro_Display {
 		// Suppressing WPCS warning because sanitization is applied later using array_walk_recursive.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
-		array_walk_recursive( $products, array( Utils::class, 'pvv_sanitize_posted_product_variations' ) );
+		array_walk_recursive( $products, array( Utils::class, 'dro_pvvp_sanitize_posted_product_variations' ) );
 
 		if ( ! isset( $products ) || ! is_array( $products ) ) {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );
@@ -231,7 +231,7 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function remove_variable_price_range_on_product_page( $price, $product ) {
 
-		$show_price = (bool) get_option( 'pvv_show_range_price', true );
+		$show_price = (bool) get_option( 'dro_pvvp_show_range_price', true );
 		if ( ! $show_price && $product->get_type() === 'variable' && is_product() ) {
 			return '';
 		}
@@ -247,7 +247,7 @@ class Product_Variations_View_Pro_Display {
 	public function remove_short_description_from_product_page() {
 
 		if ( is_product() ) {
-			$show_short_description = (bool) get_option( 'pvv_show_main_product_short_description', true );
+			$show_short_description = (bool) get_option( 'dro_pvvp_show_main_product_short_description', true );
 			global $post;
 			$product = wc_get_product( $post->ID );
 			if ( ! $show_short_description && $product && $product->is_type( 'variable' ) ) {
