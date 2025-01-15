@@ -60,6 +60,10 @@ function activation_check() {
 		);
 
 	}
+	update_option( 'dro_pvvp_is_enabled', 1 );
+	update_option( 'dro_pvvp_show_range_price', 1 );
+	update_option( 'dro_pvvp_show_main_product_short_description', 1 );
+	update_option( 'dro_pvvp_show_product_gallery', 1 );
 }
 register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ . '\\activation_check' );
 /**
