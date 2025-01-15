@@ -40,7 +40,7 @@ class DRO_PVVP_Dependencies {
 	const MINIMUM_PHP_VERSION = '7.4';
 
 	/** Minimum WordPress version required by this plugin */
-	const MINIMUM_WP_VERSION = '5.3.2';
+	const MINIMUM_WP_VERSION = '5.7';
 
 	/** Minimum WooCommerce version required by this plugin */
 	const MINIMUM_WC_VERSION = '3.7.0';

@@ -8,9 +8,12 @@
  * Author URI: https://github.com/younes-dro
  * Text Domain: product-variations-view-pro
  * Domain Path: /languages
- *
- * WC requires at least: 3.7.0
- * WC tested up to: 9.5.1
+ * Requires PHP: 7.4
+ * Requires at least: 5.7
+ * Tested up to: 6.7
+ * WC requires at least: 5.8
+ * WC tested up to: 9.4
+ * Requires Plugins: woocommerce
  *
  * Copyright: © 2024 Younes DRO
  * License: GNU General Public License v2.0 or later
