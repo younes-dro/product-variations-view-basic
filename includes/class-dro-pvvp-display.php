@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use function DRO\PVVP\dro_pvvp;
 
-use DRO\PVVP\Includes\DRO_PVVP_Utils as Utils;
+
 
 /**
  * Handles the front-end display and functionality for Product Variations View Pro.
@@ -101,7 +101,7 @@ class DRO_PVVP_Display {
 	public function frontend_scripts() {
 		$the_product = wc_get_product( get_the_ID() );
 
-		if ( ! $the_product || ! $the_product->is_type( 'variable' ) || ! is_product() ) {
+		if ( ! $the_product || ! $the_product->is_type( 'variable' ) || ! function_exists( 'is_product' ) || ! \is_product() ) {
 			return;
 		}
 
@@ -247,7 +247,7 @@ class DRO_PVVP_Display {
 	public function remove_variable_price_range_on_product_page( $price, $product ) {
 
 		$show_price = (bool) get_option( 'dro_pvvp_show_range_price', true );
-		if ( ! $show_price && $product->get_type() === 'variable' && is_product() ) {
+		if ( ! $show_price && $product->get_type() === 'variable' && function_exists( 'is_product' ) && \is_product() ) {
 			return '';
 		}
 
@@ -261,12 +261,14 @@ class DRO_PVVP_Display {
 	 */
 	public function remove_short_description_from_product_page() {
 
-		if ( is_product() ) {
+		if ( function_exists( 'is_product' ) && \is_product() ) {
 			$show_short_description = (bool) get_option( 'dro_pvvp_show_main_product_short_description', true );
 			global $post;
-			$product = wc_get_product( $post->ID );
-			if ( ! $show_short_description && $product && $product->is_type( 'variable' ) ) {
-				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+			if ( isset( $post->ID ) ) {
+				$product = wc_get_product( $post->ID );
+				if ( ! $show_short_description && $product && $product->is_type( 'variable' ) ) {
+					remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+				}
 			}
 		}
 	}
