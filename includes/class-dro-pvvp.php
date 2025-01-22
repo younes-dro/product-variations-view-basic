@@ -11,7 +11,7 @@
  * @since 1.0.0
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -24,12 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro {
+class DRO_PVVP {
 
 	/**
 	 * The Single instance of the class.
 	 *
-	 * @var Product_Variations_View_Pro|null
+	 * @var DRO_PVVP|null
 	 */
 	protected static $instance;
 
@@ -45,14 +45,14 @@ class Product_Variations_View_Pro {
 	 *
 	 * @var String
 	 */
-	public $plugin_name = PRODUCT_VARIATIONS_VIEW_PRO_NAME;
+	public $plugin_name = DRO_PVVP_NAME;
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Dependencies class.
+	 * Instance of the DRO_PVVP_Dependencies class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var obj Product_Variations_View_Pro_Dependencies object
+	 * @var obj DRO_PVVP_Dependencies object
 	 */
 	protected static $dependencies;
 
@@ -69,10 +69,13 @@ class Product_Variations_View_Pro {
 
 
 	/**
+	 * Constructor for the class.
 	 *
-	 * @param Product_Variations_View_Pro_Dependencies $dependencies
+	 * Initializes the class with required dependencies.
+	 *
+	 * @param DRO_PVVP_Dependencies $dependencies The dependencies required for the class to function.
 	 */
-	public function __construct( Product_Variations_View_Pro_Dependencies $dependencies ) {
+	public function __construct( DRO_PVVP_Dependencies $dependencies ) {
 
 		self::$dependencies = $dependencies;
 
@@ -84,20 +87,19 @@ class Product_Variations_View_Pro {
 
 		add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
 
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
 		add_action( 'after_setup_theme', array( $this, 'frontend_includes' ) );
 	}
 
 	/**
-	 * Gets the main Product_Variations_View_Pro instance.
+	 * Gets the main DRO_PVVP instance.
 	 *
-	 * Ensures only one instance of Product_Variations_View_Pro is loaded or can be loaded.
+	 * Ensures only one instance of DRO_PVVP is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro instance
+	 * @param DRO_PVVP_Dependencies $dependencies The dependencies required for the class to function.
+	 * @return DRO_PVVP instance
 	 */
-	public static function start( Product_Variations_View_Pro_Dependencies $dependencies ): Product_Variations_View_Pro {
+	public static function start( DRO_PVVP_Dependencies $dependencies ): DRO_PVVP {
 
 		self::$instance ??= new self( $dependencies );
 
@@ -140,7 +142,7 @@ class Product_Variations_View_Pro {
 	 */
 	public function check_environment() {
 
-		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) ) ) {
+		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( DRO_PVVP_FILE ) ) ) {
 
 			$this->deactivate_plugin();
 			$this->add_admin_notice(
@@ -158,7 +160,7 @@ class Product_Variations_View_Pro {
 	 */
 	protected function deactivate_plugin() {
 
-		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		deactivate_plugins( plugin_basename( DRO_PVVP_FILE ) );
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -170,18 +172,26 @@ class Product_Variations_View_Pro {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $slug message slug
-	 * @param string $class CSS classes
-	 * @param string $message notice message
+	 * @param string $slug message slug.
+	 * @param string $css_class CSS classes.
+	 * @param string $message notice message.
 	 */
-	public function add_admin_notice( $slug, $class, $message ) {
+	public function add_admin_notice( $slug, $css_class, $message ) {
 
 		$this->notices[ $slug ] = array(
-			'class'   => $class,
+			'class'   => $css_class,
 			'message' => $message,
 		);
 	}
-
+	/**
+	 * Adds plugin-related admin notices.
+	 *
+	 * Checks the WordPress and WooCommerce version compatibility.
+	 * If the versions do not meet the plugin requirements, it adds admin notices
+	 * to inform the user about necessary updates.
+	 *
+	 * @return void
+	 */
 	public function add_plugin_notices() {
 
 		if ( ! self::$dependencies->check_wp_version() ) {
@@ -196,7 +206,7 @@ class Product_Variations_View_Pro {
 	}
 
 	/**
-	 * Displays any admin notices added with \Product_Variations_View_Pro::add_admin_notice()
+	 * Displays any admin notices added with \DRO_PVVP::add_admin_notice()
 	 *
 	 * @since 1.0.0
 	 */
@@ -222,7 +232,7 @@ class Product_Variations_View_Pro {
 		}
 		if ( is_admin() ) {
 
-			Product_Variations_View_Pro_Admin::start_admin();
+			DRO_PVVP_Admin::start_admin();
 		}
 	}
 
@@ -231,24 +241,19 @@ class Product_Variations_View_Pro {
 	 */
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
-			new Product_Variations_View_Pro_Display();
-			require_once INCLUDES_FOLDER . 'wc-cvp-template-functions.php';
-			require_once INCLUDES_FOLDER . 'wc-cvp-template-hooks.php';
+			new DRO_PVVP_Display();
+			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-functions.php';
+			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-hooks.php';
 		}
 	}
-	/*
-	-----------------------------------------------------------------------------------*/
-	/*
-		Helper Functions                                                                 */
-	/*-----------------------------------------------------------------------------------*/
+
 	/**
 	 * Checks whether the frontend functionality is enabled.
 	 *
 	 * @return bool True if frontend functionality is enabled, false otherwise.
 	 */
 	private function is_frontend_enabled() {
-		$is_enabled = get_option( 'pvv_is_enabled', true );
-		return filter_var( $is_enabled, FILTER_VALIDATE_BOOLEAN );
+		return (bool) filter_var( get_option( 'dro_pvvp_is_enabled', true ), FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**
@@ -259,7 +264,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		return untrailingslashit( plugins_url( '/', DRO_PVVP_FILE ) );
 	}
 
 	/**
@@ -270,7 +275,7 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		return untrailingslashit( plugin_dir_path( DRO_PVVP_FILE ) );
 	}
 
 	/**
@@ -281,10 +286,6 @@ class Product_Variations_View_Pro {
 	 * @return string
 	 */
 	public function plugin_basename() {
-		return plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE );
-	}
-
-	public function load_textdomain() {
-		load_plugin_textdomain( 'product-variations-view-pro', false, $this->plugin_path() . '/languages' );
+		return plugin_basename( DRO_PVVP_FILE );
 	}
 }

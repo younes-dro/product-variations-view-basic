@@ -18,35 +18,35 @@
  * @since     1.0.0
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
-use function DRO\ProductVariationsViewPro\product_variations_view_pro;
+use function DRO\PVVP\dro_pvvp;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 /**
- * Product_Variations_View_Pro_Dependencies class is responsible for checking the compatibility of the environment
+ * DRO_PVVP_Dependencies class is responsible for checking the compatibility of the environment
  * in which the plugin is running, including PHP, WordPress, and WooCommerce versions.
  *
- * @class Product_Variations_View_Pro_Dependencies
+ * @class DRO_PVVP_Dependencies
  * @package Product Variations View Pro
  * @version 1.0.0
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Dependencies {
+class DRO_PVVP_Dependencies {
 
 	/** Minimum PHP version required by this plugin */
 	const MINIMUM_PHP_VERSION = '7.4';
 
 	/** Minimum WordPress version required by this plugin */
-	const MINIMUM_WP_VERSION = '5.3.2';
+	const MINIMUM_WP_VERSION = '5.7';
 
 	/** Minimum WooCommerce version required by this plugin */
 	const MINIMUM_WC_VERSION = '3.7.0';
 
 	/**
-	 * Constructor for Product_Variations_View_Pro_Dependencies class.
+	 * Constructor for DRO_PVVP_Dependencies class.
 	 * Initializes the dependency checks for PHP, WordPress, and WooCommerce versions.
 	 *
 	 * @since 1.0.0
@@ -111,7 +111,7 @@ class Product_Variations_View_Pro_Dependencies {
 		return sprintf(
 			/* translators: %1$s is the plugin name, %2$s is the minimum required WordPress version, %3$s is the HTML for the "update WordPress" link, %4$s is the closing HTML tag for the link. */
 			esc_html__( '%1$s is not active, as it requires WordPress version %2$s or higher. Please %3$supdate WordPress &raquo;%4$s', 'product-variations-view-pro' ),
-			'<strong>' . Product_Variations_View_Pro()->plugin_name . '</strong>',
+			'<strong>' . dro_pvvp()->plugin_name . '</strong>',
 			self::MINIMUM_WP_VERSION,
 			'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">',
 			'</a>'
@@ -146,7 +146,7 @@ class Product_Variations_View_Pro_Dependencies {
 		return sprintf(
 			/* translators: %1$s is the plugin name, %2$s is the minimum required WooCommerce version, %3$s is the HTML for the "update WooCommerce" link, %4$s is the closing HTML tag for the link. */
 			esc_html__( '%1$s is not active, as it requires WooCommerce version %2$s or higher. Please %3$supdate WooCommerce &raquo;%4$s', 'product-variations-view-pro' ),
-			'<strong>' . Product_Variations_View_Pro()->plugin_name . '</strong>',
+			'<strong>' . dro_pvvp()->plugin_name . '</strong>',
 			self::MINIMUM_WC_VERSION,
 			'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">',
 			'</a>'

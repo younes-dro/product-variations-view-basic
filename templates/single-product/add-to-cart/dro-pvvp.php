@@ -2,7 +2,7 @@
 /**
  * Product Variations View Pro add to cart
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/single-product/add-to-cart/cvp.php.
+ * This template can be overridden by copying it to yourtheme/woocommerce/single-product/add-to-cart/dro-pvvp.php.
  *
  * HOWEVER, on occasion Variation Carousel for WooCommerce will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to
@@ -41,7 +41,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 	?>
 	<div id="variable-products-carousel" class="carousel slide" data-interval="false" data-ride="carousel">
 
-		<?php apply_filters( 'woocommerce_cvp_carousel_indicators', count( $variations ) ); ?>
+		<?php apply_filters( 'dro_pvvp_carousel_indicators', count( $variations ) ); ?>
 		<div class="carousel-inner" role="listbox">
 			<?php
 			foreach ( $variations as $variation ) {
@@ -52,14 +52,14 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 					<div class="row pr-4">
 						<div class="col-12">
 							<div class="col-6 col-sm-4 carousel-nav ml-auto">
-								<a class="carousel-control-prev" href="#variable-products-carousel" role="button" data-slide="prev">
-									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Previous', 'product-variations-view-pro' ); ?></span>
-								</a>
-								<a class="carousel-control-next" href="#variable-products-carousel" role="button" data-slide="next">
-									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="sr-only"><?php esc_html_e( 'Next', 'product-variations-view-pro' ); ?></span>
-								</a>                                
+							<button class="carousel-control-prev" type="button" data-bs-target="#variable-products-carousel" data-bs-slide="prev">
+	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	<span class="visually-hidden">Previous</span>
+	</button>
+	<button class="carousel-control-next" type="button" data-bs-target="#variable-products-carousel" data-bs-slide="next">
+	<span class="carousel-control-next-icon" aria-hidden="true"></span>
+	<span class="visually-hidden">Next</span>
+	</button>                               
 							</div>
 						</div>
 					</div>
@@ -110,7 +110,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 										<div class="col-12 col-md-8 attribute-name-col">
 
 											<?php
-											wc_cvp_variation_attribute_options(
+											dro_pvvp_variation_attribute_options(
 												array(
 													'var_id'  => $variation['variation_id'],
 													'variation_attributes' => $variation['attributes'],
@@ -191,13 +191,9 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 							</div>
 						</div>
 						<?php
-
-							/**
-							 * Woocommerce_cvp_variation_data hook
-							 */
-							global $current_variation;
-							$current_variation = wc_get_product( $variation['variation_id'] );
-							do_action( 'woocommerce_cvp_variation_data', $current_variation );
+							global $dro_pvvp_current_variation;
+							$dro_pvvp_current_variation = wc_get_product( $variation['variation_id'] );
+							do_action( 'dro_pvvp_variation_data', $dro_pvvp_current_variation );
 						?>
 					</div><!-- .carousel-content -->
 				</div>
@@ -208,7 +204,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 		</div><!-- .carousel-inner -->
 	</div><!-- .carousel -->
 	<?php
-	do_action( 'woocommerce_cvp_add_to_cart_wrap', $product );
+	do_action( 'dro_pvvp_add_to_cart_wrap', $product );
 	?>
 </form>
 
