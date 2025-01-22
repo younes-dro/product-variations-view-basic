@@ -9,18 +9,19 @@
 
     background-color: $color__background-color-table !important;
     margin-bottom: 10px;
-    /*border:1px solid #0f0;*/
+    // border:1px solid #0f0;
     h6.available-variations{
         text-align: center;
         font-size: 1rem;
-        color: #999;
+        color: #313131;
         margin-bottom: 1rem;
+        flex-basis: 100%;
     }
     @include carousel-indicators();
     .carousel-inner{
-        border-top: 1px solid #dcdcdc;
+        /* border-top: 1px solid #dcdcdc; */
         margin-bottom: 0px;
-        margin-top: 0px;
+        margin-top: 80px;
         .carousel-item {
             min-height: 24rem;
             margin: 0 auto;

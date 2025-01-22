@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package Woocommerce_Custom_Variable_Products
+ * @package Product Variations View Pro
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Box, Switch, FormControlLabel, Checkbox, Grid2, CircularProgress, Typography, Button } from '@mui/material';
 
 const GeneralSettings = () => {
-  const [isEnabled, setIsEnabled] = useState(pvv_ajax_params.settings.is_enabled);
-  const [showPrice, setShowPrice] = useState(pvv_ajax_params.settings.show_price);
-  const [showDescription, setShowDescription] = useState(pvv_ajax_params.settings.show_description);
-  const [showProductGallery, setShowProductGallery] = useState(pvv_ajax_params.settings.show_product_gallery);
+  const [isEnabled, setIsEnabled] = useState(dro_pvvp_ajax_params.settings.is_enabled);
+  const [showPrice, setShowPrice] = useState(dro_pvvp_ajax_params.settings.show_price);
+  const [showDescription, setShowDescription] = useState(dro_pvvp_ajax_params.settings.show_description);
+  const [showProductGallery, setShowProductGallery] = useState(dro_pvvp_ajax_params.settings.show_product_gallery);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
@@ -14,8 +14,8 @@ const GeneralSettings = () => {
     setStatusMessage('');
 
     const settings = {
-      action: 'pvv_save_settings',
-      security: pvv_ajax_params.nonce,
+      action: 'dro_pvvp_save_settings',
+      security: dro_pvvp_ajax_params.nonce,
       is_enabled: isEnabled,
       show_price: showPrice,
       show_description: showDescription,
@@ -23,7 +23,7 @@ const GeneralSettings = () => {
     };
 
     try {
-      const response = await fetch(pvv_ajax_params.ajax_url, {
+      const response = await fetch(dro_pvvp_ajax_params.ajax_url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -49,7 +49,7 @@ const GeneralSettings = () => {
   return (
     <Box>
       <Grid2 container spacing={2} direction="column">
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Switch
@@ -61,7 +61,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Checkbox
@@ -73,7 +73,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Checkbox
@@ -85,7 +85,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <FormControlLabel
             control={
               <Checkbox
@@ -97,7 +97,7 @@ const GeneralSettings = () => {
           />
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           <Box mt={2} display="flex" alignItems="center">
             <Button
               onClick={handleSave}
@@ -117,7 +117,7 @@ const GeneralSettings = () => {
           </Box>
         </Grid2>
 
-        <Grid2 item xs={12}>
+        <Grid2 item="true" xs={12}>
           {statusMessage && (
             <Typography
               variant="body2"
