@@ -10,20 +10,20 @@
  * @author Younes DRO <younesdro@gmail.com>
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 /**
- * Class Product_Variations_View_Pro_Utils
+ * Class DRO_PVVP_Utils
  *
  * Utility class with static methods for data processing.
  *
  * @final
  */
-class Product_Variations_View_Pro_Utils {
+class DRO_PVVP_Utils {
 
 	/**
 	 * Private constructor to prevent instantiation.
@@ -48,7 +48,7 @@ class Product_Variations_View_Pro_Utils {
 	 *
 	 * @return void
 	 */
-	public static function pvv_sanitize_posted_product_variations( int|string &$value, int|string $key ): void {
+	public static function dro_pvvp_sanitize_posted_product_variations( int|string &$value, int|string $key ): void {
 
 		switch ( $key ) {
 			case 'variation_id':
@@ -57,8 +57,11 @@ class Product_Variations_View_Pro_Utils {
 			case 'quantity':
 				$value = absint( $value );
 				break;
+			case 'attributes':
+				$value = sanitize_key( $value );
+				break;
 			default:
-				$value = sanitize_text_field( $value );
+				$value = null;
 
 		}
 	}

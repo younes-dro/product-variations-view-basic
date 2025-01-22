@@ -2,7 +2,7 @@
  * Settings Script for Product Variations View add-on
  * 
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 31/12/2024 12:07:13
+ * Date: 08/01/2025 15:27:01
  * Released under the GPLv2 or later.
  */
 /******/ (() => { // webpackBootstrap
@@ -16891,19 +16891,19 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 var GeneralSettings = function GeneralSettings() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(pvv_ajax_params.settings.is_enabled),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(dro_pvvp_ajax_params.settings.is_enabled),
     _useState2 = _slicedToArray(_useState, 2),
     isEnabled = _useState2[0],
     setIsEnabled = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(pvv_ajax_params.settings.show_price),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(dro_pvvp_ajax_params.settings.show_price),
     _useState4 = _slicedToArray(_useState3, 2),
     showPrice = _useState4[0],
     setShowPrice = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(pvv_ajax_params.settings.show_description),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(dro_pvvp_ajax_params.settings.show_description),
     _useState6 = _slicedToArray(_useState5, 2),
     showDescription = _useState6[0],
     setShowDescription = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(pvv_ajax_params.settings.show_product_gallery),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(dro_pvvp_ajax_params.settings.show_product_gallery),
     _useState8 = _slicedToArray(_useState7, 2),
     showProductGallery = _useState8[0],
     setShowProductGallery = _useState8[1];
@@ -16924,8 +16924,8 @@ var GeneralSettings = function GeneralSettings() {
             setLoading(true);
             setStatusMessage('');
             settings = {
-              action: 'pvv_save_settings',
-              security: pvv_ajax_params.nonce,
+              action: 'dro_pvvp_save_settings',
+              security: dro_pvvp_ajax_params.nonce,
               is_enabled: isEnabled,
               show_price: showPrice,
               show_description: showDescription,
@@ -16933,7 +16933,7 @@ var GeneralSettings = function GeneralSettings() {
             };
             _context.prev = 3;
             _context.next = 6;
-            return fetch(pvv_ajax_params.ajax_url, {
+            return fetch(dro_pvvp_ajax_params.ajax_url, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

@@ -1,16 +1,17 @@
 @mixin carousel-indicators(){
-    ol.carousel-indicators{
-        /*border: 1px solid #f00;*/
-        min-height: 20px;
-        margin-bottom: 3px !important;
-        position: relative;
-        >li.active{
+    div.carousel-indicators{
+    /* border: 1px solid #f00; */
+    min-height: 20px;
+    margin-bottom: 3px !important;
+    top: 30px;
+    bottom: auto !important;
+        >button.active{
             background-color: #eee !important;
             >span{
                 color:#544f4f !important;
             }
         }
-        >li{
+        >button{
             &:hover{
                 background-color: #eee!important;
             }

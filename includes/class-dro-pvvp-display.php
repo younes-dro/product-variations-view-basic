@@ -2,7 +2,7 @@
 /**
  * Front-End Display
  *
- * @class    Product_Variations_View_Pro_Display
+ * @class    DRO_PVVP_Display
  * @version  1.0.0
  * @since    1.0.0
  * @package  Product Variations View Pro
@@ -10,29 +10,29 @@
  * @email    younesdro@gmail.com
  */
 
-namespace DRO\ProductVariationsViewPro\Includes;
+namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-use function DRO\ProductVariationsViewPro\product_variations_view_pro;
+use function DRO\PVVP\dro_pvvp;
 
-use DRO\ProductVariationsViewPro\Includes\Product_Variations_View_Pro_Utils as Utils;
+
 
 /**
  * Handles the front-end display and functionality for Product Variations View Pro.
  *
  * @since 1.0.0
  */
-class Product_Variations_View_Pro_Display {
+class DRO_PVVP_Display {
 
 	/**
-	 * Instance of the Product_Variations_View_Pro_Display class.
+	 * Instance of the DRO_PVVP_Display class.
 	 *
 	 * Verify the requirements
 	 *
-	 * @var Product_Variations_View_Pro_Display|null
+	 * @var DRO_PVVP_Display|null
 	 */
 	private static $instance;
 
@@ -46,19 +46,19 @@ class Product_Variations_View_Pro_Display {
 	public function __construct() {
 		add_action( 'init', array( $this, 'remove_woocommerce_variable_add_to_cart' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
-		add_action( 'wp_ajax_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
-		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'cvp_add_bulk_variation' ) );
+		add_action( 'wp_ajax_wc_cvp_add_to_cart', array( $this, 'dro_pvvp_add_bulk_variation' ) );
+		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'dro_pvvp_add_bulk_variation' ) );
 		add_filter( 'woocommerce_get_price_html', array( $this, 'remove_variable_price_range_on_product_page' ), 10, 2 );
 		add_action( 'wp', array( $this, 'remove_short_description_from_product_page' ) );
 	}
 
 	/**
-	 * Gets the Product_Variations_View_Pro_Disaply instance.
+	 * Gets the DRO_PVVP_Disaply instance.
 	 *
 	 * @since 1.0.0
-	 * @return Product_Variations_View_Pro_Display instance
+	 * @return DRO_PVVP_Display instance
 	 */
-	public static function start_display(): Product_Variations_View_Pro_Display {
+	public static function start_display(): DRO_PVVP_Display {
 
 		self::$instance ??= new self();
 
@@ -72,7 +72,7 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function remove_woocommerce_variable_add_to_cart() {
 		remove_action( 'woocommerce_variable_add_to_cart', 'woocommerce_variable_add_to_cart', 30 );
-		add_action( 'woocommerce_variable_add_to_cart', array( $this, 'cvp_variable_add_to_cart' ), 30 );
+		add_action( 'woocommerce_variable_add_to_cart', array( $this, 'dro_pvvp_variable_add_to_cart' ), 30 );
 	}
 
 	/**
@@ -80,16 +80,16 @@ class Product_Variations_View_Pro_Display {
 	 *
 	 * @since 1.0.0
 	 */
-	public function cvp_variable_add_to_cart() {
+	public function dro_pvvp_variable_add_to_cart() {
 		global $product;
 
 		wc_get_template(
-			'single-product/add-to-cart/cvp.php',
+			'single-product/add-to-cart/dro-pvvp.php',
 			array(
 				'container' => $product,
 			),
 			'',
-			Product_Variations_View_Pro()->plugin_path() . '/templates/'
+			dro_pvvp()->plugin_path() . '/templates/'
 		);
 	}
 
@@ -101,37 +101,37 @@ class Product_Variations_View_Pro_Display {
 	public function frontend_scripts() {
 		$the_product = wc_get_product( get_the_ID() );
 
-		if ( ! $the_product || ! $the_product->is_type( 'variable' ) || ! is_product() ) {
+		if ( ! $the_product || ! $the_product->is_type( 'variable' ) || ! function_exists( 'is_product' ) || ! \is_product() ) {
 			return;
 		}
 
 		$min = WP_DEBUG ? '' : '.min';
 
-		wp_register_style( 'wc-cvp-frontend', Product_Variations_View_Pro()->plugin_url() . '/assets/css/frontend/cvp-frontend' . $min . '.css', array(), Product_Variations_View_Pro()->version );
-		wp_enqueue_style( 'wc-cvp-frontend' );
+		wp_register_style( 'dro-pvvp-frontend', dro_pvvp()->plugin_url() . '/assets/css/frontend/dro-pvvp-frontend' . $min . '.css', array(), dro_pvvp()->version );
+		wp_enqueue_style( 'dro-pvvp-frontend' );
 
-		wp_register_style( 'bootstrap-css', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap.css', array(), Product_Variations_View_Pro()->version );
+		wp_register_style( 'bootstrap-css', dro_pvvp()->plugin_url() . '/assets/vendor/bootstrap/css/bootstrap' . $min . '.css', array(), dro_pvvp()->version );
 		wp_enqueue_style( 'bootstrap-css' );
 
-		wp_register_script( 'bootstrap-js', Product_Variations_View_Pro()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap.js', array( 'jquery' ), Product_Variations_View_Pro()->version, true );
+		wp_register_script( 'bootstrap-js', dro_pvvp()->plugin_url() . '/assets/vendor/bootstrap/js/bootstrap' . $min . '.js', array( 'jquery' ), dro_pvvp()->version, true );
 		wp_enqueue_script( 'bootstrap-js' );
 
-		wp_register_script( 'wc-add-to-cart-cvp', Product_Variations_View_Pro()->plugin_url() . '/assets/js/frontend/add-to-cart-cvp' . $min . '.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
-		wp_enqueue_script( 'wc-add-to-cart-cvp' );
+		wp_register_script( 'dro-pvvp-add-to-cart', dro_pvvp()->plugin_url() . '/assets/js/frontend/dro-pvvp-add-to-cart' . $min . '.js', array( 'jquery', 'bootstrap-js' ), fileatime( __FILE__ ), true );
+		wp_enqueue_script( 'dro-pvvp-add-to-cart' );
 
 		$params = array(
-			'currency_symbol'              => get_woocommerce_currency_symbol(),
-			'currency_format_decimal_sep'  => wc_get_price_decimal_separator(),
-			'currency_format_thousand_sep' => wc_get_price_thousand_separator(),
-			'currency_format_num_decimals' => wc_get_price_decimals(),
-			'currency_position'            => get_option( 'woocommerce_currency_pos' ),
-			'currency_format_trim_zeros'   => get_option( 'woocommerce_price_trim_zeros', 'no' ),
-			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
-			'cvp_nonce'                    => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
-			'pvv_show_product_gallery'     => (bool) get_option( 'pvv_show_product_gallery', true ),
+			'currency_symbol'               => get_woocommerce_currency_symbol(),
+			'currency_format_decimal_sep'   => wc_get_price_decimal_separator(),
+			'currency_format_thousand_sep'  => wc_get_price_thousand_separator(),
+			'currency_format_num_decimals'  => wc_get_price_decimals(),
+			'currency_position'             => sanitize_key( get_option( 'woocommerce_currency_pos' ) ),
+			'currency_format_trim_zeros'    => sanitize_key( get_option( 'woocommerce_price_trim_zeros', 'no' ) ),
+			'ajax_url'                      => admin_url( 'admin-ajax.php' ),
+			'cvp_nonce'                     => wp_create_nonce( 'cvp_add_to_cart_nonce' ),
+			'dro_pvvp_show_product_gallery' => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
 		);
 
-		wp_localize_script( 'wc-add-to-cart-cvp', 'wc_cvp_params', $params );
+		wp_localize_script( 'dro-pvvp-add-to-cart', 'dro_pvvp_params', $params );
 	}
 
 	/**
@@ -141,16 +141,31 @@ class Product_Variations_View_Pro_Display {
 	 *
 	 * @since 1.0.0
 	 */
-	public function cvp_add_bulk_variation() {
+	public function dro_pvvp_add_bulk_variation() {
 		$cvp_nonce = isset( $_POST['cvp_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['cvp_nonce'] ) ) : null;
 		if ( ! isset( $cvp_nonce ) || ! wp_verify_nonce( $cvp_nonce, 'cvp_add_to_cart_nonce' ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'product-variations-view-pro' ) ) );
 		}
 
-		// Suppressing WPCS warning because sanitization is applied later using array_walk_recursive.
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$products = ( isset( $_POST['products'] ) ) ? wp_unslash( $_POST['products'] ) : null;
-		array_walk_recursive( $products, array( Utils::class, 'pvv_sanitize_posted_product_variations' ) );
+
+		if ( is_array( $products ) ) {
+			$products = array_map(
+				function ( $product ) {
+					// Sanitize individual product data.
+					return array(
+						'variation_id' => isset( $product['variation_id'] ) ? absint( $product['variation_id'] ) : 0,
+						'quantity'     => isset( $product['quantity'] ) ? absint( $product['quantity'] ) : 0,
+						'attributes'   => isset( $product['attributes'] ) && is_array( $product['attributes'] )
+							? array_map( 'sanitize_text_field', $product['attributes'] )
+							: array(),
+					);
+				},
+				$products
+			);
+		} else {
+			$products = array();
+		}
 
 		if ( ! isset( $products ) || ! is_array( $products ) ) {
 			wp_send_json_error( array( 'message' => __( 'No products were provided.', 'product-variations-view-pro' ) ) );
@@ -231,8 +246,8 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function remove_variable_price_range_on_product_page( $price, $product ) {
 
-		$show_price = (bool) get_option( 'pvv_show_range_price', true );
-		if ( ! $show_price && $product->get_type() === 'variable' && is_product() ) {
+		$show_price = (bool) get_option( 'dro_pvvp_show_range_price', true );
+		if ( ! $show_price && $product->get_type() === 'variable' && function_exists( 'is_product' ) && \is_product() ) {
 			return '';
 		}
 
@@ -246,12 +261,14 @@ class Product_Variations_View_Pro_Display {
 	 */
 	public function remove_short_description_from_product_page() {
 
-		if ( is_product() ) {
-			$show_short_description = (bool) get_option( 'pvv_show_main_product_short_description', true );
+		if ( function_exists( 'is_product' ) && \is_product() ) {
+			$show_short_description = (bool) get_option( 'dro_pvvp_show_main_product_short_description', true );
 			global $post;
-			$product = wc_get_product( $post->ID );
-			if ( ! $show_short_description && $product && $product->is_type( 'variable' ) ) {
-				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+			if ( isset( $post->ID ) ) {
+				$product = wc_get_product( $post->ID );
+				if ( ! $show_short_description && $product && $product->is_type( 'variable' ) ) {
+					remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+				}
 			}
 		}
 	}

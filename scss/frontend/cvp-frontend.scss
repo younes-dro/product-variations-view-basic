@@ -11,11 +11,11 @@ body.single-product{
 
         form.cart.dro-variable-products-form{
             box-shadow: 0px 0px 4px #bebebe;
-            padding: 10px 5px;
+            padding: 10px 0px;
             margin-top: 10px;
-            display:block;
-            width: 96%;
-            margin: 10px auto 20px;
+            display: block;
+            width: 100%;
+            margin: 0 auto;
             // Import Carousel Styles 
             @import "media/carousel.scss";
             // Add To Cart , Total, Reset link

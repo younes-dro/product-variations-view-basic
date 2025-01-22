@@ -8,28 +8,33 @@
  * Author URI: https://github.com/younes-dro
  * Text Domain: product-variations-view-pro
  * Domain Path: /languages
- *
- * WC requires at least: 3.7.0
- * WC tested up to: 9.5.1
+ * Requires PHP: 7.4
+ * Requires at least: 5.7
+ * Tested up to: 6.7
+ * WC requires at least: 5.8
+ * WC tested up to: 9.4
+ * Requires Plugins: woocommerce
  *
  * Copyright: © 2024 Younes DRO
  * License: GNU General Public License v2.0 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @package Product Variations View Pro
  */
 
-namespace DRO\ProductVariationsViewPro;
+namespace DRO\PVVP;
 
-use DRO\ProductVariationsViewPro\Includes\Product_Variations_View_Pro;
-use DRO\ProductVariationsViewPro\Includes\Product_Variations_View_Pro_Dependencies;
+use DRO\PVVP\Includes\DRO_PVVP;
+use DRO\PVVP\Includes\DRO_PVVP_Dependencies;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'PRODUCT_VARIATIONS_VIEW_PRO_FILE', __FILE__ );
-define( 'PRODUCT_VARIATIONS_VIEW_PRO_NAME', 'Product Variations View Pro' );
-define( 'INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/' );
+define( 'DRO_PVVP_FILE', __FILE__ );
+define( 'DRO_PVVP_NAME', 'Product Variations View Pro' );
+define( 'DRO_PVVP_INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/' );
 
 /**
  * Checks the server environment and deactivates plugins as necessary.
@@ -37,10 +42,10 @@ define( 'INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/
  * @since 1.0.0
  */
 function activation_check() {
-	$dependencies = new Product_Variations_View_Pro_Dependencies();
+	$dependencies = new DRO_PVVP_Dependencies();
 	if ( ! $dependencies->check_php_version() ) {
 
-		deactivate_plugins( plugin_basename( PRODUCT_VARIATIONS_VIEW_PRO_FILE ) );
+		deactivate_plugins( plugin_basename( DRO_PVVP_FILE ) );
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -50,24 +55,28 @@ function activation_check() {
 			sprintf(
 				/* translators: %s is the plugin name. */
 				esc_html__( '%s could not be activated.', 'product-variations-view-pro' ),
-				esc_html( PRODUCT_VARIATIONS_VIEW_PRO_NAME )
+				esc_html( DRO_PVVP_NAME )
 			) . esc_html( $dependencies->get_php_notice() )
 		);
 
 	}
+	update_option( 'dro_pvvp_is_enabled', 1 );
+	update_option( 'dro_pvvp_show_range_price', 1 );
+	update_option( 'dro_pvvp_show_main_product_short_description', 1 );
+	update_option( 'dro_pvvp_show_product_gallery', 1 );
 }
-register_activation_hook( PRODUCT_VARIATIONS_VIEW_PRO_FILE, __NAMESPACE__ .'\\activation_check' );
+register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ . '\\activation_check' );
 /**
  * Register the built-in autoloader
  */
 function register_autoloader() {
 	spl_autoload_register(
 		function ( $class_name ) {
-			$prefix   = 'DRO\\ProductVariationsViewPro\\includes\\';
+			$prefix   = 'DRO\\PVVP\\includes\\';
 			$base_dir = __DIR__ . '/includes/';
 			$len      = strlen( $prefix );
-			// Make sure the class name stats with 'DRO' to load only our classes.
-			if ( strncmp( __NAMESPACE__, $class_name, 3 ) !== 0 ) {
+			// Make sure the class name stats with 'DRO\PVVP' to load only our classes.
+			if ( strncmp( __NAMESPACE__ . '\\', $class_name, strlen( __NAMESPACE__ ) + 1 ) !== 0 ) {
 				return;
 			}
 			$relative_class_name = substr( $class_name, $len );
@@ -82,14 +91,14 @@ function register_autoloader() {
 }
 
 /**
- * Returns the main instance of Product_Variations_View_Pro.
+ * Returns the main instance of  DRO_PVVP.
  */
-function product_variations_view_pro() {
+function dro_pvvp() {
 	register_autoloader();
-	return Product_Variations_View_Pro::start( new Product_Variations_View_Pro_Dependencies() );
+	return DRO_PVVP::start( new DRO_PVVP_Dependencies() );
 }
 
-product_variations_view_pro();
+dro_pvvp();
 
 /**
  * Declare compatibility with WooCommerce Custom Order Tables.

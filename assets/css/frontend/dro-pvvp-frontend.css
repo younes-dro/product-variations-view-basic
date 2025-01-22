@@ -3,11 +3,11 @@ body.single-product .woocommerce-product-gallery__image img {
 }
 body.single-product form.cart.dro-variable-products-form {
   box-shadow: 0px 0px 4px #bebebe;
-  padding: 10px 5px;
+  padding: 10px 0px;
   margin-top: 10px;
   display: block;
-  width: 96%;
-  margin: 10px auto 20px;
+  width: 100%;
+  margin: 0 auto;
   /* CUSTOMIZE THE CAROUSEL
   -------------------------------------------------- */
   /* Carousel base class */
@@ -15,27 +15,28 @@ body.single-product form.cart.dro-variable-products-form {
 body.single-product form.cart.dro-variable-products-form .carousel {
   background-color: #fff !important;
   margin-bottom: 10px;
-  /*border:1px solid #0f0;*/
 }
 body.single-product form.cart.dro-variable-products-form .carousel h6.available-variations {
   text-align: center;
   font-size: 1rem;
-  color: #999;
+  color: #313131;
   margin-bottom: 1rem;
+  flex-basis: 100%;
 }
-body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators {
-  /*border: 1px solid #f00;*/
+body.single-product form.cart.dro-variable-products-form .carousel div.carousel-indicators {
+  /* border: 1px solid #f00; */
   min-height: 20px;
   margin-bottom: 3px !important;
-  position: relative;
+  top: 30px;
+  bottom: auto !important;
 }
-body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li.active {
+body.single-product form.cart.dro-variable-products-form .carousel div.carousel-indicators > button.active {
   background-color: #eee !important;
 }
-body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li.active > span {
+body.single-product form.cart.dro-variable-products-form .carousel div.carousel-indicators > button.active > span {
   color: #544f4f !important;
 }
-body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li {
+body.single-product form.cart.dro-variable-products-form .carousel div.carousel-indicators > button {
   border: 1px solid #ccc;
   min-height: 30px;
   text-align: center;
@@ -46,16 +47,16 @@ body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-i
   background-color: #fff !important;
   text-indent: 0;
 }
-body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li:hover {
+body.single-product form.cart.dro-variable-products-form .carousel div.carousel-indicators > button:hover {
   background-color: #eee !important;
 }
-body.single-product form.cart.dro-variable-products-form .carousel ol.carousel-indicators > li > span {
+body.single-product form.cart.dro-variable-products-form .carousel div.carousel-indicators > button > span {
   color: #000 !important;
 }
 body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner {
-  border-top: 1px solid #dcdcdc;
+  /* border-top: 1px solid #dcdcdc; */
   margin-bottom: 0px;
-  margin-top: 0px;
+  margin-top: 80px;
 }
 body.single-product form.cart.dro-variable-products-form .carousel .carousel-inner .carousel-item {
   min-height: 24rem;

@@ -2,7 +2,7 @@
 /**
  * Product Variations View Pro Reset Button
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/single-product/cvp/cvp-reset.php.
+ * This template can be overridden by copying it to yourtheme/woocommerce/single-product/pvvp/dro-pvvp-reset.php.
  *
  * HOWEVER, on occasion Variation Carousel for WooCommerce will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to

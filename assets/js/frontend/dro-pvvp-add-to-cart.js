@@ -57,12 +57,12 @@
 	 * @returns {string} - Formatted price string.
 	 */
 	function formatPrice(price) {
-		const symbol            = wc_cvp_params.currency_symbol || '$';
-		const decimals          = parseInt( wc_cvp_params.currency_format_num_decimals, 10 ) || 2;
-		const decimalSeparator  = wc_cvp_params.currency_format_decimal_sep || '.';
-		const thousandSeparator = wc_cvp_params.currency_format_thousand_sep || ',';
-		const position          = wc_cvp_params.currency_position || 'left';
-		const trimZeros         = wc_cvp_params.currency_format_trim_zeros === 'yes';
+		const symbol            = dro_pvvp_params.currency_symbol || '$';
+		const decimals          = parseInt( dro_pvvp_params.currency_format_num_decimals, 10 ) || 2;
+		const decimalSeparator  = dro_pvvp_params.currency_format_decimal_sep || '.';
+		const thousandSeparator = dro_pvvp_params.currency_format_thousand_sep || ',';
+		const position          = dro_pvvp_params.currency_position || 'left';
+		const trimZeros         = dro_pvvp_params.currency_format_trim_zeros === 'yes';
 
 		let formattedPrice = price.toFixed( decimals );
 
@@ -97,8 +97,8 @@
 	 */
 
 	function parsePrice(price) {
-		const decimalSeparator  = wc_cvp_params.currency_format_decimal_sep || '.';
-		const thousandSeparator = wc_cvp_params.currency_format_thousand_sep || ',';
+		const decimalSeparator  = dro_pvvp_params.currency_format_decimal_sep || '.';
+		const thousandSeparator = dro_pvvp_params.currency_format_thousand_sep || ',';
 
 		if ( ! isNaN( price )) {
 			return parseFloat( price );
@@ -193,13 +193,13 @@
 				var $thisbutton = $( this );
 				$.ajax(
 					{
-						url: wc_cvp_params.ajax_url,
+						url: dro_pvvp_params.ajax_url,
 						type: 'POST',
 						data: {
 							action: 'wc_cvp_add_to_cart',
 							parent_id: $( 'input[name="cvp-product-parent-id"]' ).val(),
 							products: itemsToAdd,
-							'cvp_nonce': wc_cvp_params.cvp_nonce
+							'cvp_nonce': dro_pvvp_params.cvp_nonce
 						},
 						beforeSend: function () {
 							$thisbutton.prop( 'disabled', true );
@@ -271,7 +271,7 @@
 
 (function ( $) {
 
-	const showProductGallery = wc_cvp_params.pvv_show_product_gallery;
+	const showProductGallery = dro_pvvp_params.dro_pvvp_show_product_gallery;
 
 	if ( ! showProductGallery) {
 		$( '.woocommerce-product-gallery' ).hide();
