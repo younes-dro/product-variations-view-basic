@@ -21,6 +21,13 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --mode development",
     "build": "cross-env NODE_ENV=production webpack --mode production",
+
+    "dev:settings": "cross-env NODE_ENV=development ENTRY=settings webpack",
+    "build:settings": "cross-env NODE_ENV=production ENTRY=settings webpack",
+    "build:add-variation-images": "cross-env NODE_ENV=production ENTRY=dro-pvvp-add-variation-images webpack",
+    "dev:add-variation-images": "cross-env NODE_ENV=development ENTRY=dro-pvvp-add-variation-images webpack",
+    
+    
     "build:both": "npm run build && npm run build:unminified",
     "build:unminified": "cross-env NODE_ENV=development webpack --mode development --output-filename [name].js"
   },
