@@ -3,13 +3,21 @@ const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    settings:'./src/index.js',
+    'dro-pvvp-add-variation-images': './src/variation-images/dro-pvvp-add-variation-images.ts',
+  },
   output: {
     path: path.resolve(__dirname, 'assets/js/admin'),
-    filename: process.env.NODE_ENV === 'production' ? 'settings.min.js' : 'settings.js',
+    filename: process.env.NODE_ENV === 'production' ? '[name].min.js' : '[name].js',
   },
   module: {
     rules: [
+      {
+        test: /\.ts?$/,
+        exclude: /node_modules/,
+        use: 'ts-loader'
+      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -23,7 +31,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts'],
   },
   mode: process.env.NODE_ENV || 'development',
   devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
@@ -50,6 +58,10 @@ module.exports = {
  * Released under the GPLv2 or later.
  */`,
       raw: true,
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
     }),
   ],
 };

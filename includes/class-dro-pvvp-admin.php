@@ -45,6 +45,7 @@ class DRO_PVVP_Admin {
 	 */
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_dro_pvvp_settings_script' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_custom_media_script_for_variable_products' ) );
 		add_action( 'admin_menu', array( $this, 'add_dro_pvvp_menu' ) );
 		add_action( 'wp_ajax_dro_pvvp_save_settings', array( $this, 'save_dro_pvvp_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
@@ -171,7 +172,43 @@ class DRO_PVVP_Admin {
 		);
 	}
 
+	/**
+	 * Enqueues the custom media script for variable products on the WooCommerce product edit page.
+	 *
+	 * This function checks if the current admin screen is the product edit screen and whether the product type
+	 * is 'variable'. If both conditions are met, it enqueues the WordPress Media Library and a custom JavaScript file.
+	 *
+	 * @return void
+	 */
+	public function enqueue_custom_media_script_for_variable_products() {
+		global $post;
 
+		$screen = get_current_screen();
+
+		if ( 'product' !== $screen->post_type ) {
+			return;
+		}
+
+		$product_type = function_exists( 'wc_get_product' ) ? wc_get_product( $post )->get_type() : '';
+		if ( 'variable' !== $product_type ) {
+			return;
+		}
+
+		wp_enqueue_media();
+
+		$min     = WP_DEBUG ? '' : '.min';
+		$version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
+			? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
+			: '1.0.0';
+
+		wp_enqueue_script(
+			'dro-pvvp-add-variation-images',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js',
+			array( 'jquery' ),
+			$version,
+			true
+		);
+	}
 
 
 	/**
