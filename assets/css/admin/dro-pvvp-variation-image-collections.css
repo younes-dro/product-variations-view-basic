@@ -3,10 +3,10 @@
  * Product Variations View Pro
  *
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 01/26/2025
+ * Date: 01/27/2025
  * Released under the GPLv2.0 or later
  */
-div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-postbox {
+div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox {
   position: relative;
   min-width: 255px;
   border: 1px solid #c3c4c7;
@@ -16,4 +16,77 @@ div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-postbox {
   padding: 0;
   line-height: 1;
 }
-/*# sourceMappingURL=dro-pvvp-variation-image-collections.css.map */
+div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox.closed .dro-pvvp-variation-images-content {
+  display: none;
+}
+div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox-header {
+  border: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox-header button.dro-pvvp-handlediv {
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox-header button.dro-pvvp-handlediv .toggle-indicator {
+  color: #787c82;
+}
+div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox-header button.dro-pvvp-handlediv .toggle-indicator::before {
+  content: "\f140";
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content {
+  border-top: 1px solid #c3c4c7;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container {
+  padding: 5px 10px;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-add-wrapper {
+  display: block;
+  padding: 0 13px 10px 13px;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-add-wrapper .dro-pvvp-variation-images-add-image {
+  background: #2271b1;
+  border-color: #2271b1;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: none;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 2.15384615;
+  min-height: 30px;
+  margin: 0;
+  padding: 0 10px;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  -webkit-appearance: none;
+  border-radius: 3px;
+  white-space: nowrap;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.woo-variation-gallery-wrapper .woo-variation-gallery-postbox.closed .woo-variation-gallery-inside {
+  display: none;
+}
+
+.woo-variation-gallery-wrapper .woo-variation-gallery-postbox.closed .toggle-indicator::before {
+  content: "\f140";
+}

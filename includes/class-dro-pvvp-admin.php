@@ -13,6 +13,8 @@
 
 namespace DRO\PVVP\Includes;
 
+use function DRO\PVVP\dro_pvvp;
+
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
@@ -49,6 +51,7 @@ class DRO_PVVP_Admin {
 		add_action( 'admin_menu', array( $this, 'add_dro_pvvp_menu' ) );
 		add_action( 'wp_ajax_dro_pvvp_save_settings', array( $this, 'save_dro_pvvp_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
+		add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'add_varaition_image_collections' ), 10, 3 );
 	}
 
 	/**
@@ -208,6 +211,14 @@ class DRO_PVVP_Admin {
 			$version,
 			true
 		);
+
+		wp_enqueue_style(
+			'dro-pvvp-variation-image-collections',
+			plugin_dir_url( __DIR__ ) . 'assets/css/admin/dro-pvvp-variation-image-collections' . $min . '.css',
+			array(),
+			$version,
+			'all'
+		);
 	}
 
 
@@ -248,5 +259,63 @@ class DRO_PVVP_Admin {
 			}
 			echo '</div>';
 		}
+	}
+
+	/**
+	 * Outputs the HTML for managing multiple variation images in a WooCommerce product variation.
+	 *
+	 * This function generates a customizable HTML block that allows the admin to
+	 * manage multiple images for a specific variation. The block includes a collapsible
+	 * postbox for better organization of variation image collections.
+	 *
+	 * @param int     $loop           The index of the current variation in the loop.
+	 * @param array   $variation_data Array containing data related to the current variation.
+	 * @param WP_Post $variation      The variation object, which is an instance of WP_Post.
+	 */
+	public function add_varaition_image_collections( $loop, $variation_data, $variation ) {
+		$variation_id     = absint( $variation->ID );
+		// $variation_images = get_post_meta( $variation_id, 'dro_pvvp_variation_images', true );
+		$variation_images = get_post_meta( $variation_id, 'woo_variation_gallery_images', true );
+		?>
+		<div data-dro-pvvp-variation-id="<?php echo esc_attr( $variation_id ); ?>" class="form-row form-row-full dro-pvvp-variation-images-container">
+			<div class="dro-pvvp-variation-images-postbox">
+					<div class="dro-pvvp-variation-images-postbox-header">
+						<h2><?php esc_html_e( 'Variation Image Collections', 'product-variations-view-pro' ); ?></h2>
+						
+						<button type="button" class="dro-pvvp-handlediv" aria-expanded="true">
+						<span class="screen-reader-text"><?php esc_html_e( 'Toggle panel: Variation images', 'product-variations-view-pro' ); ?></span>
+							<span class="toggle-indicator" aria-hidden="true"></span>
+						</button>
+					</div>
+
+					<div class="dro-pvvp-variation-images-content">
+						<div class="dro-pvvp-variation-images-grid-container">
+								<ul class="dro-pvvp-variation-images-grid-images">
+									<?php
+									if ( is_array( $variation_images ) && ! empty( $variation_images ) ) {
+										wc_get_template(
+											'admin/views/html-variation-image-collections.php',
+											array(
+												'variation_images' => $variation_images,
+											),
+											'',
+											dro_pvvp()->plugin_path() . '/includes/'
+										);
+									}
+									?>
+								</ul>
+							</div>
+							<div class="dro-pvvp-variation-images-add-wrapper hide-if-no-js">
+								<a href="#" data-product_variation_loop="<?php echo absint( $loop ); ?>" 
+								data-product_variation_id="<?php echo esc_attr( $variation_id ); ?>" 
+								class="button-primary dro-pvvp-variation-images-add-image">
+								<?php esc_html_e( 'Add Image', 'product-variations-view-pro' ); ?>
+							</a>
+							</div>
+					</div>
+			</div>
+
+		</div>
+		<?php
 	}
 }
