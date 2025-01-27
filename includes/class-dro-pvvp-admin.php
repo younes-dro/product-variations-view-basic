@@ -45,7 +45,7 @@ class DRO_PVVP_Admin {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
+	private function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_dro_pvvp_settings_script' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_custom_media_script_for_variable_products' ) );
 		add_action( 'admin_menu', array( $this, 'add_dro_pvvp_menu' ) );
@@ -207,7 +207,7 @@ class DRO_PVVP_Admin {
 		wp_enqueue_script(
 			'dro-pvvp-add-variation-images',
 			plugin_dir_url( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js',
-			array( 'jquery' ),
+			array( 'jquery','underscore' ),
 			$version,
 			true
 		);
