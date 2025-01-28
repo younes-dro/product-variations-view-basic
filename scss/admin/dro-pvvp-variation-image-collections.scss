@@ -56,6 +56,47 @@ div.dro-pvvp-variation-images-container {
     border-top: 1px solid #c3c4c7;
     .dro-pvvp-variation-images-grid-container{
       padding: 5px 10px;
+      ul.dro-pvvp-variation-images-grid-images{
+        zoom: 1;
+        margin: 0;
+        display: flex;
+        &::before{
+          content: " ";
+          display: table;
+        }
+        &::after{
+          clear: both;
+        }
+        li{
+          float: left;
+          list-style: none;
+          position: relative;
+          cursor: move;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          margin: 3px;
+          background: none;
+          border-radius: 2px;
+          border: 3px solid transparent;
+          img{
+            width: 80px;
+            display: block;
+            height: auto;
+            border: 1px solid #D5D5D5;
+          }
+          .delete{
+            display: none;
+            color: #999;
+            background: #fff;
+            position: absolute;
+            right: -5px;
+            top: -5px;
+            z-index: 1;
+            text-decoration: none;
+            border-radius: 100%;
+          }
+        }
+      }
     }
     .dro-pvvp-variation-images-add-wrapper{
       display: block;

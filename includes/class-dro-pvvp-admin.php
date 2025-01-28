@@ -51,7 +51,9 @@ class DRO_PVVP_Admin {
 		add_action( 'admin_menu', array( $this, 'add_dro_pvvp_menu' ) );
 		add_action( 'wp_ajax_dro_pvvp_save_settings', array( $this, 'save_dro_pvvp_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
-		add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'add_varaition_image_collections' ), 10, 3 );
+		add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'add_variation_image_collections' ), 10, 3 );
+		add_action( 'admin_footer', array( $this, 'print_variation_image_collections_template' ) );
+		add_action( 'woocommerce_save_product_variation', array( $this, 'save_variation_image_collections' ),10, 2 );
 	}
 
 	/**
@@ -272,10 +274,10 @@ class DRO_PVVP_Admin {
 	 * @param array   $variation_data Array containing data related to the current variation.
 	 * @param WP_Post $variation      The variation object, which is an instance of WP_Post.
 	 */
-	public function add_varaition_image_collections( $loop, $variation_data, $variation ) {
+	public function add_variation_image_collections( $loop, $variation_data, $variation ) {
 		$variation_id     = absint( $variation->ID );
+		$variation_images = get_post_meta( $variation_id, 'dro_pvvp_variation_images', true );
 		// $variation_images = get_post_meta( $variation_id, 'dro_pvvp_variation_images', true );
-		$variation_images = get_post_meta( $variation_id, 'woo_variation_gallery_images', true );
 		?>
 		<div data-dro-pvvp-variation-id="<?php echo esc_attr( $variation_id ); ?>" class="form-row form-row-full dro-pvvp-variation-images-container">
 			<div class="dro-pvvp-variation-images-postbox">
@@ -297,6 +299,7 @@ class DRO_PVVP_Admin {
 											'admin/views/html-variation-image-collections.php',
 											array(
 												'variation_images' => $variation_images,
+												'variation_id' => $variation_id
 											),
 											'',
 											dro_pvvp()->plugin_path() . '/includes/'
@@ -306,8 +309,8 @@ class DRO_PVVP_Admin {
 								</ul>
 							</div>
 							<div class="dro-pvvp-variation-images-add-wrapper hide-if-no-js">
-								<a href="#" data-product_variation_loop="<?php echo absint( $loop ); ?>" 
-								data-product_variation_id="<?php echo esc_attr( $variation_id ); ?>" 
+								<a href="#" data-dro-pvvp-variation-loop="<?php echo absint( $loop ); ?>" 
+								data-dro-pvvp-variation-id="<?php echo esc_attr( $variation_id ); ?>" 
 								class="button-primary dro-pvvp-variation-images-add-image">
 								<?php esc_html_e( 'Add Image', 'product-variations-view-pro' ); ?>
 							</a>
@@ -317,5 +320,35 @@ class DRO_PVVP_Admin {
 
 		</div>
 		<?php
+	}
+
+	public function print_variation_image_collections_template(){
+		$screen = get_current_screen();
+		
+		if( $screen && $screen->post_type === 'product' ){
+			ob_start();
+			require_once dro_pvvp()->plugin_path() . '/includes/admin/views/template-js-variation-image-collections.php';
+			$data = ob_get_clean();
+			echo apply_filters( 'dro_pvvp_variation_image_collections_template_js', $data );
+		}
+	}
+	public function save_variation_image_collections( $variation_id, $loop ){
+		error_log(print_r( $_POST, true));
+		
+		error_log( print_r( $_POST['dro_pvvp_variation_image_collections'], true ));
+
+			if ( isset( $_POST['dro_pvvp_variation_image_collections'] ) ) {
+
+				if ( isset( $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] ) ) {
+
+					$gallery_image_ids = array_map( 'absint', $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] );
+					update_post_meta( $variation_id, 'dro_pvvp_variation_images', $gallery_image_ids );
+				} else {
+					delete_post_meta( $variation_id, 'dro_pvvp_variation_images' );
+				}
+			} else {
+				delete_post_meta( $variation_id, 'dro_pvvp_variation_images' );
+			}
+		
 	}
 }

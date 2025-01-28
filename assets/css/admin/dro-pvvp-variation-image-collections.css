@@ -3,7 +3,7 @@
  * Product Variations View Pro
  *
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 01/27/2025
+ * Date: 01/28/2025
  * Released under the GPLv2.0 or later
  */
 div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox {
@@ -56,6 +56,47 @@ div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content {
 }
 div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container {
   padding: 5px 10px;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container ul.dro-pvvp-variation-images-grid-images {
+  zoom: 1;
+  margin: 0;
+  display: flex;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container ul.dro-pvvp-variation-images-grid-images::before {
+  content: " ";
+  display: table;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container ul.dro-pvvp-variation-images-grid-images::after {
+  clear: both;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container ul.dro-pvvp-variation-images-grid-images li {
+  float: left;
+  list-style: none;
+  position: relative;
+  cursor: move;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 3px;
+  background: none;
+  border-radius: 2px;
+  border: 3px solid transparent;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container ul.dro-pvvp-variation-images-grid-images li img {
+  width: 80px;
+  display: block;
+  height: auto;
+  border: 1px solid #D5D5D5;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container ul.dro-pvvp-variation-images-grid-images li .delete {
+  display: none;
+  color: #999;
+  background: #fff;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  z-index: 1;
+  text-decoration: none;
+  border-radius: 100%;
 }
 div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-add-wrapper {
   display: block;
