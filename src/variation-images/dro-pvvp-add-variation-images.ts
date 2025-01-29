@@ -43,8 +43,6 @@ class ProductVariationImage {
   }
 
   public addImage(event: JQuery.ClickEvent): void {
-
-
     const addImageButton = event.currentTarget;
 
     event.preventDefault();
@@ -57,7 +55,7 @@ class ProductVariationImage {
     if (typeof wp !== 'undefined' && wp.media && wp.media?.editor) {
 
       if (frame) {
-        frame?.open();
+        frame.open();
         return;
       }
 
@@ -66,42 +64,43 @@ class ProductVariationImage {
         button: {
           text: 'Add media'
         },
-
+        multiple: true,
         library: {
           type: ['video', 'image']
-
         }
-
       });
 
-      frame?.on('select', () => {
-        var images = frame?.state().get('selection').toJSON();
-        var html = images.map(function (image: Image) {
+      frame.on('select', () => {
+        const images = frame.state().get('selection').toJSON();
+        let html = '';
+        images.forEach((image: Image) => {
           if (image.type === 'image') {
-            var id = image.id, _image$sizes: ImageSizes = image.sizes;
+            const id = image.id;
+            let _image$sizes: ImageSizes = image.sizes;
             _image$sizes = _image$sizes === void 0 ? { full: { url: '' }, thumbnail: { url: '' } } : _image$sizes;
+            const thumbnail = _image$sizes.thumbnail;
+            const full = _image$sizes.full;
+            const url = thumbnail ? thumbnail.url : full.url;
+            const template = wp.template('dro-pvvp-variation-image-collections');
 
-            var thumbnail = _image$sizes.thumbnail, full = _image$sizes.full;
-            var url = thumbnail ? thumbnail.url : full.url;
-            var template = wp.template('dro-pvvp-variation-image-collections');
-            return template({
+            html += template({
               id: id,
               url: url,
               product_variation_id: product_variation_id,
               loop: loop
             });
           }
-        }).join('');
+        });
+
         jQuery(addImageButton).parent().prev().find('.dro-pvvp-variation-images-grid-images').append(html);
         this.collectionsChanged(addImageButton);
-
       });
 
-      frame?.open();
+      frame.open();
     }
   }
 
-  public removeImage(event: JQuery.ClickEvent): void{
+  public removeImage(event: JQuery.ClickEvent): void {
 
     const removeImageIcon = event.currentTarget;
     event.preventDefault();
@@ -109,7 +108,7 @@ class ProductVariationImage {
 
     this.collectionsChanged(removeImageIcon);
     jQuery(removeImageIcon).parent().remove();
-  
+
   }
 
   public collectionsChanged(addImageButton: HTMLElement) {

@@ -2,7 +2,7 @@
  * Settings Script for Product Variations View add-on
  * 
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 29/01/2025 17:53:49
+ * Date: 29/01/2025 18:16:12
  * Released under the GPLv2 or later.
  */
 /******/ (() => { // webpackBootstrap
@@ -56,7 +56,7 @@ class ProductVariationImage {
         var loop = jQuery(addImageButton).data('dro-pvvp-variation-loop');
         if (typeof wp !== 'undefined' && wp.media && ((_a = wp.media) === null || _a === void 0 ? void 0 : _a.editor)) {
             if (frame) {
-                frame === null || frame === void 0 ? void 0 : frame.open();
+                frame.open();
                 return;
             }
             frame = wp.media({
@@ -64,31 +64,35 @@ class ProductVariationImage {
                 button: {
                     text: 'Add media'
                 },
+                multiple: true,
                 library: {
                     type: ['video', 'image']
                 }
             });
-            frame === null || frame === void 0 ? void 0 : frame.on('select', () => {
-                var images = frame === null || frame === void 0 ? void 0 : frame.state().get('selection').toJSON();
-                var html = images.map(function (image) {
+            frame.on('select', () => {
+                const images = frame.state().get('selection').toJSON();
+                let html = '';
+                images.forEach((image) => {
                     if (image.type === 'image') {
-                        var id = image.id, _image$sizes = image.sizes;
+                        const id = image.id;
+                        let _image$sizes = image.sizes;
                         _image$sizes = _image$sizes === void 0 ? { full: { url: '' }, thumbnail: { url: '' } } : _image$sizes;
-                        var thumbnail = _image$sizes.thumbnail, full = _image$sizes.full;
-                        var url = thumbnail ? thumbnail.url : full.url;
-                        var template = wp.template('dro-pvvp-variation-image-collections');
-                        return template({
+                        const thumbnail = _image$sizes.thumbnail;
+                        const full = _image$sizes.full;
+                        const url = thumbnail ? thumbnail.url : full.url;
+                        const template = wp.template('dro-pvvp-variation-image-collections');
+                        html += template({
                             id: id,
                             url: url,
                             product_variation_id: product_variation_id,
                             loop: loop
                         });
                     }
-                }).join('');
+                });
                 jQuery(addImageButton).parent().prev().find('.dro-pvvp-variation-images-grid-images').append(html);
                 this.collectionsChanged(addImageButton);
             });
-            frame === null || frame === void 0 ? void 0 : frame.open();
+            frame.open();
         }
     }
     removeImage(event) {
