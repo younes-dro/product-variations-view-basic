@@ -3,7 +3,7 @@
  * Product Variations View Pro
  *
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 01/28/2025
+ * Date: 01/29/2025
  * Released under the GPLv2.0 or later
  */
 div.dro-pvvp-variation-images-container div.dro-pvvp-variation-images-postbox {
@@ -97,6 +97,9 @@ div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-
   z-index: 1;
   text-decoration: none;
   border-radius: 100%;
+}
+div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-grid-container ul.dro-pvvp-variation-images-grid-images li:hover .delete {
+  display: block;
 }
 div.dro-pvvp-variation-images-container .dro-pvvp-variation-images-content .dro-pvvp-variation-images-add-wrapper {
   display: block;

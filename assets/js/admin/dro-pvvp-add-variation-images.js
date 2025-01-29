@@ -2,7 +2,7 @@
  * Settings Script for Product Variations View add-on
  * 
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 29/01/2025 16:54:32
+ * Date: 29/01/2025 17:53:49
  * Released under the GPLv2 or later.
  */
 /******/ (() => { // webpackBootstrap
@@ -34,7 +34,7 @@ class ProductVariationImage {
         jQuery(document).off('click', '.dro-pvvp-variation-images-add-image');
         jQuery(document).off('click', '.dro-pvvp-variation-images-remove-image');
         jQuery(document).on('click', '.dro-pvvp-variation-images-add-image', (event) => this.addImage(event));
-        // jQuery(document).on('click', '.dro-pvvp-variation-images-remove-image', this.removeImage);
+        jQuery(document).on('click', '.dro-pvvp-variation-images-remove-image', (event) => this.removeImage(event));
         jQuery('.woocommerce_variation').each((index, element) => {
             var optionsWrapper = jQuery(element).find('.options:first');
             var galleryWrapper = jQuery(element).find('.dro-pvvp-variation-images-container');
@@ -90,6 +90,13 @@ class ProductVariationImage {
             });
             frame === null || frame === void 0 ? void 0 : frame.open();
         }
+    }
+    removeImage(event) {
+        const removeImageIcon = event.currentTarget;
+        event.preventDefault();
+        event.stopPropagation();
+        this.collectionsChanged(removeImageIcon);
+        jQuery(removeImageIcon).parent().remove();
     }
     collectionsChanged(addImageButton) {
         jQuery(addImageButton).closest('.woocommerce_variation').addClass('variation-needs-update');

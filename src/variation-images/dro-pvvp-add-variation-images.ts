@@ -27,7 +27,7 @@ class ProductVariationImage {
     jQuery(document).off('click', '.dro-pvvp-variation-images-add-image');
     jQuery(document).off('click', '.dro-pvvp-variation-images-remove-image');
     jQuery(document).on('click', '.dro-pvvp-variation-images-add-image', (event) => this.addImage(event));
-    // jQuery(document).on('click', '.dro-pvvp-variation-images-remove-image', this.removeImage);
+    jQuery(document).on('click', '.dro-pvvp-variation-images-remove-image', (event) => this.removeImage(event));
 
     jQuery('.woocommerce_variation').each((index, element) => {
       var optionsWrapper = jQuery(element).find('.options:first');
@@ -99,6 +99,17 @@ class ProductVariationImage {
 
       frame?.open();
     }
+  }
+
+  public removeImage(event: JQuery.ClickEvent): void{
+
+    const removeImageIcon = event.currentTarget;
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.collectionsChanged(removeImageIcon);
+    jQuery(removeImageIcon).parent().remove();
+  
   }
 
   public collectionsChanged(addImageButton: HTMLElement) {

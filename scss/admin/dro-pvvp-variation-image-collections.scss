@@ -95,6 +95,11 @@ div.dro-pvvp-variation-images-container {
             text-decoration: none;
             border-radius: 100%;
           }
+          &:hover{
+            .delete{
+              display: block;
+            }
+          }
         }
       }
     }
