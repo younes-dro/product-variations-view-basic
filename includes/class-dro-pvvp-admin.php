@@ -53,7 +53,7 @@ class DRO_PVVP_Admin {
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
 		add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'add_variation_image_collections' ), 10, 3 );
 		add_action( 'admin_footer', array( $this, 'print_variation_image_collections_template' ) );
-		add_action( 'woocommerce_save_product_variation', array( $this, 'save_variation_image_collections' ),10, 2 );
+		add_action( 'woocommerce_save_product_variation', array( $this, 'save_variation_image_collections' ), 10, 2 );
 	}
 
 	/**
@@ -209,7 +209,7 @@ class DRO_PVVP_Admin {
 		wp_enqueue_script(
 			'dro-pvvp-add-variation-images',
 			plugin_dir_url( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js',
-			array( 'jquery','underscore' ),
+			array( 'jquery', 'underscore' ),
 			$version,
 			true
 		);
@@ -299,7 +299,7 @@ class DRO_PVVP_Admin {
 											'admin/views/html-variation-image-collections.php',
 											array(
 												'variation_images' => $variation_images,
-												'variation_id' => $variation_id
+												'variation_id' => $variation_id,
 											),
 											'',
 											dro_pvvp()->plugin_path() . '/includes/'
@@ -322,33 +322,48 @@ class DRO_PVVP_Admin {
 		<?php
 	}
 
-	public function print_variation_image_collections_template(){
+	/**
+	 * Outputs the JavaScript template for variation image collections in the WooCommerce admin.
+	 *
+	 * This function checks if the current screen is the WooCommerce product editor. If so,
+	 * it loads and outputs a JavaScript template for handling variation image collections.
+	 *
+	 * @return void
+	 */
+	public function print_variation_image_collections_template() {
 		$screen = get_current_screen();
-		
-		if( $screen && $screen->post_type === 'product' ){
+
+		if ( $screen && $screen->post_type === 'product' ) {
 			ob_start();
 			require_once dro_pvvp()->plugin_path() . '/includes/admin/views/template-js-variation-image-collections.php';
 			$data = ob_get_clean();
 			echo apply_filters( 'dro_pvvp_variation_image_collections_template_js', $data );
 		}
 	}
-	public function save_variation_image_collections( $variation_id, $loop ){
-		error_log(print_r( $_POST, true));
-		
-		error_log( print_r( $_POST['dro_pvvp_variation_image_collections'], true ));
 
-			if ( isset( $_POST['dro_pvvp_variation_image_collections'] ) ) {
+	/**
+	 * Saves or deletes variation image collections for a WooCommerce product variation.
+	 *
+	 * This function handles the saving of image collection metadata for a specific
+	 * WooCommerce product variation. If images are provided in the POST request,
+	 * they are stored as post meta. If no images are provided, the meta entry is removed.
+	 *
+	 * @param int $variation_id The ID of the WooCommerce product variation.
+	 * @param int $loop The index of the variation in the variations list.
+	 */
+	public function save_variation_image_collections( $variation_id, $loop ) {
 
-				if ( isset( $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] ) ) {
+		if ( isset( $_POST['dro_pvvp_variation_image_collections'] ) ) {
 
-					$gallery_image_ids = array_map( 'absint', $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] );
-					update_post_meta( $variation_id, 'dro_pvvp_variation_images', $gallery_image_ids );
-				} else {
-					delete_post_meta( $variation_id, 'dro_pvvp_variation_images' );
-				}
+			if ( isset( $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] ) ) {
+
+				$gallery_image_ids = array_map( 'absint', $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] );
+				update_post_meta( $variation_id, 'dro_pvvp_variation_images', $gallery_image_ids );
 			} else {
 				delete_post_meta( $variation_id, 'dro_pvvp_variation_images' );
 			}
-		
+		} else {
+			delete_post_meta( $variation_id, 'dro_pvvp_variation_images' );
+		}
 	}
 }

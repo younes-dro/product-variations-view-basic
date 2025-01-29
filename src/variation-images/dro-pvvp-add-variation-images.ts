@@ -26,7 +26,7 @@ class ProductVariationImage {
 
     jQuery(document).off('click', '.dro-pvvp-variation-images-add-image');
     jQuery(document).off('click', '.dro-pvvp-variation-images-remove-image');
-    jQuery(document).on('click', '.dro-pvvp-variation-images-add-image', this.addImage);
+    jQuery(document).on('click', '.dro-pvvp-variation-images-add-image', (event) => this.addImage(event));
     // jQuery(document).on('click', '.dro-pvvp-variation-images-remove-image', this.removeImage);
 
     jQuery('.woocommerce_variation').each((index, element) => {
@@ -42,23 +42,24 @@ class ProductVariationImage {
     });
   }
 
-  public addImage(event: Event): void {
+  public addImage(event: JQuery.ClickEvent): void {
 
-    var $this = this;
+
+    const addImageButton = event.currentTarget;
 
     event.preventDefault();
     event.stopPropagation();
 
     var frame: MediaFrame | null = null;
-    var product_variation_id = jQuery(this).data('dro-pvvp-variation-id');
-    var loop = jQuery(this).data('dro-pvvp-variation-loop');
+    var product_variation_id = jQuery(addImageButton).data('dro-pvvp-variation-id');
+    var loop = jQuery(addImageButton).data('dro-pvvp-variation-loop');
 
     if (typeof wp !== 'undefined' && wp.media && wp.media?.editor) {
-  
+
       if (frame) {
         frame?.open();
         return;
-      } 
+      }
 
       frame = wp.media({
         title: 'Select media',
@@ -73,7 +74,7 @@ class ProductVariationImage {
 
       });
 
-      frame?.on('select', function () {
+      frame?.on('select', () => {
         var images = frame?.state().get('selection').toJSON();
         var html = images.map(function (image: Image) {
           if (image.type === 'image') {
@@ -91,19 +92,31 @@ class ProductVariationImage {
             });
           }
         }).join('');
-        jQuery($this).parent().prev().find('.dro-pvvp-variation-images-grid-images').append(html);
+        jQuery(addImageButton).parent().prev().find('.dro-pvvp-variation-images-grid-images').append(html);
+        this.collectionsChanged(addImageButton);
 
       });
 
       frame?.open();
     }
   }
+
+  public collectionsChanged(addImageButton: HTMLElement) {
+
+    jQuery(addImageButton).closest('.woocommerce_variation').addClass('variation-needs-update');
+    jQuery('button.cancel-variation-changes, button.save-variation-changes').removeAttr('disabled');
+    jQuery('#variable_product_options').trigger('woocommerce_variations_input_changed');
+
+    // const event = document.createEvent('Event');
+    // event.initEvent('woo_variation_gallery_admin_variation_changed', true, true); 
+    // document.dispatchEvent(event);
+  }
 }
 (function ($) {
   $(function () {
     const variationImageManager = ProductVariationImage.getInstance();
     if (variationImageManager.checkMediaAvailability()) {
-      // variationImageManager.init();
+      variationImageManager.init();
       $('#woocommerce-product-data').on('woocommerce_variations_loaded', function () {
         variationImageManager.init();
       });

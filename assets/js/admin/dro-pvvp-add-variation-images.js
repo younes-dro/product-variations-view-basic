@@ -2,7 +2,7 @@
  * Settings Script for Product Variations View add-on
  * 
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 28/01/2025 18:07:31
+ * Date: 29/01/2025 16:54:32
  * Released under the GPLv2 or later.
  */
 /******/ (() => { // webpackBootstrap
@@ -33,8 +33,8 @@ class ProductVariationImage {
     init() {
         jQuery(document).off('click', '.dro-pvvp-variation-images-add-image');
         jQuery(document).off('click', '.dro-pvvp-variation-images-remove-image');
-        jQuery(document).on('click', '.dro-pvvp-variation-images-add-image', this.addImage);
-        // $(document).on('click', '.dro-pvvp-variation-images-remove-image', this.removeImage);
+        jQuery(document).on('click', '.dro-pvvp-variation-images-add-image', (event) => this.addImage(event));
+        // jQuery(document).on('click', '.dro-pvvp-variation-images-remove-image', this.removeImage);
         jQuery('.woocommerce_variation').each((index, element) => {
             var optionsWrapper = jQuery(element).find('.options:first');
             var galleryWrapper = jQuery(element).find('.dro-pvvp-variation-images-container');
@@ -48,12 +48,12 @@ class ProductVariationImage {
     }
     addImage(event) {
         var _a;
-        var $this = this;
+        const addImageButton = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
         var frame = null;
-        var product_variation_id = jQuery(this).data('dro-pvvp-variation-id');
-        var loop = jQuery(this).data('dro-pvvp-variation-loop');
+        var product_variation_id = jQuery(addImageButton).data('dro-pvvp-variation-id');
+        var loop = jQuery(addImageButton).data('dro-pvvp-variation-loop');
         if (typeof wp !== 'undefined' && wp.media && ((_a = wp.media) === null || _a === void 0 ? void 0 : _a.editor)) {
             if (frame) {
                 frame === null || frame === void 0 ? void 0 : frame.open();
@@ -68,7 +68,7 @@ class ProductVariationImage {
                     type: ['video', 'image']
                 }
             });
-            frame === null || frame === void 0 ? void 0 : frame.on('select', function () {
+            frame === null || frame === void 0 ? void 0 : frame.on('select', () => {
                 var images = frame === null || frame === void 0 ? void 0 : frame.state().get('selection').toJSON();
                 var html = images.map(function (image) {
                     if (image.type === 'image') {
@@ -85,10 +85,19 @@ class ProductVariationImage {
                         });
                     }
                 }).join('');
-                jQuery($this).parent().prev().find('.dro-pvvp-variation-images-grid-images').append(html);
+                jQuery(addImageButton).parent().prev().find('.dro-pvvp-variation-images-grid-images').append(html);
+                this.collectionsChanged(addImageButton);
             });
             frame === null || frame === void 0 ? void 0 : frame.open();
         }
+    }
+    collectionsChanged(addImageButton) {
+        jQuery(addImageButton).closest('.woocommerce_variation').addClass('variation-needs-update');
+        jQuery('button.cancel-variation-changes, button.save-variation-changes').removeAttr('disabled');
+        jQuery('#variable_product_options').trigger('woocommerce_variations_input_changed');
+        // const event = document.createEvent('Event');
+        // event.initEvent('woo_variation_gallery_admin_variation_changed', true, true); 
+        // document.dispatchEvent(event);
     }
 }
 ProductVariationImage.instance = null;
@@ -96,7 +105,7 @@ ProductVariationImage.instance = null;
     $(function () {
         const variationImageManager = ProductVariationImage.getInstance();
         if (variationImageManager.checkMediaAvailability()) {
-            // variationImageManager.init();
+            variationImageManager.init();
             $('#woocommerce-product-data').on('woocommerce_variations_loaded', function () {
                 variationImageManager.init();
             });
