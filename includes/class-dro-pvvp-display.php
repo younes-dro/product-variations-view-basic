@@ -43,7 +43,7 @@ class DRO_PVVP_Display {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
+	private function __construct() {
 		add_action( 'init', array( $this, 'remove_woocommerce_variable_add_to_cart' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
 		add_action( 'wp_ajax_wc_cvp_add_to_cart', array( $this, 'dro_pvvp_add_bulk_variation' ) );

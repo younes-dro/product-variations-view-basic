@@ -1,3 +1,11 @@
+
+/*!
+ * Product Variations View Pro
+ *
+ * Author: Younes DRO (younesdro@gmail.com)
+ * Date: 01/26/2025
+ * Released under the GPLv2.0 or later
+ */
 body.single-product .woocommerce-product-gallery__image img {
   transition: opacity 0.3s ease-in-out;
 }
@@ -260,5 +268,3 @@ body.single-product form.cart.dro-variable-products-form a.cvp-reset:focus {
 body.single-product form.cart.dro-variable-products-form a.cvp-reset {
   margin-top: 10px;
 }
-
-/*# sourceMappingURL=cvp-frontend.css.map */
