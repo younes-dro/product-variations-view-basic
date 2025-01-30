@@ -46,6 +46,7 @@ class DRO_PVVP_Admin {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
+		add_action( 'init', array($this, 'register_dro_pvvp_admin_scripts'));
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_dro_pvvp_settings_script' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_custom_media_script_for_variable_products' ) );
 		add_action( 'admin_menu', array( $this, 'add_dro_pvvp_menu' ) );
@@ -54,6 +55,11 @@ class DRO_PVVP_Admin {
 		add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'add_variation_image_collections' ), 10, 3 );
 		add_action( 'admin_footer', array( $this, 'print_variation_image_collections_template' ) );
 		add_action( 'woocommerce_save_product_variation', array( $this, 'save_variation_image_collections' ), 10, 2 );
+	}
+
+	public function register_dro_pvvp_admin_scripts(){
+		
+
 	}
 
 	/**
@@ -128,7 +134,7 @@ class DRO_PVVP_Admin {
 	 * @since 1.0.0
 	 */
 	public function render_dro_pvvp_settings() {
-		wp_enqueue_script( 'product-variations-view-settings' );
+		wp_enqueue_script( 'dro-pvvp-settings-script' );
 		echo '<div id="pvv-app"></div>';
 	}
 
@@ -145,7 +151,7 @@ class DRO_PVVP_Admin {
 		: '1.0.0';
 
 		wp_register_script(
-			'product-variations-view-settings',
+			'dro-pvvp-settings-script',
 			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js',
 			array( 'wp-element' ),
 			$settings_version,
@@ -153,7 +159,7 @@ class DRO_PVVP_Admin {
 		);
 
 		wp_register_style(
-			'product-variations-view-settings',
+			'dro-pvvp-settings-script',
 			plugin_dir_url( __DIR__ ) . 'assets/css/admin/settings.css',
 			array(),
 			$settings_version
@@ -167,12 +173,12 @@ class DRO_PVVP_Admin {
 		);
 
 		wp_localize_script(
-			'product-variations-view-settings',
+			'dro-pvvp-settings-script',
 			'dro_pvvp_ajax_params',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'nonce'    => wp_create_nonce( 'dro_pvvp_settings_nonce' ),
-				'settings' => $current_settings, // Pass settings to React.
+				'settings' => $current_settings,
 			)
 		);
 	}
