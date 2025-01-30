@@ -46,9 +46,9 @@ class DRO_PVVP_Admin {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
-		add_action( 'init', array($this, 'register_dro_pvvp_admin_scripts'));
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_dro_pvvp_settings_script' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_custom_media_script_for_variable_products' ) );
+		add_action( 'init', array( $this, 'register_dro_pvvp_variation_images_script' ) );
+		add_action( 'init', array( $this, 'register_dro_pvvp_settings_script' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_dro_pvvp_variation_images_script' ) );
 		add_action( 'admin_menu', array( $this, 'add_dro_pvvp_menu' ) );
 		add_action( 'wp_ajax_dro_pvvp_save_settings', array( $this, 'save_dro_pvvp_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
@@ -56,10 +56,84 @@ class DRO_PVVP_Admin {
 		add_action( 'admin_footer', array( $this, 'print_variation_image_collections_template' ) );
 		add_action( 'woocommerce_save_product_variation', array( $this, 'save_variation_image_collections' ), 10, 2 );
 	}
+	/**
+	 * Registers the scripts and styles for adding variation images in the admin area.
+	 *
+	 * This function registers the necessary JavaScript and CSS files used for managing
+	 * variation images within the WordPress admin interface. It determines whether to use
+	 * minified versions based on the WP_DEBUG constant and includes dependencies like jQuery
+	 * and underscore.js.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function register_dro_pvvp_variation_images_script() {
+		$min     = WP_DEBUG ? '' : '.min';
+		$version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
+			? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
+			: '1.0.0';
 
-	public function register_dro_pvvp_admin_scripts(){
-		
+		wp_register_script(
+			'dro-pvvp-add-variation-images',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js',
+			array( 'jquery', 'underscore' ),
+			$version,
+			true
+		);
 
+		wp_register_style(
+			'dro-pvvp-variation-image-collections',
+			plugin_dir_url( __DIR__ ) . 'assets/css/admin/dro-pvvp-variation-image-collections' . $min . '.css',
+			array(),
+			$version,
+			'all'
+		);
+	}
+
+	/**
+	 * Registers the settings script and passes settings to React.
+	 *
+	 * @since 1.0.0
+	 */
+	public function register_dro_pvvp_settings_script() {
+		$min = WP_DEBUG ? '' : '.min';
+
+		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
+		? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
+		: '1.0.0';
+
+		wp_register_script(
+			'dro-pvvp-settings-script',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js',
+			array( 'wp-element' ),
+			$settings_version,
+			true
+		);
+
+		wp_register_style(
+			'dro-pvvp-settings-script',
+			plugin_dir_url( __DIR__ ) . 'assets/css/admin/settings.css',
+			array(),
+			$settings_version
+		);
+
+		$current_settings = array(
+			'is_enabled'           => (bool) filter_var( get_option( 'dro_pvvp_is_enabled', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_price'           => (bool) filter_var( get_option( 'dro_pvvp_show_range_price', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_description'     => (bool) filter_var( get_option( 'dro_pvvp_show_main_product_short_description', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_product_gallery' => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
+		);
+
+		wp_localize_script(
+			'dro-pvvp-settings-script',
+			'dro_pvvp_ajax_params',
+			array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'dro_pvvp_settings_nonce' ),
+				'settings' => $current_settings,
+			)
+		);
 	}
 
 	/**
@@ -138,65 +212,23 @@ class DRO_PVVP_Admin {
 		echo '<div id="pvv-app"></div>';
 	}
 
-	/**
-	 * Registers the settings script and passes settings to React.
-	 *
-	 * @since 1.0.0
-	 */
-	public function register_dro_pvvp_settings_script() {
-		$min = WP_DEBUG ? '' : '.min';
-
-		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
-		? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
-		: '1.0.0';
-
-		wp_register_script(
-			'dro-pvvp-settings-script',
-			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js',
-			array( 'wp-element' ),
-			$settings_version,
-			true
-		);
-
-		wp_register_style(
-			'dro-pvvp-settings-script',
-			plugin_dir_url( __DIR__ ) . 'assets/css/admin/settings.css',
-			array(),
-			$settings_version
-		);
-
-		$current_settings = array(
-			'is_enabled'           => (bool) filter_var( get_option( 'dro_pvvp_is_enabled', true ), FILTER_VALIDATE_BOOLEAN ),
-			'show_price'           => (bool) filter_var( get_option( 'dro_pvvp_show_range_price', true ), FILTER_VALIDATE_BOOLEAN ),
-			'show_description'     => (bool) filter_var( get_option( 'dro_pvvp_show_main_product_short_description', true ), FILTER_VALIDATE_BOOLEAN ),
-			'show_product_gallery' => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
-		);
-
-		wp_localize_script(
-			'dro-pvvp-settings-script',
-			'dro_pvvp_ajax_params',
-			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'dro_pvvp_settings_nonce' ),
-				'settings' => $current_settings,
-			)
-		);
-	}
 
 	/**
-	 * Enqueues the custom media script for variable products on the WooCommerce product edit page.
+	 * Enqueues the variation images collections script on the WooCommerce product edit page.
 	 *
 	 * This function checks if the current admin screen is the product edit screen and whether the product type
-	 * is 'variable'. If both conditions are met, it enqueues the WordPress Media Library and a custom JavaScript file.
+	 * is 'variable'. If both conditions are met, it enqueues the WordPress Media Library and the registered JavaScript file.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
-	public function enqueue_custom_media_script_for_variable_products() {
+	public function enqueue_dro_pvvp_variation_images_script() {
 		global $post;
 
 		$screen = get_current_screen();
 
-		if ( 'product' !== $screen->post_type ) {
+		if ( $screen && 'product' !== $screen->post_type ) {
 			return;
 		}
 
@@ -206,27 +238,8 @@ class DRO_PVVP_Admin {
 		}
 
 		wp_enqueue_media();
-
-		$min     = WP_DEBUG ? '' : '.min';
-		$version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
-			? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
-			: '1.0.0';
-
-		wp_enqueue_script(
-			'dro-pvvp-add-variation-images',
-			plugin_dir_url( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js',
-			array( 'jquery', 'underscore' ),
-			$version,
-			true
-		);
-
-		wp_enqueue_style(
-			'dro-pvvp-variation-image-collections',
-			plugin_dir_url( __DIR__ ) . 'assets/css/admin/dro-pvvp-variation-image-collections' . $min . '.css',
-			array(),
-			$version,
-			'all'
-		);
+		wp_enqueue_script( 'dro-pvvp-add-variation-images' );
+		wp_enqueue_style( 'dro-pvvp-variation-image-collections' );
 	}
 
 
