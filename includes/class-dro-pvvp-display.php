@@ -50,7 +50,37 @@ class DRO_PVVP_Display {
 		add_action( 'wp_ajax_nopriv_wc_cvp_add_to_cart', array( $this, 'dro_pvvp_add_bulk_variation' ) );
 		add_filter( 'woocommerce_get_price_html', array( $this, 'remove_variable_price_range_on_product_page' ), 10, 2 );
 		add_action( 'wp', array( $this, 'remove_short_description_from_product_page' ) );
+		add_filter( 'wc_get_template', array( $this, 'variation_image_collections' ), 30, 2 );
+		// add_filter( 'wc_get_template_part', array( $this, 'custom_variable_product_template' ), 30, 3 );
+		
 	}
+	
+
+	public function variation_image_collections( $template, $template_name ) {
+		$product = wc_get_product();
+		if($product && $product->get_type() != 'variable'){
+			return $template;
+
+		}
+		$current_template = $template;
+
+		if ( apply_filters( 'variation_image_collections', false ) ) {
+			return $current_template;
+		}
+
+		if ( $template_name == 'single-product/product-image.php' ) {
+			$template = untrailingslashit( plugin_dir_path( DRO_PVVP_FILE ) . 'templates' ) . '/'.$template_name;
+
+		}
+
+		if ( $template_name == 'single-product/product-thumbnails.php' ) {
+			error_log( print_r('single-product/product-thumbnails.php', true));
+			// $template = untrailingslashit( plugin_dir_path( DRO_PVVP_FILE ) . 'templates' ) . '/'.$template_name;
+		}
+		return $template;
+
+	}
+
 
 	/**
 	 * Gets the DRO_PVVP_Disaply instance.

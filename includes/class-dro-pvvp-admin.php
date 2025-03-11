@@ -232,7 +232,9 @@ class DRO_PVVP_Admin {
 			return;
 		}
 
-		$product_type = function_exists( 'wc_get_product' ) ? wc_get_product( $post )->get_type() : '';
+		$product = function_exists('wc_get_product') ? wc_get_product($post) : false;
+		$product_type = ($product instanceof \WC_Product) ? $product->get_type() : '';
+		
 		if ( 'variable' !== $product_type ) {
 			return;
 		}

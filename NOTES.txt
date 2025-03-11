@@ -1,8 +1,0 @@
-1- Video demo : use openAI to create a video with example  : a family of Father, mother and 2 girls buying 
-Tshirt football ( Size, color )
-
-2- Settings: 
-    2-1 Option to display the Carousel in full with ( remove the Main product container)
-
-
-3- Change the plugin name using OpenAI ( Ex : product-variations-viex-pro )

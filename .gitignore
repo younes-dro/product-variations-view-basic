@@ -1,7 +1,10 @@
 # Plugin zip file
 product-variations-view-pro.zip
+NOTES.txt
 # Node.js dependencies
 node_modules/
+
+vendor/
 
 # Temporary development files
 .vscode/
