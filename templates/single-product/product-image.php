@@ -15,6 +15,7 @@
  * @version 9.0.0
  */
 
+ use DRO\PVVP\Includes\DRO_PVVP_Variation_Collections;
 defined( 'ABSPATH' ) || exit;
 
 // Note: `wc_get_gallery_image_html` was added in WC 3.3.2 and did not exist prior. This check protects against theme overrides being used on older versions of WC.
@@ -23,10 +24,14 @@ if ( ! function_exists( 'wc_get_gallery_image_html' ) ) {
 }
 
 global $product;
-$post_thumbnail_id = $product->get_image_id();
-$variation_images = get_post_meta( 26, 'dro_pvvp_variation_images', true );
+$variation_image_collections = DRO_PVVP_Variation_Collections::get_instance()
+	->set_product( $product )
+	->get_variation_image_collections();
 
-// echo '<pre>';
-// var_dump( $variation_images);
-// echo '</pre>';
-// var_dump( $product->get_id());
+var_dump( $variation_image_collections );
+?>
+<div class="dro-pvvp-gallery" style="background: #ccc;">
+	<div class="dro-pvvp-thumbs">Thumbs</div>
+	<div class="dro-pvvp-main-image">MainImage</div>
+
+</div>

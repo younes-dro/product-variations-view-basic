@@ -3,7 +3,7 @@
  * Plugin Name: Product Variations View Pro
  * Plugin URI: https://github.com/younes-dro/product-variations-view-pro
  * Description: Product Variation View Pro enhances WooCommerce variable products by displaying variations in an intuitive, carousel-style interface. It allows customers to add multiple product variations to the cart in a single action, streamlining the shopping experience.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Younes DRO
  * Author URI: https://github.com/younes-dro
  * Text Domain: product-variations-view-pro
