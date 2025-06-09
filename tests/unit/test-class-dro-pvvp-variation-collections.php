@@ -166,4 +166,113 @@ class DRO_PVVP_Variation_Collections_Test extends WP_UnitTestCase {
 			'get_product should return null when no product is set.'
 		);
 	}
+
+	/**
+	 * Test the get_variation_collections method.
+	 *
+	 * Ensures that:
+	 * - Returns empty array when product is not variable type
+	 * - Returns empty array when no variations available
+	 * - Returns variations array when product has available variations
+	 */
+	public function test_get_variation_collections() {
+		if ( ! class_exists( 'WC_Product' ) ) {
+			eval(
+				'class WC_Product {
+                public function is_type( $type ) {
+                    return $type === "variable";
+                }
+                public function get_available_variations() {
+                    return array();
+                }
+            }'
+			);
+		}
+
+		$reflection = new ReflectionClass( $this->variation_collections );
+		$method     = $reflection->getMethod( 'get_variation_collections' );
+		$method->setAccessible( true );
+
+		// Test 1: Non-variable product should return empty array
+		$non_variable_product = $this->createMock( WC_Product::class );
+		$non_variable_product->method( 'is_type' )
+		->with( 'variable' )
+		->willReturn( false );
+
+		$result = $method->invoke( $this->variation_collections, $non_variable_product );
+		$this->assertIsArray( $result, 'Should return array for non-variable product' );
+		$this->assertEmpty( $result, 'Should return empty array for non-variable product' );
+
+		// Test 2: Variable product with no variations should return empty array
+		$empty_variable_product = $this->createMock( WC_Product::class );
+		$empty_variable_product->method( 'is_type' )
+		->with( 'variable' )
+		->willReturn( true );
+		$empty_variable_product->method( 'get_available_variations' )
+		->willReturn( array() );
+
+		$result = $method->invoke( $this->variation_collections, $empty_variable_product );
+		$this->assertIsArray( $result, 'Should return array for variable product with no variations' );
+		$this->assertEmpty( $result, 'Should return empty array when no variations available' );
+
+		// Test 3: Variable product with null variations should return empty array
+		$null_variations_product = $this->createMock( WC_Product::class );
+		$null_variations_product->method( 'is_type' )
+		->with( 'variable' )
+		->willReturn( true );
+		$null_variations_product->method( 'get_available_variations' )
+		->willReturn( null );
+
+		$result = $method->invoke( $this->variation_collections, $null_variations_product );
+		$this->assertIsArray( $result, 'Should return array for product with null variations' );
+		$this->assertEmpty( $result, 'Should return empty array when variations is null' );
+
+		// Test 4: Variable product with available variations should return variations array
+		$expected_variations = array(
+			array(
+				'variation_id' => 123,
+				'image'        => array(
+					'url' => 'http://example.com/image1.jpg',
+					'alt' => 'Example Image 1',
+				),
+				'attributes'   => array(
+					'attribute_color' => 'red',
+					'attribute_size'  => 'large',
+				),
+			),
+			array(
+				'variation_id' => 124,
+				'image'        => array(
+					'url' => 'http://example.com/image2.jpg',
+					'alt' => 'Example Image 2',
+				),
+				'attributes'   => array(
+					'attribute_color' => 'blue',
+					'attribute_size'  => 'medium',
+				),
+			),
+		);
+
+		$variable_product_with_variations = $this->createMock( WC_Product::class );
+		$variable_product_with_variations->method( 'is_type' )
+		->with( 'variable' )
+		->willReturn( true );
+		$variable_product_with_variations->method( 'get_available_variations' )
+		->willReturn( $expected_variations );
+
+		$result = $method->invoke( $this->variation_collections, $variable_product_with_variations );
+		$this->assertIsArray( $result, 'Should return array for variable product with variations' );
+		$this->assertNotEmpty( $result, 'Should return non-empty array when variations available' );
+		$this->assertEquals( $expected_variations, $result, 'Should return the exact variations array' );
+		$this->assertCount( 2, $result, 'Should return correct number of variations' );
+
+		// Test 5: Verify specific variation data structure
+		$this->assertArrayHasKey( 0, $result, 'First variation should exist' );
+		$this->assertArrayHasKey( 'variation_id', $result[0], 'First variation should have variation_id' );
+		$this->assertEquals( 123, $result[0]['variation_id'], 'First variation ID should be 123' );
+
+		$this->assertArrayHasKey( 1, $result, 'Second variation should exist' );
+		$this->assertArrayHasKey( 'variation_id', $result[1], 'Second variation should have variation_id' );
+		$this->assertEquals( 124, $result[1]['variation_id'], 'Second variation ID should be 124' );
+	}
 }
