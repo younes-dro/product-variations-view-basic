@@ -1,14 +1,14 @@
 // declare var wp: any;
 // import* as  $ from 'jquery';
 
-class ProductVariationImage {
-  private static instance: ProductVariationImage | null = null;
+class DROPVVP_AddVariationImages {
+  private static instance: DROPVVP_AddVariationImages | null = null;
 
   private constructor() { }
 
-  public static getInstance(): ProductVariationImage {
+  public static getInstance(): DROPVVP_AddVariationImages {
     if (this.instance == null) {
-      this.instance = new ProductVariationImage();
+      this.instance = new DROPVVP_AddVariationImages();
     }
     return this.instance;
   }
@@ -124,7 +124,7 @@ class ProductVariationImage {
 }
 (function ($) {
   $(function () {
-    const variationImageManager = ProductVariationImage.getInstance();
+    const variationImageManager = DROPVVP_AddVariationImages.getInstance();
     if (variationImageManager.checkMediaAvailability()) {
       variationImageManager.init();
       $('#woocommerce-product-data').on('woocommerce_variations_loaded', function () {

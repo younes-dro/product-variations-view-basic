@@ -1,25 +1,20 @@
-
 @import "variables/variables.scss";
 
+body.single-product {
+  .woocommerce-product-gallery__image img {
+    transition: opacity 0.3s ease-in-out;
+  }
 
-body.single-product{
-    .woocommerce-product-gallery__image img {
-        transition: opacity 0.3s ease-in-out;
-    }
-    
-    
-
-        form.cart.dro-variable-products-form{
-            box-shadow: 0px 0px 4px #bebebe;
-            padding: 10px 0px;
-            margin-top: 10px;
-            display: block;
-            width: 100%;
-            margin: 0 auto;
-            // Import Carousel Styles 
-            @import "media/carousel.scss";
-            // Add To Cart , Total, Reset link
-            @import "add-to-cart/add-to-cart";
-        }
-    
+  form.cart.dro-variable-products-form {
+    box-shadow: 0px 0px 4px #bebebe;
+    padding: 10px 0px;
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    // Import Carousel Styles
+    @import "media/carousel.scss";
+    // Add To Cart , Total, Reset link
+    @import "add-to-cart/add-to-cart";
+  }
 }

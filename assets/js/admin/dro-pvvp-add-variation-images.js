@@ -2,7 +2,7 @@
  * Settings Script for Product Variations View add-on
  * 
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 29/01/2025 18:16:12
+ * Date: 02/04/2025 18:28:09
  * Released under the GPLv2 or later.
  */
 /******/ (() => { // webpackBootstrap
@@ -13,11 +13,11 @@
 
 // declare var wp: any;
 // import* as  $ from 'jquery';
-class ProductVariationImage {
+class DROPVVP_AddVariationImages {
     constructor() { }
     static getInstance() {
         if (this.instance == null) {
-            this.instance = new ProductVariationImage();
+            this.instance = new DROPVVP_AddVariationImages();
         }
         return this.instance;
     }
@@ -111,10 +111,10 @@ class ProductVariationImage {
         // document.dispatchEvent(event);
     }
 }
-ProductVariationImage.instance = null;
+DROPVVP_AddVariationImages.instance = null;
 (function ($) {
     $(function () {
-        const variationImageManager = ProductVariationImage.getInstance();
+        const variationImageManager = DROPVVP_AddVariationImages.getInstance();
         if (variationImageManager.checkMediaAvailability()) {
             variationImageManager.init();
             $('#woocommerce-product-data').on('woocommerce_variations_loaded', function () {

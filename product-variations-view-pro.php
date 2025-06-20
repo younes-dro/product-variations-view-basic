@@ -79,6 +79,7 @@ function register_autoloader() {
 			if ( strncmp( __NAMESPACE__ . '\\', $class_name, strlen( __NAMESPACE__ ) + 1 ) !== 0 ) {
 				return;
 			}
+			error_log($class_name);
 			$relative_class_name = substr( $class_name, $len );
 			$class               = strtolower( str_replace( '_', '-', $relative_class_name ) );
 			$file_class          = $base_dir . 'class-' . $class . '.php';

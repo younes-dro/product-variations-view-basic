@@ -31,7 +31,7 @@ class DRO_PVVP {
 	 *
 	 * @var DRO_PVVP|null
 	 */
-	protected static $instance;
+	private static ?self $instance = null;
 
 	/**
 	 * Plugin Version.
@@ -99,11 +99,10 @@ class DRO_PVVP {
 	 * @param DRO_PVVP_Dependencies $dependencies The dependencies required for the class to function.
 	 * @return DRO_PVVP instance
 	 */
-	public static function start( DRO_PVVP_Dependencies $dependencies ): DRO_PVVP {
+	public static function start( DRO_PVVP_Dependencies $dependencies ): self {
 
-		self::$instance ??= new self( $dependencies );
+		return  self::$instance ??= new self( $dependencies );
 
-		return self::$instance;
 	}
 
 	/**
