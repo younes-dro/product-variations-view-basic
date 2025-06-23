@@ -16,29 +16,29 @@ class DRO_PVVP_Gallery_Builder {
 	 *
 	 * @var array
 	 */
-	private array $config = [
-		'layout'          => 'default', // default, sidebar, bottom, grid
-		'thumb_position'  => 'bottom',  // bottom, left, right, top
-		'thumb_size'      => 'thumbnail',
-		'main_size'       => 'large',
-		'slider_enabled'  => true,
-		'lightbox_enabled'=> false,
-		'lazy_loading'    => true,
-		'css_classes'     => [],
-		'data_attributes' => []
-	];
+	private array $config = array(
+		'layout'           => 'default', // default, sidebar, bottom, grid
+		'thumb_position'   => 'bottom',  // bottom, left, right, top
+		'thumb_size'       => 'thumbnail',
+		'main_size'        => 'large',
+		'slider_enabled'   => true,
+		'lightbox_enabled' => false,
+		'lazy_loading'     => true,
+		'css_classes'      => array(),
+		'data_attributes'  => array(),
+	);
 
 	/**
 	 * Gallery data
 	 *
 	 * @var array
 	 */
-	private array $data = [
+	private array $data = array(
 		'variation_id' => 0,
-		'main_image'  => [],
-		'thumbnails'   => [],
-		'is_active'    => false
-	];
+		'main_image'   => array(),
+		'thumbnails'   => array(),
+		'is_active'    => false,
+	);
 
 	/**
 	 * Set gallery layout
@@ -129,13 +129,26 @@ class DRO_PVVP_Gallery_Builder {
 	}
 
 	/**
-	 * Set main images
+	 * Set main image - handles both single image and array of images
 	 *
-	 * @param array $images Main images array
+	 * @param array|null $images Main images array or single image
 	 * @return self
 	 */
-	public function set_main_image( array $images ): self {
-		$this->data['main_image'] = $images;
+	public function set_main_image( ?array $images ): self {
+		if ( is_null( $images ) ) {
+			$this->data['main_image'] = array();
+			return $this;
+		}
+
+		// Handle single image vs array of images
+		if ( isset( $images['id'] ) || isset( $images['url'] ) ) {
+			// Single image format
+			$this->data['main_image'] = array( $images );
+		} else {
+			// Array of images
+			$this->data['main_image'] = $images;
+		}
+
 		return $this;
 	}
 
@@ -180,7 +193,7 @@ class DRO_PVVP_Gallery_Builder {
 	 * @return self
 	 */
 	public function add_data_attribute( string $key, string $value ): self {
-		$this->config['data_attributes'][$key] = $value;
+		$this->config['data_attributes'][ $key ] = $value;
 		return $this;
 	}
 
@@ -190,7 +203,6 @@ class DRO_PVVP_Gallery_Builder {
 	 * @return string Gallery HTML
 	 */
 	public function build(): string {
-	
 		if ( empty( $this->data['main_image'] ) && empty( $this->data['thumbnails'] ) ) {
 			return '';
 		}
@@ -217,7 +229,7 @@ class DRO_PVVP_Gallery_Builder {
 		$main_image_html = $this->build_main_image_container();
 		$thumbnails_html = $this->build_thumbnails_container();
 
-		$css_classes = $this->get_css_classes( 'dro-pvvp-gallery-default' );
+		$css_classes     = $this->get_css_classes( 'dro-pvvp-gallery-default' );
 		$data_attributes = $this->get_data_attributes();
 
 		return sprintf(
@@ -241,11 +253,11 @@ class DRO_PVVP_Gallery_Builder {
 		$main_image_html = $this->build_main_image_container();
 		$thumbnails_html = $this->build_thumbnails_container();
 
-		$css_classes = $this->get_css_classes( 'dro-pvvp-gallery-sidebar' );
+		$css_classes     = $this->get_css_classes( 'dro-pvvp-gallery-sidebar' );
 		$data_attributes = $this->get_data_attributes();
 
 		$thumb_position = $this->config['thumb_position'];
-		
+
 		if ( $thumb_position === 'left' ) {
 			$content = sprintf(
 				'<div class="dro-pvvp-thumbnails dro-pvvp-thumbnails-left">%s</div>
@@ -285,7 +297,7 @@ class DRO_PVVP_Gallery_Builder {
 	 * @return string HTML
 	 */
 	private function build_grid_layout(): string {
-		$all_images = array_merge( $this->data['main_image'], $this->data['thumbnails'] );
+		$all_images  = array_merge( $this->data['main_image'], $this->data['thumbnails'] );
 		$images_html = '';
 
 		foreach ( $all_images as $index => $image ) {
@@ -296,7 +308,7 @@ class DRO_PVVP_Gallery_Builder {
 			);
 		}
 
-		$css_classes = $this->get_css_classes( 'dro-pvvp-gallery-grid' );
+		$css_classes     = $this->get_css_classes( 'dro-pvvp-gallery-grid' );
 		$data_attributes = $this->get_data_attributes();
 
 		return sprintf(
@@ -364,28 +376,33 @@ class DRO_PVVP_Gallery_Builder {
 	 * Process image for output
 	 *
 	 * @param array|string $image Image data
-	 * @param string $size Image size
+	 * @param string       $size Image size
 	 * @return string Processed image HTML
 	 */
 	private function process_image( $image, string $size ): string {
 		// Handle different image formats
 		if ( is_array( $image ) ) {
-			$image_id = $image['id'] ?? 0;
+			$image_id  = $image['id'] ?? 0;
 			$image_url = $image['url'] ?? '';
 			$image_alt = $image['alt'] ?? '';
 		} else {
 			$image_url = $image;
-			$image_id = attachment_url_to_postid( $image_url );
+			$image_id  = attachment_url_to_postid( $image_url );
 			$image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
 		}
 
 		// Generate image HTML
 		if ( $image_id ) {
-			$image_html = wp_get_attachment_image( $image_id, $size, false, [
-				'class' => 'dro-pvvp-image',
-				'alt'   => $image_alt,
-				'loading' => $this->config['lazy_loading'] ? 'lazy' : 'eager'
-			]);
+			$image_html = wp_get_attachment_image(
+				$image_id,
+				$size,
+				false,
+				array(
+					'class'   => 'dro-pvvp-image',
+					'alt'     => $image_alt,
+					'loading' => $this->config['lazy_loading'] ? 'lazy' : 'eager',
+				)
+			);
 		} else {
 			$image_html = sprintf(
 				'<img src="%s" alt="%s" class="dro-pvvp-image" loading="%s">',
@@ -398,7 +415,7 @@ class DRO_PVVP_Gallery_Builder {
 		// Add lightbox wrapper if enabled
 		if ( $this->config['lightbox_enabled'] ) {
 			$full_size_url = $image_id ? wp_get_attachment_image_url( $image_id, 'full' ) : $image_url;
-			$image_html = sprintf(
+			$image_html    = sprintf(
 				'<a href="%s" class="dro-pvvp-lightbox" data-lightbox="gallery-%d">%s</a>',
 				esc_url( $full_size_url ),
 				$this->data['variation_id'],
@@ -416,19 +433,19 @@ class DRO_PVVP_Gallery_Builder {
 	 * @return string CSS classes
 	 */
 	private function get_css_classes( string $base_class ): string {
-		$classes = [ $base_class ];
+		$classes = array( $base_class );
 
 		// Add configuration classes
 		$classes[] = 'thumbs-' . $this->config['thumb_position'];
-		
+
 		if ( $this->config['slider_enabled'] ) {
 			$classes[] = 'slider-enabled';
 		}
-		
+
 		if ( $this->config['lightbox_enabled'] ) {
 			$classes[] = 'lightbox-enabled';
 		}
-		
+
 		if ( $this->data['is_active'] ) {
 			$classes[] = 'active';
 		}
@@ -445,12 +462,12 @@ class DRO_PVVP_Gallery_Builder {
 	 * @return string Data attributes
 	 */
 	private function get_data_attributes(): string {
-		$attributes = [
+		$attributes = array(
 			'variation-id' => $this->data['variation_id'],
-			'layout' => $this->config['layout'],
-			'slider' => $this->config['slider_enabled'] ? 'true' : 'false',
-			'lightbox' => $this->config['lightbox_enabled'] ? 'true' : 'false'
-		];
+			'layout'       => $this->config['layout'],
+			'slider'       => $this->config['slider_enabled'] ? 'true' : 'false',
+			'lightbox'     => $this->config['lightbox_enabled'] ? 'true' : 'false',
+		);
 
 		// Add custom data attributes
 		$attributes = array_merge( $attributes, $this->config['data_attributes'] );
@@ -461,5 +478,24 @@ class DRO_PVVP_Gallery_Builder {
 		}
 
 		return $attr_string;
+	}
+
+	/**
+	 * Reset builder for reuse
+	 *
+	 * @return self
+	 */
+	public function reset(): self {
+		$this->data = array(
+			'variation_id' => 0,
+			'main_image'   => array(),
+			'thumbnails'   => array(),
+			'is_active'    => false,
+		);
+
+		$this->config['css_classes']     = array();
+		$this->config['data_attributes'] = array();
+
+		return $this;
 	}
 }
