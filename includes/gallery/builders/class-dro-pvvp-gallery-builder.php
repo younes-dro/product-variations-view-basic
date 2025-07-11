@@ -5,7 +5,7 @@
  * @package DRO\PVVP\Includes\Gallery
  */
 
-namespace DRO\PVVP\Includes\Gallery;
+namespace DRO\PVVP\Includes\Gallery\Builders;
 
 defined( 'ABSPATH' ) || exit;
 
