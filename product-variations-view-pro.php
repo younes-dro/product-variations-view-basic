@@ -3,7 +3,7 @@
  * Plugin Name: Product Variations View Pro
  * Plugin URI: https://github.com/younes-dro/product-variations-view-pro
  * Description: Product Variation View Pro enhances WooCommerce variable products by displaying variations in an intuitive, carousel-style interface. It allows customers to add multiple product variations to the cart in a single action, streamlining the shopping experience.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Younes DRO
  * Author URI: https://github.com/younes-dro
  * Text Domain: product-variations-view-pro
@@ -67,24 +67,40 @@ function activation_check() {
 }
 register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ . '\\activation_check' );
 /**
- * Register the built-in autoloader
+ * Registers the custom autoloader for plugin classes.
+ *
+ * Supports class autoloading with nested subfolders based on namespace structure.
+ *
+ * - Filters classes by namespace prefix using __NAMESPACE__.
+ * - Converts class name (underscored) to WordPress-style file format.
+ * - Maps sub-namespaces to lowercased directory paths.
+ *
+ * Uses:
+ * - array_pop() to extract class basename.
+ * - array_map() and array_slice() to handle directory mapping.
+ *
+ * @since 1.1.0
+ * @return void
  */
 function register_autoloader() {
 	spl_autoload_register(
 		function ( $class_name ) {
-			$prefix   = 'DRO\\PVVP\\includes\\';
-			$base_dir = __DIR__ . '/includes/';
-			$len      = strlen( $prefix );
-			// Make sure the class name stats with 'DRO\PVVP' to load only our classes.
+			// Ensure the class is part of the current namespace.
 			if ( strncmp( __NAMESPACE__ . '\\', $class_name, strlen( __NAMESPACE__ ) + 1 ) !== 0 ) {
 				return;
 			}
-			$relative_class_name = substr( $class_name, $len );
-			$class               = strtolower( str_replace( '_', '-', $relative_class_name ) );
-			$file_class          = $base_dir . 'class-' . $class . '.php';
 
-			if ( file_exists( $file_class ) ) {
-				require_once $file_class;
+			$class_parts    = explode( '\\', $class_name );
+			$class_basename = array_pop( $class_parts );
+			$class_filename = strtolower( str_replace( '_', '-', $class_basename ) );
+
+			$class_parts   = array_map( 'strtolower', $class_parts );
+			$relative_path = implode( '/', array_slice( $class_parts, 2 ) );
+
+			$full_path = __DIR__ . '/' . $relative_path . '/class-' . $class_filename . '.php';
+
+			if ( file_exists( $full_path ) ) {
+				require $full_path;
 			}
 		}
 	);

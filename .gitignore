@@ -1,7 +1,11 @@
 # Plugin zip file
 product-variations-view-pro.zip
+NOTES.txt
+bin/
 # Node.js dependencies
 node_modules/
+vendor/
+
 vendor/
 
 # Temporary development files
@@ -15,6 +19,7 @@ vendor/
 .env.development.local
 .env.test.local
 .env.production.local
+.phpunit.result.cache
 
 # Logs
 npm-debug.log*
