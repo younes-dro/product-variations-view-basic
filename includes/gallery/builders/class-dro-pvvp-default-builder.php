@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace DRO\PVVP\Includes\Gallery\Builders;
 
-use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Gallery_Builder_Interface as Builder_Interface;
+use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Gallery_Builder_Interface as Gallery_Builder_Interface;
 use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider as Variation_Data_Provider;
 use DRO\PVVP\Includes\Gallery\Traits\DRO_PVVP_Image_Renderer_Trait;
 use WC_Product;
@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
  * @version 1.1.0
  * @license GPL-2.0-or-later
  */
-class DRO_PVVP_Default_Builder implements Builder_Interface {
+class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 
 	use DRO_PVVP_Image_Renderer_Trait;
 
@@ -50,7 +50,7 @@ class DRO_PVVP_Default_Builder implements Builder_Interface {
 
 	private array $config = array(
 		'layout'           => 'default',
-		'thumb_position'   => 'left', // default
+		'thumb_position'   => 'left', // default. possible values : left, right, bottom, top
 		'thumb_size'       => 'thumbnail',
 		'main_size'        => 'large',
 		'slider_enabled'   => true,
@@ -75,6 +75,7 @@ class DRO_PVVP_Default_Builder implements Builder_Interface {
 	 * Constructor
 	 */
 	public function __construct() {
+		// TODO: Consider injecting Variation_Data_Provider via a DI container.
 		$this->variation_data_provider = new Variation_Data_Provider();
 	}
 	/** @inheritDoc */
@@ -163,7 +164,7 @@ class DRO_PVVP_Default_Builder implements Builder_Interface {
 	/** @inheritDoc */
 	public function build( WC_Product $product ): string {
 
-		var_dump( $this->data );
+		var_dump( $this->config );
 
 		if ( empty( $this->data['main_image'] ) && empty( $this->data['thumbnails'] ) ) {
 			return '';
@@ -177,21 +178,14 @@ class DRO_PVVP_Default_Builder implements Builder_Interface {
 
 		$thumb_position = $this->config['thumb_position'];
 
-		if ( $thumb_position === 'left' ) {
-			$content = sprintf(
-				'<div class="dro-pvvp-thumbnails dro-pvvp-thumbnails-left">%s</div>
+		// Control layout direction using flex-direction: row-reverse
+		$content = sprintf(
+			'<div class="dro-pvvp-thumbnails dro-pvvp-thumbnails-%s">%s</div>
                  <div class="dro-pvvp-main-images">%s</div>',
-				$thumbnails_html,
-				$main_image_html
-			);
-		} else {
-			$content = sprintf(
-				'<div class="dro-pvvp-main-images">%s</div>
-                 <div class="dro-pvvp-thumbnails dro-pvvp-thumbnails-right">%s</div>',
-				$main_image_html,
-				$thumbnails_html
-			);
-		}
+			esc_attr( $thumb_position ),
+			$thumbnails_html,
+			$main_image_html
+		);
 
 		return sprintf(
 			'<div class="%s"%s>%s</div>',
