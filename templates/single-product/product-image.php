@@ -15,7 +15,7 @@
  * @version 9.0.0
  */
 
-use DRO\PVVP\Includes\Factories\DRO_PVVP_Gallery_Factory;
+use DRO\PVVP\Includes\Gallery\Factories\DRO_PVVP_Gallery_Factory as Gallery_Factory;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -43,12 +43,14 @@ $gallery_config = apply_filters(
 	$product
 );
 
-$gallery_factory = DRO_PVVP_Gallery_Factory::get_instance();
-$gallery_html    = $gallery_factory
-	->create_gallery_for_product( $product, $gallery_config );
 
-// Fallback to default WooCommerce gallery if no variations or gallery fails
-if ( empty( $gallery_html ) ) {
+try {
+	$gallery_html = Gallery_Factory::get_instance()
+	->create_gallery_layout( $gallery_config['layout'] )
+	->render( $product );
+} catch ( Exception $e ) {
+	
+	error_log( 'DRO_PVVP Gallery Error: ' . $e->getMessage() );
 	// Load default WooCommerce product image template
 	wc_get_template( 'single-product/product-image.php' );
 	return;
@@ -57,21 +59,5 @@ if ( empty( $gallery_html ) ) {
 // Output the gallery
 echo $gallery_html;
 
-// Enqueue necessary scripts and styles
-wp_enqueue_script( 'dro-pvvp-gallery-js' );
-wp_enqueue_style( 'dro-pvvp-gallery-css' );
-
-// Add inline JavaScript for gallery initialization
 ?>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-	// Initialize gallery based on configuration
-	if (typeof DRO_PVVP_Gallery !== 'undefined') {
-		DRO_PVVP_Gallery.init({
-			slider: <?php echo $gallery_config['slider_enabled'] ? 'true' : 'false'; ?>,
-			lightbox: <?php echo $gallery_config['lightbox_enabled'] ? 'true' : 'false'; ?>,
-			lazyLoad: <?php echo $gallery_config['lazy_loading'] ? 'true' : 'false'; ?>
-		});
-	}
-});
-</script>
+

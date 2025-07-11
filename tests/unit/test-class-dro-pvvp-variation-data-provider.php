@@ -12,7 +12,7 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 * @var DRO_PVVP_Variation_Data_Provider|null
 	 * @since 1.1.0
 	 */
-	private DRO_PVVP_Variation_Data_Provider $variation_data_provider;
+	private ?DRO_PVVP_Variation_Data_Provider $variation_data_provider= null;
 
 	/**
 	 * Prepares the test environment for each test method.
@@ -23,6 +23,17 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 		$this->variation_data_provider = DRO_PVVP_Variation_Data_Provider::get_instance();
+	}
+
+	/**
+	 * Cleans up the test environment after each test method.
+	 * Resets the variation_data_provider to null to ensure a clean state for subsequent tests.
+	 *
+	 * @return void
+	 */
+	public function tearDown(): void{
+		parent::tearDown();
+		$this->variation_data_provider = null;
 	}
 
 	/**

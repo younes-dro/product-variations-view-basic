@@ -1,37 +1,48 @@
 <?php
 /**
- * WooCommerce Variation Data Provider Implementation
+ * WooCommerce Variation Data Provider Implementation.
  *
- * @package DRO\PVVP\Includes\Providers
+ * Provides reusable methods to retrieve variation data for WooCommerce variable products.
+ *
+ * @package     DRO\PVVP\Includes\Providers
+ * @version     1.0.0
+ * @since       1.0.0
+ * @author      Younes DRO <younesdro@gmail.com>
+ * @license     GPL-2.0-or-later
  */
 
 namespace DRO\PVVP\Includes\Providers;
 
-use DRO\PVVP\Includes\Interfaces\DRO_PVVP_Variation_Data_Provider_Interface;
 use WC_Product;
 use WC_Product_Variable;
 use WC_Product_Variation;
+use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Variation_Data_Provider_Interface;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Class DRO_PVVP_Variation_Data_Provider
+ *
+ * Implements data retrieval logic for WooCommerce variable products and their variations.
+ */
 class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provider_Interface {
 
 	/**
-	 * Current product context
+	 * Current WooCommerce product context.
 	 *
 	 * @var WC_Product|null
 	 */
 	private ?WC_Product $product = null;
 
 	/**
-	 * Singleton instance
+	 * Singleton instance.
 	 *
 	 * @var self|null
 	 */
 	private static ?self $instance = null;
 
 	/**
-	 * Get singleton instance
+	 * Get singleton instance.
 	 *
 	 * @return self
 	 */
@@ -40,9 +51,9 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Set the product context for variation operations
+	 * Set the product context for data retrieval.
 	 *
-	 * @param WC_Product $product The WooCommerce product.
+	 * @param WC_Product $product WooCommerce product.
 	 * @return self
 	 */
 	public function set_product( WC_Product $product ): self {
@@ -51,9 +62,9 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Get all available variations for the current product
+	 * Get available variations for the current product.
 	 *
-	 * @return array Array of available variations
+	 * @return array List of available variation data.
 	 */
 	public function get_available_variations(): array {
 		if ( ! $this->product || ! $this->product->is_type( 'variable' ) ) {
@@ -66,10 +77,10 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Get main image for a variation
+	 * Get main image data for a given variation.
 	 *
 	 * @param int $variation_id Variation ID.
-	 * @return array|null Image data or null if not found.
+	 * @return array|null Main image data or null if not found.
 	 */
 	public function get_variation_main_image( int $variation_id ): ?array {
 		$variation = $this->get_variation_product( $variation_id );
@@ -79,7 +90,6 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 
 		$image_id = $variation->get_image_id();
 
-		// Fallback to parent product image if variation has no image
 		if ( ! $image_id && $this->product ) {
 			$image_id = $this->product->get_image_id();
 		}
@@ -104,19 +114,23 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Get thumbnail images for a variation
+	 * Get thumbnail images for a given variation.
 	 *
 	 * @param int    $variation_id Variation ID.
-	 * @param string $size Image size.
-	 * @return array Array of thumbnail data.
+	 * @param string $size          Image size.
+	 * @return array List of thumbnails.
 	 */
 	public function get_variation_thumbs( int $variation_id, string $size = 'thumbnail' ): array {
 		$variation = $this->get_variation_product( $variation_id );
 		if ( ! $variation ) {
 			return array();
 		}
+
 		$gallery_ids = get_post_meta( $variation_id, 'dro_pvvp_variation_images', true );
-		// $gallery_ids = $variation->get_gallery_image_ids();
+
+		if ( empty( $gallery_ids ) || ! is_array( $gallery_ids ) ) {
+			return array();
+		}
 
 		$thumbnails = array();
 
@@ -138,10 +152,10 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Get variation attributes
+	 * Get variation attributes.
 	 *
 	 * @param int $variation_id Variation ID.
-	 * @return array Variation attributes.
+	 * @return array Attributes array.
 	 */
 	public function get_variation_attributes( int $variation_id ): array {
 		$variation = $this->get_variation_product( $variation_id );
@@ -149,10 +163,10 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Get variation stock information
+	 * Get stock data for a given variation.
 	 *
 	 * @param int $variation_id Variation ID.
-	 * @return array|null Stock information or null if not found.
+	 * @return array|null Stock data or null if not available.
 	 */
 	public function get_variation_stock( int $variation_id ): ?array {
 		$variation = $this->get_variation_product( $variation_id );
@@ -170,10 +184,10 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Get variation pricing information
+	 * Get price data for a given variation.
 	 *
 	 * @param int $variation_id Variation ID.
-	 * @return array|null Pricing information or null if not found.
+	 * @return array|null Price data or null if not available.
 	 */
 	public function get_variation_pricing( int $variation_id ): ?array {
 		$variation = $this->get_variation_product( $variation_id );
@@ -191,10 +205,10 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Check if variation exists and is valid
+	 * Validate a variation by ID.
 	 *
-	 * @param int $variation_id Variation ID
-	 * @return bool True if variation is valid
+	 * @param int $variation_id Variation ID.
+	 * @return bool True if valid variation.
 	 */
 	public function is_valid_variation( int $variation_id ): bool {
 		$variation = $this->get_variation_product( $variation_id );
@@ -202,10 +216,10 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	}
 
 	/**
-	 * Get variation product object
+	 * Get variation product object from ID.
 	 *
 	 * @param int $variation_id Variation ID.
-	 * @return WC_Product_Variation|null Variation product or null if not found.
+	 * @return WC_Product_Variation|null Product variation object or null.
 	 */
 	private function get_variation_product( int $variation_id ): ?WC_Product_Variation {
 		$variation = wc_get_product( $variation_id );

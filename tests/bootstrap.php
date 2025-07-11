@@ -5,6 +5,8 @@
  * @package Product_Variations_View_Pro
  */
 
+define( 'WP_PLUGIN_DIR', dirname( dirname( __DIR__ ) )  );
+
 require_once dirname(__DIR__) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
@@ -31,6 +33,7 @@ require_once "{$_tests_dir}/includes/functions.php";
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
+	require WP_PLUGIN_DIR. '/woocommerce/woocommerce.php';
 	require dirname( dirname( __FILE__ ) ) . '/product-variations-view-pro.php';
 }
 
