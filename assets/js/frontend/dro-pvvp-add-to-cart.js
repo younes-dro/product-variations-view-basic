@@ -278,6 +278,7 @@
 		$( '.entry-summary' ).css(
 			{
 				'width': '100%',
+				'min-width':'100%',
 				'float': 'none'
 			}
 		);

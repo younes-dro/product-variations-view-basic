@@ -2,7 +2,7 @@
  * Settings Script for Product Variations View add-on
  * 
  * Author: Younes DRO (younesdro@gmail.com)
- * Date: 08/01/2025 15:27:01
+ * Date: 02/04/2025 18:28:09
  * Released under the GPLv2 or later.
  */
 /******/ (() => { // webpackBootstrap

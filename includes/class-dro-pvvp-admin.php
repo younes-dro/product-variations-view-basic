@@ -13,6 +13,8 @@
 
 namespace DRO\PVVP\Includes;
 
+use function DRO\PVVP\dro_pvvp;
+
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
@@ -43,11 +45,95 @@ class DRO_PVVP_Admin {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_dro_pvvp_settings_script' ) );
+	private function __construct() {
+		add_action( 'init', array( $this, 'register_dro_pvvp_variation_images_script' ) );
+		add_action( 'init', array( $this, 'register_dro_pvvp_settings_script' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_dro_pvvp_variation_images_script' ) );
 		add_action( 'admin_menu', array( $this, 'add_dro_pvvp_menu' ) );
 		add_action( 'wp_ajax_dro_pvvp_save_settings', array( $this, 'save_dro_pvvp_settings' ) );
 		add_action( 'woocommerce_variation_header', array( $this, 'display_missing_attributes_warning' ), 10, 2 );
+		add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'add_variation_image_collections' ), 10, 3 );
+		add_action( 'admin_footer', array( $this, 'print_variation_image_collections_template' ) );
+		add_action( 'woocommerce_save_product_variation', array( $this, 'save_variation_image_collections' ), 10, 2 );
+	}
+	/**
+	 * Registers the scripts and styles for adding variation images in the admin area.
+	 *
+	 * This function registers the necessary JavaScript and CSS files used for managing
+	 * variation images within the WordPress admin interface. It determines whether to use
+	 * minified versions based on the WP_DEBUG constant and includes dependencies like jQuery
+	 * and underscore.js.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function register_dro_pvvp_variation_images_script() {
+		$min     = WP_DEBUG ? '' : '.min';
+		$version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
+			? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js' )
+			: '1.0.0';
+
+		wp_register_script(
+			'dro-pvvp-add-variation-images',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/dro-pvvp-add-variation-images' . $min . '.js',
+			array( 'jquery', 'underscore' ),
+			$version,
+			true
+		);
+
+		wp_register_style(
+			'dro-pvvp-variation-image-collections',
+			plugin_dir_url( __DIR__ ) . 'assets/css/admin/dro-pvvp-variation-image-collections' . $min . '.css',
+			array(),
+			$version,
+			'all'
+		);
+	}
+
+	/**
+	 * Registers the settings script and passes settings to React.
+	 *
+	 * @since 1.0.0
+	 */
+	public function register_dro_pvvp_settings_script() {
+		$min = WP_DEBUG ? '' : '.min';
+
+		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
+		? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
+		: '1.0.0';
+
+		wp_register_script(
+			'dro-pvvp-settings-script',
+			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js',
+			array( 'wp-element' ),
+			$settings_version,
+			true
+		);
+
+		wp_register_style(
+			'dro-pvvp-settings-script',
+			plugin_dir_url( __DIR__ ) . 'assets/css/admin/settings.css',
+			array(),
+			$settings_version
+		);
+
+		$current_settings = array(
+			'is_enabled'           => (bool) filter_var( get_option( 'dro_pvvp_is_enabled', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_price'           => (bool) filter_var( get_option( 'dro_pvvp_show_range_price', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_description'     => (bool) filter_var( get_option( 'dro_pvvp_show_main_product_short_description', true ), FILTER_VALIDATE_BOOLEAN ),
+			'show_product_gallery' => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
+		);
+
+		wp_localize_script(
+			'dro-pvvp-settings-script',
+			'dro_pvvp_ajax_params',
+			array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'dro_pvvp_settings_nonce' ),
+				'settings' => $current_settings,
+			)
+		);
 	}
 
 	/**
@@ -122,56 +208,41 @@ class DRO_PVVP_Admin {
 	 * @since 1.0.0
 	 */
 	public function render_dro_pvvp_settings() {
-		wp_enqueue_script( 'product-variations-view-settings' );
+		wp_enqueue_script( 'dro-pvvp-settings-script' );
 		echo '<div id="pvv-app"></div>';
 	}
 
+
 	/**
-	 * Registers the settings script and passes settings to React.
+	 * Enqueues the variation images collections script on the WooCommerce product edit page.
+	 *
+	 * This function checks if the current admin screen is the product edit screen and whether the product type
+	 * is 'variable'. If both conditions are met, it enqueues the WordPress Media Library and the registered JavaScript file.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @return void
 	 */
-	public function register_dro_pvvp_settings_script() {
-		$min = WP_DEBUG ? '' : '.min';
+	public function enqueue_dro_pvvp_variation_images_script() {
+		global $post;
 
-		$settings_version = file_exists( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
-		? filemtime( plugin_dir_path( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js' )
-		: '1.0.0';
+		$screen = get_current_screen();
 
-		wp_register_script(
-			'product-variations-view-settings',
-			plugin_dir_url( __DIR__ ) . 'assets/js/admin/settings' . $min . '.js',
-			array( 'wp-element' ),
-			$settings_version,
-			true
-		);
+		if ( $screen && 'product' !== $screen->post_type ) {
+			return;
+		}
 
-		wp_register_style(
-			'product-variations-view-settings',
-			plugin_dir_url( __DIR__ ) . 'assets/css/admin/settings.css',
-			array(),
-			$settings_version
-		);
+		$product = function_exists('wc_get_product') ? wc_get_product($post) : false;
+		$product_type = ($product instanceof \WC_Product) ? $product->get_type() : '';
+		
+		if ( 'variable' !== $product_type ) {
+			return;
+		}
 
-		$current_settings = array(
-			'is_enabled'           => (bool) filter_var( get_option( 'dro_pvvp_is_enabled', true ), FILTER_VALIDATE_BOOLEAN ),
-			'show_price'           => (bool) filter_var( get_option( 'dro_pvvp_show_range_price', true ), FILTER_VALIDATE_BOOLEAN ),
-			'show_description'     => (bool) filter_var( get_option( 'dro_pvvp_show_main_product_short_description', true ), FILTER_VALIDATE_BOOLEAN ),
-			'show_product_gallery' => (bool) filter_var( get_option( 'dro_pvvp_show_product_gallery', true ), FILTER_VALIDATE_BOOLEAN ),
-		);
-
-		wp_localize_script(
-			'product-variations-view-settings',
-			'dro_pvvp_ajax_params',
-			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'dro_pvvp_settings_nonce' ),
-				'settings' => $current_settings, // Pass settings to React.
-			)
-		);
+		wp_enqueue_media();
+		wp_enqueue_script( 'dro-pvvp-add-variation-images' );
+		wp_enqueue_style( 'dro-pvvp-variation-image-collections' );
 	}
-
-
 
 
 	/**
@@ -210,6 +281,110 @@ class DRO_PVVP_Admin {
 				echo '<p style="margin: 0;">' . esc_html( $warning ) . '</p>';
 			}
 			echo '</div>';
+		}
+	}
+
+	/**
+	 * Outputs the HTML for managing multiple variation images in a WooCommerce product variation.
+	 *
+	 * This function generates a customizable HTML block that allows the admin to
+	 * manage multiple images for a specific variation. The block includes a collapsible
+	 * postbox for better organization of variation image collections.
+	 *
+	 * @param int     $loop           The index of the current variation in the loop.
+	 * @param array   $variation_data Array containing data related to the current variation.
+	 * @param WP_Post $variation      The variation object, which is an instance of WP_Post.
+	 */
+	public function add_variation_image_collections( $loop, $variation_data, $variation ) {
+		$variation_id     = absint( $variation->ID );
+		$variation_images = get_post_meta( $variation_id, 'dro_pvvp_variation_images', true );
+		// $variation_images = get_post_meta( $variation_id, 'dro_pvvp_variation_images', true );
+		?>
+		<div data-dro-pvvp-variation-id="<?php echo esc_attr( $variation_id ); ?>" class="form-row form-row-full dro-pvvp-variation-images-container">
+			<div class="dro-pvvp-variation-images-postbox">
+					<div class="dro-pvvp-variation-images-postbox-header">
+						<h2><?php esc_html_e( 'Variation Image Collections', 'product-variations-view-pro' ); ?></h2>
+						
+						<button type="button" class="dro-pvvp-handlediv" aria-expanded="true">
+						<span class="screen-reader-text"><?php esc_html_e( 'Toggle panel: Variation images', 'product-variations-view-pro' ); ?></span>
+							<span class="toggle-indicator" aria-hidden="true"></span>
+						</button>
+					</div>
+
+					<div class="dro-pvvp-variation-images-content">
+						<div class="dro-pvvp-variation-images-grid-container">
+								<ul class="dro-pvvp-variation-images-grid-images">
+									<?php
+									if ( is_array( $variation_images ) && ! empty( $variation_images ) ) {
+										wc_get_template(
+											'admin/views/html-variation-image-collections.php',
+											array(
+												'variation_images' => $variation_images,
+												'variation_id' => $variation_id,
+											),
+											'',
+											dro_pvvp()->plugin_path() . '/includes/'
+										);
+									}
+									?>
+								</ul>
+							</div>
+							<div class="dro-pvvp-variation-images-add-wrapper hide-if-no-js">
+								<a href="#" data-dro-pvvp-variation-loop="<?php echo absint( $loop ); ?>" 
+								data-dro-pvvp-variation-id="<?php echo esc_attr( $variation_id ); ?>" 
+								class="button-primary dro-pvvp-variation-images-add-image">
+								<?php esc_html_e( 'Add Image', 'product-variations-view-pro' ); ?>
+							</a>
+							</div>
+					</div>
+			</div>
+
+		</div>
+		<?php
+	}
+
+	/**
+	 * Outputs the JavaScript template for variation image collections in the WooCommerce admin.
+	 *
+	 * This function checks if the current screen is the WooCommerce product editor. If so,
+	 * it loads and outputs a JavaScript template for handling variation image collections.
+	 *
+	 * @return void
+	 */
+	public function print_variation_image_collections_template() {
+		$screen = get_current_screen();
+
+		if ( $screen && $screen->post_type === 'product' ) {
+			ob_start();
+			require_once dro_pvvp()->plugin_path() . '/includes/admin/views/template-js-variation-image-collections.php';
+			$data = ob_get_clean();
+			echo apply_filters( 'dro_pvvp_variation_image_collections_template_js', $data );
+		}
+	}
+
+	/**
+	 * Saves or deletes variation image collections for a WooCommerce product variation.
+	 *
+	 * This function handles the saving of image collection metadata for a specific
+	 * WooCommerce product variation. If images are provided in the POST request,
+	 * they are stored as post meta. If no images are provided, the meta entry is removed.
+	 *
+	 * @param int $variation_id The ID of the WooCommerce product variation.
+	 * @param int $loop The index of the variation in the variations list.
+	 */
+	public function save_variation_image_collections( $variation_id, $loop ) {
+
+		if ( isset( $_POST['dro_pvvp_variation_image_collections'] ) ) {
+
+			if ( isset( $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] ) ) {
+
+				$gallery_image_ids = array_map( 'absint', $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] );
+				update_post_meta( $variation_id, 'dro_pvvp_variation_images', $gallery_image_ids );
+			} else {
+				delete_post_meta( $variation_id, 'dro_pvvp_variation_images' );
+			}
+		} else {
+			delete_post_meta( $variation_id, 'dro_pvvp_variation_images' );
 		}
 	}
 }

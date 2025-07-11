@@ -31,7 +31,7 @@ class DRO_PVVP {
 	 *
 	 * @var DRO_PVVP|null
 	 */
-	protected static $instance;
+	private static ?self $instance = null;
 
 	/**
 	 * Plugin Version.
@@ -75,7 +75,7 @@ class DRO_PVVP {
 	 *
 	 * @param DRO_PVVP_Dependencies $dependencies The dependencies required for the class to function.
 	 */
-	public function __construct( DRO_PVVP_Dependencies $dependencies ) {
+	private function __construct( DRO_PVVP_Dependencies $dependencies ) {
 
 		self::$dependencies = $dependencies;
 
@@ -99,11 +99,10 @@ class DRO_PVVP {
 	 * @param DRO_PVVP_Dependencies $dependencies The dependencies required for the class to function.
 	 * @return DRO_PVVP instance
 	 */
-	public static function start( DRO_PVVP_Dependencies $dependencies ): DRO_PVVP {
+	public static function start( DRO_PVVP_Dependencies $dependencies ): self {
 
-		self::$instance ??= new self( $dependencies );
+		return  self::$instance ??= new self( $dependencies );
 
-		return self::$instance;
 	}
 
 	/**
@@ -241,7 +240,7 @@ class DRO_PVVP {
 	 */
 	public function frontend_includes() {
 		if ( $this->is_frontend_enabled() ) {
-			new DRO_PVVP_Display();
+			DRO_PVVP_Display::start_display();
 			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-functions.php';
 			require_once DRO_PVVP_INCLUDES_FOLDER . 'dro-pvvp-template-hooks.php';
 		}
