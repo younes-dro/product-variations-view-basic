@@ -31,7 +31,13 @@ use DRO\PVVP\Includes\DRO_PVVP_Dependencies;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
+$dro_pvvp_metadata = get_file_data(
+	__FILE__,
+	array(
+		'Version' => 'Version',
+	)
+);
+define( 'DRO_PVVP_VERSION', $dro_pvvp_metadata['Version'] );
 define( 'DRO_PVVP_FILE', __FILE__ );
 define( 'DRO_PVVP_NAME', 'Product Variations View Pro' );
 define( 'DRO_PVVP_INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/' );
@@ -44,7 +50,6 @@ define( 'DRO_PVVP_INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__
 function activation_check() {
 	$dependencies = new DRO_PVVP_Dependencies();
 	if ( ! $dependencies->check_php_version() ) {
-
 		deactivate_plugins( plugin_basename( DRO_PVVP_FILE ) );
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
 		if ( isset( $_GET['activate'] ) ) {
@@ -58,7 +63,6 @@ function activation_check() {
 				esc_html( DRO_PVVP_NAME )
 			) . esc_html( $dependencies->get_php_notice() )
 		);
-
 	}
 	update_option( 'dro_pvvp_is_enabled', 1 );
 	update_option( 'dro_pvvp_show_range_price', 1 );
