@@ -33,7 +33,7 @@ $gallery_config = apply_filters(
 	'dro_pvvp_gallery_config',
 	array(
 		'layout'           => get_option( 'dro_pvvp_gallery_layout', 'default' ),
-		'thumb_position'   => get_option( 'dro_pvvp_thumb_position', 'bottom' ),
+		'thumb_position'   => get_option( 'dro_pvvp_thumb_position', 'left' ),
 		'slider_enabled'   => get_option( 'dro_pvvp_slider_enabled', true ),
 		'lightbox_enabled' => get_option( 'dro_pvvp_lightbox_enabled', false ),
 		'lazy_loading'     => get_option( 'dro_pvvp_lazy_loading', true ),

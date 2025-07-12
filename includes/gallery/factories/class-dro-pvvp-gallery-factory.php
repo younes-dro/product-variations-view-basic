@@ -56,12 +56,13 @@ class DRO_PVVP_Gallery_Factory {
 	/**
 	 * Create gallery for product using configuration
 	 *
-	 * @param string $config Gallery configuration
+	 * @param array $gallery_config Gallery configuration
 	 * @return Gallery_Interface|null Gallery Layout or null if no variations
 	 * @throws Exception
 	 */
-	public function create_gallery_layout( string $layout ): Gallery_Interface {
-
+	public function create_gallery_layout( array $gallery_config ): Gallery_Interface {
+		
+		$layout = $gallery_config['layout'] ?: 'default';
 		// Call Gallery layout
 		switch ( $layout ) {
 			case 'default':
