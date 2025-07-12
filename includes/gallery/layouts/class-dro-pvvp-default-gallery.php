@@ -36,11 +36,45 @@ class DRO_PVVP_Default_Gallery implements Gallery_Interface, Layout_Assets_Inter
 	protected Default_Builder $buidler;
 
 	/**
-	 * Constructor.
-	 * Initializes the builder.
+	 * Constructor
+	 *
+	 * @param array $config Optional configuration to be applied to the builder.
 	 */
-	public function __construct() {
+	public function __construct( array $config = array() ) {
+		
 		$this->buidler = new Default_Builder();
+
+		if ( isset( $config['layout'] ) ) {
+			$this->buidler->set_layout( $config['layout'] );
+		}
+		if ( isset( $config['thumb_position'] ) ) {
+			$this->buidler->set_thumb_position( $config['thumb_position'] );
+		}
+		if ( isset( $config['thumb_size'] ) ) {
+			$this->buidler->set_thumb_size( $config['thumb_size'] );
+		}
+		if ( isset( $config['main_size'] ) ) {
+			$this->buidler->set_main_size( $config['main_size'] );
+		}
+		if ( isset( $config['slider_enabled'] ) ) {
+			$this->buidler->enable_slider( (bool) $config['slider_enabled'] );
+		}
+		if ( isset( $config['lightbox_enabled'] ) ) {
+			$this->buidler->enable_lightbox( (bool) $config['lightbox_enabled'] );
+		}
+		if ( isset( $config['lazy_loading'] ) ) {
+			$this->buidler->enable_lazy_loading( (bool) $config['lazy_loading'] );
+		}
+		if ( isset( $config['css_classes'] ) && is_array( $config['css_classes'] ) ) {
+			foreach ( $config['css_classes'] as $class ) {
+				$this->buidler->add_css_class( $class );
+			}
+		}
+		if ( isset( $config['data_attributes'] ) && is_array( $config['data_attributes'] ) ) {
+			foreach ( $config['data_attributes'] as $key => $value ) {
+				$this->buidler->add_data_attribute( $key, $value );
+			}
+		}
 	}
 
 	/**

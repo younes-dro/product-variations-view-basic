@@ -66,7 +66,7 @@ class DRO_PVVP_Gallery_Factory {
 		// Call Gallery layout
 		switch ( $layout ) {
 			case 'default':
-				return new Default_Gallery();
+				return new Default_Gallery( $gallery_config );
 			default:
 				throw new \InvalidArgumentException( "Unknown gallery layout: {$layout}" );
 		}
