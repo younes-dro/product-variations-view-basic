@@ -19,6 +19,7 @@ namespace DRO\PVVP\Includes\Gallery\Layouts;
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Gallery_Interface as Gallery_Interface;
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Layout_Assets_Interface as Layout_Assets_Interface;
 use DRO\PVVP\Includes\Gallery\Builders\DRO_PVVP_Default_Builder as Default_Builder;
+use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider;
 use WC_Product;
 
 /**
@@ -28,20 +29,9 @@ use WC_Product;
  */
 class DRO_PVVP_Default_Gallery implements Gallery_Interface, Layout_Assets_Interface {
 
-	/**
-	 * The builder instance responsible for rendering the HTML structure.
-	 *
-	 * @var Default_Builder
-	 */
 	protected Default_Builder $buidler;
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $config Optional configuration to be applied to the builder.
-	 */
 	public function __construct( array $config = array() ) {
-		// TODO: Replace with Dependency Injection (e.g., via a container) for better testability and decoupling.
 		$this->buidler = new Default_Builder();
 
 		if ( isset( $config['layout'] ) ) {
@@ -77,21 +67,32 @@ class DRO_PVVP_Default_Gallery implements Gallery_Interface, Layout_Assets_Inter
 		}
 	}
 
-	/**
-	 * Render the gallery HTML for a given product.
-	 *
-	 * @param WC_Product $product WooCommerce product object.
-	 * @return string Rendered HTML of the gallery.
-	 */
 	public function render( WC_Product $product ): string {
 		$this->enqueue_assets();
-		return $this->buidler->build( $product );
+
+		$provider   = DRO_PVVP_Variation_Data_Provider::get_instance()->set_product( $product );
+		$variations = $provider->get_available_variations();
+
+		$output = '';
+
+		foreach ( $variations as $index => $variation ) {
+			$variation_id = (int) $variation['variation_id'];
+			$main_image   = $provider->get_variation_main_image( $variation_id );
+			$thumbnails   = $provider->get_variation_thumbs( $variation_id );
+
+			$this->buidler
+				->reset()
+				->set_variation_id( $variation_id )
+				->set_main_image( array( $main_image ) )
+				->set_thumbnails( $thumbnails )
+				->set_active( $index === 0 );
+
+			$output .= $this->buidler->build( $product );
+		}
+
+		return sprintf( '<div class="dro-pvvp-gallery-layout-wrapper">%s</div>', $output );
 	}
 
-	/**
-	 * Enqueue CSS/JS specific to this layout.
-	 * Called automatically before rendering.
-	 */
 	public function enqueue_assets(): void {
 		wp_register_style(
 			'dro-pvvp-layout-default',
