@@ -56,7 +56,7 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 		'slider_enabled'   => true,
 		'lightbox_enabled' => false,
 		'lazy_loading'     => true,
-		'css_classes'      => array(),
+		'css_classes'      => array(), 
 		'data_attributes'  => array(),
 	);
 	/**
@@ -164,7 +164,9 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 	/** @inheritDoc */
 	public function build( WC_Product $product ): string {
 
-		var_dump( $this->config );
+		error_log( print_r( $product, true));
+		error_log( print_r( $this->data, true));
+		$main_image= $this->variation_data_provider->get_variation_main_image(  );
 
 		if ( empty( $this->data['main_image'] ) && empty( $this->data['thumbnails'] ) ) {
 			return '';

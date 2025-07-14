@@ -41,7 +41,7 @@ class DRO_PVVP_Default_Gallery implements Gallery_Interface, Layout_Assets_Inter
 	 * @param array $config Optional configuration to be applied to the builder.
 	 */
 	public function __construct( array $config = array() ) {
-		
+		// TODO: Replace with Dependency Injection (e.g., via a container) for better testability and decoupling.
 		$this->buidler = new Default_Builder();
 
 		if ( isset( $config['layout'] ) ) {

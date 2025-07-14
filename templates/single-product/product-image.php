@@ -46,7 +46,7 @@ $gallery_config = apply_filters(
 
 try {
 	$gallery_html = Gallery_Factory::get_instance()
-	->create_gallery_layout( $gallery_config['layout'] )
+	->create_gallery_layout( $gallery_config )
 	->render( $product );
 } catch ( Exception $e ) {
 	
