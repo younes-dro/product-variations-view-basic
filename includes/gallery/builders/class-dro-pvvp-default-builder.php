@@ -40,7 +40,7 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 	 *
 	 * @var Variation_Data_Provider
 	 */
-	private Variation_Data_Provider $variation_data_provider;
+	private Variation_Data_Provider $provider;
 
 	/**
 	 * Gallery configuration options.
@@ -56,7 +56,7 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 		'slider_enabled'   => true,
 		'lightbox_enabled' => false,
 		'lazy_loading'     => true,
-		'css_classes'      => array(), 
+		'css_classes'      => array(),
 		'data_attributes'  => array(),
 	);
 	/**
@@ -76,7 +76,7 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 	 */
 	public function __construct() {
 		// TODO: Consider injecting Variation_Data_Provider via a DI container.
-		$this->variation_data_provider = new Variation_Data_Provider();
+		$this->provider = new Variation_Data_Provider();
 	}
 	/** @inheritDoc */
 	public function set_layout( string $layout ): self {
@@ -164,11 +164,10 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 	/** @inheritDoc */
 	public function build( WC_Product $product ): string {
 
-		error_log( print_r( $product, true));
-		error_log( print_r( $this->data, true));
-		$main_image= $this->variation_data_provider->get_variation_main_image(  );
+		// error_log( print_r( $product, true));
+		error_log( print_r( $this->data, true ) );
 
-		if ( empty( $this->data['main_image'] ) && empty( $this->data['thumbnails'] ) ) {
+		if ( empty( $this->data['main_image'] ) ) {
 			return '';
 		}
 
