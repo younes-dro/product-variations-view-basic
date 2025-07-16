@@ -164,9 +164,6 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 	/** @inheritDoc */
 	public function build( WC_Product $product ): string {
 
-		// error_log( print_r( $product, true));
-		error_log( print_r( $this->data, true ) );
-
 		if ( empty( $this->data['main_image'] ) ) {
 			return '';
 		}

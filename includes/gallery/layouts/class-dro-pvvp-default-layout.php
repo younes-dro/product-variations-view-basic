@@ -23,11 +23,11 @@ use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider;
 use WC_Product;
 
 /**
- * Class DRO_PVVP_Default_Gallery
+ * Class DRO_PVVP_Default_Layout
  *
  * Implements the default layout for displaying product variation galleries.
  */
-class DRO_PVVP_Default_Gallery implements Gallery_Interface, Layout_Assets_Interface {
+class DRO_PVVP_Default_Layout implements Gallery_Interface, Layout_Assets_Interface {
 
 	protected Default_Builder $buidler;
 

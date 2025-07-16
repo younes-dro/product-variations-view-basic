@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace DRO\PVVP\Includes\Gallery\Factories;
 
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Gallery_Interface as Gallery_Interface;
-use DRO\PVVP\Includes\Gallery\Layouts\DRO_PVVP_Default_Gallery as Default_Gallery;
+use DRO\PVVP\Includes\Gallery\Layouts\DRO_PVVP_Default_Layout as Default_Layout;
 use Exception;
 
 defined( 'ABSPATH' ) || exit;
@@ -66,7 +66,7 @@ class DRO_PVVP_Gallery_Factory {
 		// Call Gallery layout
 		switch ( $layout ) {
 			case 'default':
-				return new Default_Gallery( $gallery_config );
+				return new Default_Layout( $gallery_config );
 			default:
 				throw new \InvalidArgumentException( "Unknown gallery layout: {$layout}" );
 		}
