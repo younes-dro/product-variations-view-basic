@@ -81,7 +81,7 @@ class DRO_PVVP_Default_Builder implements Gallery_Builder_Interface {
 	/** @inheritDoc */
 	public function set_layout( string $layout ): self {
 
-		$this->config['layout'] = 'default';
+		$this->config['layout'] = $layout;
 		return $this;
 	}
 	/** @inheritDoc */
