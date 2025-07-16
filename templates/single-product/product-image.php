@@ -48,8 +48,8 @@ try {
 	$gallery_html = Gallery_Factory::get_instance()
 	->create_gallery_layout( $gallery_config )
 	->render( $product );
-} catch ( Exception $e ) {
-	
+} catch ( Throwable $e ) {
+
 	error_log( 'DRO_PVVP Gallery Error: ' . $e->getMessage() );
 	// Load default WooCommerce product image template
 	wc_get_template( 'single-product/product-image.php' );
@@ -58,6 +58,3 @@ try {
 
 // Output the gallery
 echo $gallery_html;
-
-?>
-
