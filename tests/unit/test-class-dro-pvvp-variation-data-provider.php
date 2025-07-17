@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider;
+use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider as Provider;
 
 /**
  * Unit tests for the DRO_PVVP_Variation_Data_Provider class.
@@ -24,7 +24,7 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 * @var DRO_PVVP_Variation_Data_Provider|null
 	 * @since 1.1.0
 	 */
-	private ?DRO_PVVP_Variation_Data_Provider $variation_data_provider = null;
+	private ?Provider $provider = null;
 
 	/**
 	 * Prepares the test environment for each test method.
@@ -34,7 +34,7 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$this->variation_data_provider = DRO_PVVP_Variation_Data_Provider::get_instance();
+		$this->provider = Provider::get_instance();
 	}
 
 	/**
@@ -45,7 +45,7 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 */
 	public function tearDown(): void {
 		parent::tearDown();
-		$this->variation_data_provider = null;
+		$this->provider = null;
 	}
 
 	/**
@@ -59,11 +59,33 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_instance(): void {
-		$instance1 = DRO_PVVP_Variation_Data_Provider::get_instance();
-		$instance2 = DRO_PVVP_Variation_Data_Provider::get_instance();
+		$instance1 = Provider::get_instance();
+		$instance2 = Provider::get_instance();
 
-		$this->assertInstanceOf( DRO_PVVP_Variation_Data_Provider::class, $this->variation_data_provider, 'get_instance should return the same instance.' );
-		$this->assertSame( $this->variation_data_provider, $instance1, 'get_instance should return the same instance.' );
+		$this->assertInstanceOf( Provider::class, $this->provider, 'get_instance should return the same instance.' );
+		$this->assertSame( $this->provider, $instance1, 'get_instance should return the same instance.' );
 		$this->assertSame( $instance1, $instance2, 'get_instance should return the same instance.' );
+	}
+
+	/**
+	 * Test the set_product method.
+	 *
+	 * It should store the WC_Product instance and return the provider itself.
+	 *
+	 * @covers ::set_product
+	 * @return void
+	 */
+	public function test_set_product(): void {
+		$product = new WC_Product();
+
+		$should_return_provider_object = $this->provider->set_product( $product );
+
+		$provider_reflection = new ReflectionClass( $this->provider );
+		$product_prop        = $provider_reflection->getProperty( 'product' );
+		$product_prop->setAccessible( true );
+		$product_prop_value = $product_prop->getValue( $this->provider );
+
+		$this->assertInstanceOf( WC_Product::class, $product_prop_value );
+		$this->assertInstanceOf( Provider::class, $should_return_provider_object );
 	}
 }
