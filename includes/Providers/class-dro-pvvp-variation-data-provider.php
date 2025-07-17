@@ -17,6 +17,7 @@ use WC_Product;
 use WC_Product_Variable;
 use WC_Product_Variation;
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Variation_Data_Provider_Interface;
+use DRO\PVVP\Includes\Exceptions\DRO_PVVP_Invalid_Product_Exception as Invalid_Product_Exception;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -65,10 +66,11 @@ class DRO_PVVP_Variation_Data_Provider implements DRO_PVVP_Variation_Data_Provid
 	 * Get available variations for the current product.
 	 *
 	 * @return array List of available variation data.
+	 * @throws Invalid_Product_Exception If the product is not set or not variable.
 	 */
 	public function get_available_variations(): array {
 		if ( ! $this->product || ! $this->product->is_type( 'variable' ) ) {
-			return array();
+			throw new Invalid_Product_Exception( 'The product is either not set or is not a variable product.' );
 		}
 
 		/** @var WC_Product_Variable $product */

@@ -232,9 +232,9 @@ class DRO_PVVP_Admin {
 			return;
 		}
 
-		$product = function_exists('wc_get_product') ? wc_get_product($post) : false;
-		$product_type = ($product instanceof \WC_Product) ? $product->get_type() : '';
-		
+		$product      = function_exists( 'wc_get_product' ) ? wc_get_product( $post ) : false;
+		$product_type = ( $product instanceof \WC_Product ) ? $product->get_type() : '';
+
 		if ( 'variable' !== $product_type ) {
 			return;
 		}
@@ -266,7 +266,6 @@ class DRO_PVVP_Admin {
 		// Check for missing attributes (e.g., set to "Any" or empty).
 		foreach ( $attributes as $key => $value ) {
 			if ( strtolower( $value ) === 'any' || empty( $value ) ) {
-
 				$warnings[] = sprintf(
 					/* translators: %1$d is the variation ID, %2$s is the attribute label. */
 					__( 'Variation #%1$d has an undefined attribute: %2$s', 'product-variations-view-pro' ),
@@ -375,9 +374,7 @@ class DRO_PVVP_Admin {
 	public function save_variation_image_collections( $variation_id, $loop ) {
 
 		if ( isset( $_POST['dro_pvvp_variation_image_collections'] ) ) {
-
 			if ( isset( $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] ) ) {
-
 				$gallery_image_ids = array_map( 'absint', $_POST['dro_pvvp_variation_image_collections'][ $variation_id ] );
 				update_post_meta( $variation_id, 'dro_pvvp_variation_images', $gallery_image_ids );
 			} else {

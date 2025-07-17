@@ -62,7 +62,6 @@ class DRO_PVVP_Utils {
 				break;
 			default:
 				$value = null;
-
 		}
 	}
 }

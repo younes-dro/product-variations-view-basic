@@ -61,7 +61,7 @@ class DRO_PVVP_Gallery_Factory {
 	 * @throws Exception
 	 */
 	public function create_gallery_layout( array $gallery_config ): Gallery_Interface {
-		
+
 		$layout = $gallery_config['layout'] ?: 'default';
 		// Call Gallery layout
 		switch ( $layout ) {
