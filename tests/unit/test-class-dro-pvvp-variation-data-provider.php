@@ -1,9 +1,21 @@
 <?php
+/**
+ * Unit tests for the DRO_PVVP_Variation_Data_Provider class.
+ *
+ * @package DRO_PVVP
+ * @subpackage Tests
+ * @group unit
+ */
 
 declare(strict_types=1);
 
 use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider;
 
+/**
+ * Unit tests for the DRO_PVVP_Variation_Data_Provider class.
+ *
+ * @coversDefaultClass DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider
+ */
 class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 
 	/**
@@ -12,7 +24,7 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 * @var DRO_PVVP_Variation_Data_Provider|null
 	 * @since 1.1.0
 	 */
-	private ?DRO_PVVP_Variation_Data_Provider $variation_data_provider= null;
+	private ?DRO_PVVP_Variation_Data_Provider $variation_data_provider = null;
 
 	/**
 	 * Prepares the test environment for each test method.
@@ -31,7 +43,7 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function tearDown(): void{
+	public function tearDown(): void {
 		parent::tearDown();
 		$this->variation_data_provider = null;
 	}
