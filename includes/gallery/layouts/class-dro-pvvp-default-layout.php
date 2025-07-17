@@ -19,7 +19,7 @@ namespace DRO\PVVP\Includes\Gallery\Layouts;
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Gallery_Interface as Gallery_Interface;
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Layout_Assets_Interface as Layout_Assets_Interface;
 use DRO\PVVP\Includes\Gallery\Builders\DRO_PVVP_Default_Builder as Default_Builder;
-use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider;
+use DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider as Provider;
 use DRO\PVVP\Includes\Exceptions\DRO_PVVP_Invalid_Product_Exception as Invalid_Product_Exception;
 use WC_Product;
 
@@ -71,7 +71,7 @@ class DRO_PVVP_Default_Layout implements Gallery_Interface, Layout_Assets_Interf
 	public function render( WC_Product $product ): string {
 		$this->enqueue_assets();
 
-		$provider   = DRO_PVVP_Variation_Data_Provider::get_instance()->set_product( $product );
+		$provider   = Provider::get_instance()->set_product( $product );
 		$variations = array();
 
 		try {
