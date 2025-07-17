@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Unit tests for the DRO_PVVP_Gallery_Factory class.
  *
@@ -91,5 +90,20 @@ class DRO_PVVP_Gallery_Factory_Test extends WP_UnitTestCase {
 		$this->expectExceptionMessage( 'Unknown gallery layout: unknown' );
 
 		$this->gallery_factory->create_gallery_layout( array( 'layout' => 'unknown' ) );
+	}
+
+	/**
+	 * Test the create_gallery_layout method with an empty layout value.
+	 * It should fall back to the 'default' layout.
+	 *
+	 * @covers ::create_gallery_layout
+	 * @return void
+	 */
+	public function test_create_gallery_layout_with_empty_layout(): void {
+		$empty_layout_config     = array( 'layout' => '' );
+		$expected_default_layout = $this->gallery_factory->create_gallery_layout( $empty_layout_config );
+
+		$this->assertInstanceOf( Default_Layout::class, $expected_default_layout );
+		$this->assertInstanceOf( Gallery_Interface::class, $expected_default_layout );
 	}
 }
