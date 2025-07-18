@@ -88,4 +88,74 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 		$this->assertInstanceOf( WC_Product::class, $product_prop_value );
 		$this->assertInstanceOf( Provider::class, $should_return_provider_object );
 	}
+
+	/**
+	 * Test that get_available_variations() returns a list of variation data arrays
+	 * for a valid variable product, or throws an Invalid_Product_Exception
+	 * if the product is not set or invalid.
+	 *
+	 * @covers ::get_available_variations
+	 *
+	 * @return void
+	 * @throws \DRO\PVVP\Includes\Exceptions\DRO_PVVP_Invalid_Product_Exception
+	 */
+	public function test_get_available_variations(): void {
+		// Create a variable product
+		$product_id_test = wp_insert_post(
+			array(
+				'post_title'  => 'Test Variable Product',
+				'post_status' => 'publish',
+				'post_type'   => 'product',
+			)
+		);
+
+		$product_variable_test = new WC_Product_Variable( $product_id_test );
+
+		// Set up attribute for variations (e.g., 'pa_color')
+		$attribute = new WC_Product_Attribute();
+		$attribute->set_name( 'pa_color' );
+		$attribute->set_options( array( 'red' ) );
+		$attribute->set_visible( true );
+		$attribute->set_variation( true );
+
+		$product_variable_test->set_attributes( array( $attribute ) );
+		$product_variable_test->save();
+
+		// Create two variations
+		$variation_id_test_1 = wp_insert_post(
+			array(
+				'post_parent' => $product_id_test,
+				'post_status' => 'publish',
+				'post_type'   => 'product_variation',
+			)
+		);
+		$variation_id_test_2 = wp_insert_post(
+			array(
+				'post_parent' => $product_id_test,
+				'post_status' => 'publish',
+				'post_type'   => 'product_variation',
+			)
+		);
+
+		$variation_test_1 = new WC_Product_Variation( $variation_id_test_1 );
+		$variation_test_1->set_attributes( array( 'pa_color' => 'red' ) );
+		$variation_test_1->set_regular_price( '9.99' );
+		$variation_test_1->save();
+
+		$variation_test_2 = new WC_Product_Variation( $variation_id_test_2 );
+		$variation_test_2->set_attributes( array( 'pa_color' => 'red' ) );
+		$variation_test_2->set_regular_price( '14.99' );
+		$variation_test_2->save();
+
+		// Assign the product to the provider and test
+		$this->provider->set_product( $product_variable_test );
+		$available_variations = $this->provider->get_available_variations();
+
+		// Assert the structure of returned variation data
+		$this->assertIsArray( $available_variations );
+		$this->assertNotEmpty( $available_variations );
+		$this->assertIsArray( $available_variations[0] );
+		$this->assertArrayHasKey( 'attributes', $available_variations[0] );
+		$this->assertArrayHasKey( 'display_price', $available_variations[0] );
+	}
 }
