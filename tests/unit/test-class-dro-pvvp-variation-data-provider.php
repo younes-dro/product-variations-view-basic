@@ -26,58 +26,105 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 	 */
 	private ?Provider $provider = null;
 
+	protected int $product_id;
+	protected WC_Product_Variable $product;
+
 	/**
 	 * Prepares the test environment for each test method.
 	 *
 	 * @return void
-	 * @see DRO\PVVP\Includes\Providers\DRO_PVVP_Variation_Data_Provider::get_instance()
 	 */
 	public function setUp(): void {
 		parent::setUp();
 		$this->provider = Provider::get_instance();
+
+		// Register 'pa_color' taxonomy
+		if ( ! taxonomy_exists( 'pa_color' ) ) {
+			register_taxonomy(
+				'pa_color',
+				'product_variation',
+				array(
+					'hierarchical' => false,
+					'label'        => 'Color',
+					'show_ui'      => false,
+					'query_var'    => true,
+					'rewrite'      => false,
+				)
+			);
+		}
+
+		// Insert term 'red' into 'pa_color'
+		$term = term_exists( 'red', 'pa_color' );
+		if ( ! $term ) {
+			$term = wp_insert_term( 'red', 'pa_color' );
+		}
+		$term_id = is_array( $term ) ? $term['term_id'] : $term;
+
+		// Create variable product
+		$this->product_id = wp_insert_post(
+			array(
+				'post_title'  => 'Test Variable Product',
+				'post_status' => 'publish',
+				'post_type'   => 'product',
+			)
+		);
+
+		$this->product = new WC_Product_Variable( $this->product_id );
+
+		// Add attribute to product
+		$attribute = new WC_Product_Attribute();
+		$attribute->set_id( 0 );
+		$attribute->set_name( 'pa_color' );
+		$attribute->set_options( array( 'red' ) );
+		$attribute->set_visible( true );
+		$attribute->set_variation( true );
+
+		$this->product->set_attributes( array( $attribute ) );
+		wp_set_object_terms( $this->product_id, 'red', 'pa_color' );
+		$this->product->save();
+
+		// Create variation
+		$variation_id = wp_insert_post(
+			array(
+				'post_title'  => 'Variation #1',
+				'post_status' => 'publish',
+				'post_parent' => $this->product_id,
+				'post_type'   => 'product_variation',
+			)
+		);
+
+		$variation = new WC_Product_Variation( $variation_id );
+		$variation->set_regular_price( '9.99' );
+		$variation->set_attributes( array( 'pa_color' => 'red' ) );
+		$variation->save();
+
+		// Refresh product
+		$this->product = wc_get_product( $this->product_id );
+		$this->provider->set_product( $this->product );
 	}
 
 	/**
 	 * Cleans up the test environment after each test method.
-	 * Resets the variation_data_provider to null to ensure a clean state for subsequent tests.
 	 *
 	 * @return void
 	 */
 	public function tearDown(): void {
-		parent::tearDown();
+		wp_delete_post( $this->product_id, true );
 		$this->provider = null;
+		parent::tearDown();
 	}
 
-	/**
-	 * Tests the singleton instance retrieval of DRO_PVVP_Variation_Data_Provider.
-	 *
-	 * Ensures that:
-	 * - The retrieved instance is of the correct class.
-	 * - The instance retrieved via `get_instance()` is the same as the one set in setUp().
-	 * - Multiple calls to `get_instance()` return the same object reference (singleton behavior).
-	 *
-	 * @return void
-	 */
 	public function test_get_instance(): void {
 		$instance1 = Provider::get_instance();
 		$instance2 = Provider::get_instance();
 
-		$this->assertInstanceOf( Provider::class, $this->provider, 'get_instance should return the same instance.' );
-		$this->assertSame( $this->provider, $instance1, 'get_instance should return the same instance.' );
-		$this->assertSame( $instance1, $instance2, 'get_instance should return the same instance.' );
+		$this->assertInstanceOf( Provider::class, $this->provider );
+		$this->assertSame( $this->provider, $instance1 );
+		$this->assertSame( $instance1, $instance2 );
 	}
 
-	/**
-	 * Test the set_product method.
-	 *
-	 * It should store the WC_Product instance and return the provider itself.
-	 *
-	 * @covers ::set_product
-	 * @return void
-	 */
 	public function test_set_product(): void {
-		$product = new WC_Product();
-
+		$product                       = new WC_Product();
 		$should_return_provider_object = $this->provider->set_product( $product );
 
 		$provider_reflection = new ReflectionClass( $this->provider );
@@ -89,71 +136,11 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 		$this->assertInstanceOf( Provider::class, $should_return_provider_object );
 	}
 
-	/**
-	 * Test that get_available_variations() returns a list of variation data arrays
-	 * for a valid variable product, or throws an Invalid_Product_Exception
-	 * if the product is not set or invalid.
-	 *
-	 * @covers ::get_available_variations
-	 *
-	 * @return void
-	 * @throws \DRO\PVVP\Includes\Exceptions\DRO_PVVP_Invalid_Product_Exception
-	 */
 	public function test_get_available_variations(): void {
-		// Create a variable product
-		$product_id_test = wp_insert_post(
-			array(
-				'post_title'  => 'Test Variable Product',
-				'post_status' => 'publish',
-				'post_type'   => 'product',
-			)
-		);
-
-		$product_variable_test = new WC_Product_Variable( $product_id_test );
-
-		// Set up attribute for variations (e.g., 'pa_color')
-		$attribute = new WC_Product_Attribute();
-		$attribute->set_name( 'pa_color' );
-		$attribute->set_options( array( 'red' ) );
-		$attribute->set_visible( true );
-		$attribute->set_variation( true );
-
-		$product_variable_test->set_attributes( array( $attribute ) );
-		$product_variable_test->save();
-
-		// Create two variations
-		$variation_id_test_1 = wp_insert_post(
-			array(
-				'post_parent' => $product_id_test,
-				'post_status' => 'publish',
-				'post_type'   => 'product_variation',
-			)
-		);
-		$variation_id_test_2 = wp_insert_post(
-			array(
-				'post_parent' => $product_id_test,
-				'post_status' => 'publish',
-				'post_type'   => 'product_variation',
-			)
-		);
-
-		$variation_test_1 = new WC_Product_Variation( $variation_id_test_1 );
-		$variation_test_1->set_attributes( array( 'pa_color' => 'red' ) );
-		$variation_test_1->set_regular_price( '9.99' );
-		$variation_test_1->save();
-
-		$variation_test_2 = new WC_Product_Variation( $variation_id_test_2 );
-		$variation_test_2->set_attributes( array( 'pa_color' => 'red' ) );
-		$variation_test_2->set_regular_price( '14.99' );
-		$variation_test_2->save();
-
-		// Assign the product to the provider and test
-		$this->provider->set_product( $product_variable_test );
 		$available_variations = $this->provider->get_available_variations();
 
-		// Assert the structure of returned variation data
 		$this->assertIsArray( $available_variations );
-		$this->assertNotEmpty( $available_variations );
+		$this->assertNotEmpty( $available_variations, 'Expected at least one available variation.' );
 		$this->assertIsArray( $available_variations[0] );
 		$this->assertArrayHasKey( 'attributes', $available_variations[0] );
 		$this->assertArrayHasKey( 'display_price', $available_variations[0] );
