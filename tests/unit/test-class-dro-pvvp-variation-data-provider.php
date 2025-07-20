@@ -68,7 +68,6 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 				'post_type'   => 'product',
 			)
 		);
-
 		$this->product = new WC_Product_Variable( $this->product_id );
 
 		// Add attribute to product
@@ -78,7 +77,6 @@ class DRO_PVVP_Variation_Data_Provider_Test extends WP_UnitTestCase {
 		$attribute->set_options( array( 'red' ) );
 		$attribute->set_visible( true );
 		$attribute->set_variation( true );
-
 		$this->product->set_attributes( array( $attribute ) );
 		wp_set_object_terms( $this->product_id, 'red', 'pa_color' );
 		$this->product->save();
