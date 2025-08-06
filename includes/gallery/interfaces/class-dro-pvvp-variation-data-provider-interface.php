@@ -4,7 +4,7 @@
  *
  * @package DRO\PVVP\Includes\Interfaces
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP\Includes\Gallery\Interfaces;
 
 use DRO\PVVP\Includes\Exceptions\DRO_PVVP_Invalid_Product_Exception;

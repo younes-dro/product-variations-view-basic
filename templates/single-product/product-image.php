@@ -14,6 +14,7 @@
  * @package WooCommerce\Templates
  * @version 9.0.0
  */
+declare(strict_types=1);
 
 use DRO\PVVP\Includes\Gallery\Factories\DRO_PVVP_Gallery_Factory as Gallery_Factory;
 

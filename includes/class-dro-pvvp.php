@@ -10,6 +10,7 @@
  * @version 1.0.0
  * @since 1.0.0
  */
+declare(strict_types=1);
 
 namespace DRO\PVVP\Includes;
 
@@ -129,7 +130,7 @@ class DRO_PVVP {
 			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
-		_doing_it_wrong( __FUNCTION__, esc_html( $unserializing_message ), esc_xml( $this->version ) );
+		_doing_it_wrong( __FUNCTION__, esc_html( $unserializing_message ), esc_html( $this->version ) );
 	}
 
 

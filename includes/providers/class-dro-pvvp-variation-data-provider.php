@@ -10,7 +10,7 @@
  * @author      Younes DRO <younesdro@gmail.com>
  * @license     GPL-2.0-or-later
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP\Includes\Providers;
 
 use WC_Product;

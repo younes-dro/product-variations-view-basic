@@ -90,4 +90,8 @@ class DRO_PVVP_Default_Layout_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'custom', $builder_config['data_attributes'] );
 		$this->assertSame( 'value', $builder_config['data_attributes']['custom'] );
 	}
+
+	public function test_render(){
+
+	}
 }

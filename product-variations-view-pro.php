@@ -21,7 +21,7 @@
  *
  * @package Product Variations View Pro
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP;
 
 use DRO\PVVP\Includes\DRO_PVVP;

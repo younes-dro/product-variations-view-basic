@@ -10,7 +10,7 @@
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP\Includes;
 
 use function DRO\PVVP\dro_pvvp;
