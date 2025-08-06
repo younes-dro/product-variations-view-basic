@@ -14,6 +14,7 @@
  * @package WooCommerce\Templates
  * @version 9.0.0
  */
+declare(strict_types=1);
 
 use DRO\PVVP\Includes\Gallery\Factories\DRO_PVVP_Gallery_Factory as Gallery_Factory;
 
@@ -33,7 +34,7 @@ $gallery_config = apply_filters(
 	'dro_pvvp_gallery_config',
 	array(
 		'layout'           => get_option( 'dro_pvvp_gallery_layout', 'default' ),
-		'thumb_position'   => get_option( 'dro_pvvp_thumb_position', 'bottom' ),
+		'thumb_position'   => get_option( 'dro_pvvp_thumb_position', 'left' ),
 		'slider_enabled'   => get_option( 'dro_pvvp_slider_enabled', true ),
 		'lightbox_enabled' => get_option( 'dro_pvvp_lightbox_enabled', false ),
 		'lazy_loading'     => get_option( 'dro_pvvp_lazy_loading', true ),
@@ -46,10 +47,10 @@ $gallery_config = apply_filters(
 
 try {
 	$gallery_html = Gallery_Factory::get_instance()
-	->create_gallery_layout( $gallery_config['layout'] )
+	->create_gallery_layout( $gallery_config )
 	->render( $product );
-} catch ( Exception $e ) {
-	
+} catch ( Throwable $e ) {
+
 	error_log( 'DRO_PVVP Gallery Error: ' . $e->getMessage() );
 	// Load default WooCommerce product image template
 	wc_get_template( 'single-product/product-image.php' );
@@ -58,6 +59,3 @@ try {
 
 // Output the gallery
 echo $gallery_html;
-
-?>
-

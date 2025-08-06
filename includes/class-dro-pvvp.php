@@ -10,6 +10,7 @@
  * @version 1.0.0
  * @since 1.0.0
  */
+declare(strict_types=1);
 
 namespace DRO\PVVP\Includes;
 
@@ -101,8 +102,7 @@ class DRO_PVVP {
 	 */
 	public static function start( DRO_PVVP_Dependencies $dependencies ): self {
 
-		return  self::$instance ??= new self( $dependencies );
-
+		return self::$instance ??= new self( $dependencies );
 	}
 
 	/**
@@ -130,7 +130,7 @@ class DRO_PVVP {
 			esc_html__( 'You cannot clone instances of %s.', 'product-variations-view-pro' ),
 			get_class( $this )
 		);
-		_doing_it_wrong( __FUNCTION__, esc_html( $unserializing_message ), esc_xml( $this->version ) );
+		_doing_it_wrong( __FUNCTION__, esc_html( $unserializing_message ), esc_html( $this->version ) );
 	}
 
 
@@ -142,7 +142,6 @@ class DRO_PVVP {
 	public function check_environment() {
 
 		if ( ! self::$dependencies->check_php_version() && is_plugin_active( plugin_basename( DRO_PVVP_FILE ) ) ) {
-
 			$this->deactivate_plugin();
 			$this->add_admin_notice(
 				'bad_environment',
@@ -194,12 +193,10 @@ class DRO_PVVP {
 	public function add_plugin_notices() {
 
 		if ( ! self::$dependencies->check_wp_version() ) {
-
 			$this->add_admin_notice( 'update_wordpress', 'error', self::$dependencies->get_wp_notice() );
 		}
 
 		if ( ! self::$dependencies->check_wc_version() ) {
-
 			$this->add_admin_notice( 'update_woocommerce', 'error', self::$dependencies->get_wc_notice() );
 		}
 	}
@@ -212,7 +209,6 @@ class DRO_PVVP {
 	public function admin_notices() {
 
 		foreach ( (array) $this->notices as $notice_key => $notice ) {
-
 			echo "<div class='" . esc_attr( $notice['class'] ) . "'><p>";
 			echo wp_kses( $notice['message'], array( 'a' => array( 'href' => array() ) ) );
 			echo '</p></div>';
@@ -230,7 +226,6 @@ class DRO_PVVP {
 			return;
 		}
 		if ( is_admin() ) {
-
 			DRO_PVVP_Admin::start_admin();
 		}
 	}
