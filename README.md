@@ -1,9 +1,13 @@
-# Product Variations View Pro - Free Version
+# Product Variations View Pro – Free Version
 
-![WordPress Plugin](https://img.shields.io/wordpress/plugin/dt/product-variations-view-pro)
 ![License: GPL v2](https://img.shields.io/badge/License-GPLv2-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
 
-Product Variations View Pro (Free Version) is a WooCommerce plugin that enhances the display of variable products using a simple, mobile-responsive carousel. It’s ideal for small stores seeking a more interactive way to display product variations.
+[Download on WordPress.org](https://wordpress.org/plugins/product-variations-view-pro/)
+
+**Product Variations View Pro (Free Version)** is a WooCommerce plugin that improves the display of variable products with a clean, mobile-responsive carousel.  
+It’s perfect for small stores that want to showcase product variations in a more interactive and user-friendly way.
+
 
 ## Features
 
@@ -13,9 +17,7 @@ Product Variations View Pro (Free Version) is a WooCommerce plugin that enhances
 - **Responsive Design**: The carousel is fully responsive across all devices.
 - **Compatibility**: Works with most WooCommerce-ready themes and extensions.
 
-## Why Upgrade to the Pro Version?
 
-The **Pro version** offers advanced features, such as multi-variation AJAX add-to-cart, more customization options, and priority support. Check out the pro version for even more flexibility and functionality!
 
 ## Installation
 
@@ -24,20 +26,6 @@ The **Pro version** offers advanced features, such as multi-variation AJAX add-t
 3. Activate the plugin through the 'Plugins' screen in WordPress.
 4. Configure the carousel display by editing any WooCommerce variable product.
 
-## Usage
-
-1. Navigate to any variable product in your WooCommerce store.
-2. Enable the carousel by selecting the product attributes.
-3. Users can browse variations in the carousel and select the desired quantity.
-4. Add variations to the cart manually.
-
-## Screenshots
-
-![Screenshot 1](./assets/screenshot-1.png)
-_Example of the basic carousel layout for a variable product._
-
-![Screenshot 2](./assets/screenshot-2.png)
-_Showcase of manual add-to-cart functionality for individual variations._
 
 ## Changelog
 
