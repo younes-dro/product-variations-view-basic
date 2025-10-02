@@ -13,19 +13,23 @@
 declare(strict_types=1);
 namespace DRO\PVVP\Includes;
 
+use function DRO\PVVP\Includes\dro_pvvp_template_carousel_indicators;
+use function DRO\PVVP\Includes\dro_pvvp_template_reset_button;
+use function DRO\PVVP\Includes\dro_pvvp_template_add_to_cart_wrap;
+use function DRO\PVVP\Includes\dro_pvvp_template_variation_data;
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 // Carousel Indicators.
-add_filter( 'dro_pvvp_carousel_indicators', 'dro_pvvp_template_carousel_indicators', 10, 1 );
+add_filter( 'dro_pvvp_carousel_indicators', __NAMESPACE__ .'\dro_pvvp_template_carousel_indicators', 10, 1 );
 
 // Reset Button.
-add_action( 'dro_pvvp_add_to_cart_wrap', 'dro_pvvp_template_reset_button', 20 );
+add_action( 'dro_pvvp_add_to_cart_wrap', __NAMESPACE__ .'\dro_pvvp_template_reset_button', 20 );
 
 // Single product add-to-cart buttons area template.
-add_action( 'dro_pvvp_add_to_cart_wrap', 'dro_pvvp_template_add_to_cart_wrap', 10 );
+add_action( 'dro_pvvp_add_to_cart_wrap', __NAMESPACE__ .'\dro_pvvp_template_add_to_cart_wrap', 10 );
 
 // Variation data.
-add_action( 'dro_pvvp_variation_data', 'dro_pvvp_template_variation_data', 10, 1 );
+add_action( 'dro_pvvp_variation_data', __NAMESPACE__ .'\dro_pvvp_template_variation_data', 10, 1 );
