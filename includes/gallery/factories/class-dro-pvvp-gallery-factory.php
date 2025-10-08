@@ -41,7 +41,7 @@ class DRO_PVVP_Gallery_Factory {
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	private function __construct() {
 	}
 
 	/**
