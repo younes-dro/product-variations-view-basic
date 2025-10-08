@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace DRO\PVVP\Includes\Gallery\Factories;
 
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Gallery_Interface as Gallery_Interface;
-// use DRO\PVVP\Includes\Gallery\Layouts\DRO_PVVP_Default_Layout as Default_Layout;
 use Exception;
 
 defined( 'ABSPATH' ) || exit;
@@ -61,13 +60,14 @@ class DRO_PVVP_Gallery_Factory {
 	 * @throws Exception
 	 */
 	public function create_gallery_layout( array $gallery_config ): Gallery_Interface {
-
-		$layout     = $gallery_config['layout'] ?: 'default';
+		$layout     = trim( strtolower( $gallery_config['layout'] ?? 'default' ) );
 		$class_name = '\\DRO\\PVVP\\Includes\\Gallery\\Layouts\\DRO_PVVP_' . ucfirst( $layout ) . '_Layout';
 
 		if ( class_exists( $class_name ) ) {
-			return new $class_name();
+			return new $class_name( $gallery_config );
 		}
+
+		error_log( "Gallery layout class not found: {$class_name}" );
 		throw new \InvalidArgumentException( "Unknown layout class: {$class_name}" );
 	}
 }
