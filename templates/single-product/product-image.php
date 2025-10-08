@@ -52,9 +52,12 @@ try {
 } catch ( Throwable $e ) {
 
 	error_log( 'DRO_PVVP Gallery Error: ' . $e->getMessage() );
+	add_filter( 'disable_variation_image_collections', '__return_true' );
 	// Load default WooCommerce product image template
 	wc_get_template( 'single-product/product-image.php' );
+	remove_filter( 'disable_variation_image_collections', '__return_true' );
 	return;
+
 }
 
 // Output the gallery
