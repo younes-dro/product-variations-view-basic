@@ -33,6 +33,8 @@ class DRO_PVVP_Default_Layout implements Gallery_Interface, Layout_Assets_Interf
 	protected Default_Builder $builder;
 
 	public function __construct( array $config = array() ) {
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_assets' ) );
+
 		$this->builder = new Default_Builder();
 
 		if ( isset( $config['layout'] ) ) {
@@ -69,7 +71,9 @@ class DRO_PVVP_Default_Layout implements Gallery_Interface, Layout_Assets_Interf
 	}
 
 	public function render( WC_Product $product ): string {
-		$this->enqueue_assets();
+
+		wp_enqueue_style( 'dro-pvvp-layout-default' );
+		wp_enqueue_script( 'dro-pvvp-layout-default' );
 
 		$provider   = Provider::get_instance()->set_product( $product );
 		$variations = array();
@@ -100,23 +104,21 @@ class DRO_PVVP_Default_Layout implements Gallery_Interface, Layout_Assets_Interf
 		return sprintf( '<div class="dro-pvvp-gallery-layout-wrapper">%s</div>', $output );
 	}
 
-	public function enqueue_assets(): void {
+	public function register_assets(): void {
+
 		wp_register_style(
 			'dro-pvvp-layout-default',
-			plugins_url( 'assets/css/frontend/layout-default.css', DRO_PVVP_FILE ),
+			plugins_url( 'assets/css/frontend/layouts/default/layout-default.css', DRO_PVVP_FILE ),
 			array(),
 			DRO_PVVP_VERSION
 		);
 
 		wp_register_script(
 			'dro-pvvp-layout-default',
-			plugins_url( 'assets/js/frontend/layout-default.js', DRO_PVVP_FILE ),
+			plugins_url( 'assets/js/frontend/layouts/defaults/layout-default.js', DRO_PVVP_FILE ),
 			array( 'jquery' ),
 			DRO_PVVP_VERSION,
 			true
 		);
-
-		wp_enqueue_style( 'dro-pvvp-layout-default' );
-		wp_enqueue_script( 'dro-pvvp-layout-default' );
 	}
 }

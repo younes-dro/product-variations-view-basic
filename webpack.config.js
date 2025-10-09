@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const TARGET_ENTRY  = process.env.ENTRY || null;
+const TARGET_ENTRY = process.env.ENTRY || null;
 const entries = {
   settings: './src/index.js',
   'dro-pvvp-add-variation-images': './src/variation-images/dro-pvvp-add-variation-images.ts',
@@ -46,10 +46,10 @@ module.exports = {
       new TerserPlugin({
         terserOptions: {
           format: {
-            comments: /@license|@preserve|^!/i, 
+            comments: /@license|@preserve|^!/i,
           },
         },
-        extractComments: false, 
+        extractComments: false,
       }),
     ],
   },

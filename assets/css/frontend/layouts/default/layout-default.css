@@ -1,0 +1,23 @@
+
+/*!
+ * Product Variations View Pro - Layout Styles
+ *
+ * Author: Younes DRO (younesdro@gmail.com)
+ * Date: 10/09/2025
+ * Released under the GPLv2.0 or later
+ */
+div.dro-pvvp-gallery-layout-wrapper {
+  border: 1px solid #f0f;
+}
+div.dro-pvvp-gallery-layout-wrapper div.dro-pvvp-gallery-default {
+  border: 1px solid #0f0;
+  display: none;
+  /* Thumbs */
+  /* Main Image*/
+}
+div.dro-pvvp-gallery-layout-wrapper div.dro-pvvp-gallery-default.active {
+  display: block;
+}
+div.dro-pvvp-gallery-layout-wrapper div.dro-pvvp-gallery-default .dro-pvvp-main-images .dro-pvvp-main-image.active {
+  border: 1px solid #eee;
+}
