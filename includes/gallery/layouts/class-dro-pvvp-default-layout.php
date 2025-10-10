@@ -108,14 +108,14 @@ class DRO_PVVP_Default_Layout implements Gallery_Interface, Layout_Assets_Interf
 
 		wp_register_style(
 			'dro-pvvp-layout-default',
-			plugins_url( 'assets/css/frontend/layouts/default/layout-default.css', DRO_PVVP_FILE ),
+			plugins_url( 'assets/css/frontend/layouts/default/default-layout.css', DRO_PVVP_FILE ),
 			array(),
 			DRO_PVVP_VERSION
 		);
 
 		wp_register_script(
 			'dro-pvvp-layout-default',
-			plugins_url( 'assets/js/frontend/layouts/defaults/layout-default.js', DRO_PVVP_FILE ),
+			plugins_url( 'assets/js/frontend/layouts/default/default-layout.js', DRO_PVVP_FILE ),
 			array( 'jquery' ),
 			DRO_PVVP_VERSION,
 			true
