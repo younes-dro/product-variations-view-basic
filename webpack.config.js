@@ -2,10 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const TARGET_ENTRY  = process.env.ENTRY || null;
+const TARGET_ENTRY = process.env.ENTRY || null;
 const entries = {
-  settings: './src/index.js',
+  'settings': './src/index.js',
   'dro-pvvp-add-variation-images': './src/variation-images/dro-pvvp-add-variation-images.ts',
+  'default-layout': './src/frontend/layouts/default-layout.ts',
 }
 
 const filteredEntries = TARGET_ENTRY ? { [TARGET_ENTRY]: entries[TARGET_ENTRY] } : entries;
@@ -13,8 +14,26 @@ const filteredEntries = TARGET_ENTRY ? { [TARGET_ENTRY]: entries[TARGET_ENTRY] }
 module.exports = {
   entry: filteredEntries,
   output: {
-    path: path.resolve(__dirname, 'assets/js/admin'),
-    filename: process.env.NODE_ENV === 'production' ? '[name].min.js' : '[name].js',
+    path: path.resolve(__dirname, 'assets/js/'),
+    filename: (pathData) => {
+      const name = pathData.chunk.name;
+
+      // Admin scripts
+      if (name === 'settings' || name === 'dro-pvvp-add-variation-images') {
+        return `admin/${name}${process.env.NODE_ENV === 'production' ? '.min' : ''}.js`;
+      }
+
+      // Frontend layouts
+      if (name.endsWith('-layout')) {
+        // const endIndex = name.length - 7;
+        // const prefixLayout = name.substring(0, endIndex )
+        const prefixLayout = name.replace('-layout', '')
+        return `frontend/layouts/${prefixLayout}/${name}${process.env.NODE_ENV === 'production' ? '.min' : ''}.js`;
+      }
+
+      // Default fallback
+      return `${name}${process.env.NODE_ENV === 'production' ? '.min' : ''}.js`;
+    },
   },
   module: {
     rules: [
@@ -46,10 +65,10 @@ module.exports = {
       new TerserPlugin({
         terserOptions: {
           format: {
-            comments: /@license|@preserve|^!/i, 
+            comments: /@license|@preserve|^!/i,
           },
         },
-        extractComments: false, 
+        extractComments: false,
       }),
     ],
   },

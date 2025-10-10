@@ -9,7 +9,7 @@
  * @author   Younes DRO
  * @email    younesdro@gmail.com
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
