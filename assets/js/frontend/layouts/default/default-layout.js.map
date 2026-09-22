@@ -1,0 +1,1 @@
+{"version":3,"file":"frontend/layouts/default/default-layout.js","mappings":";;;;;;;;;;;;AAAa;AACb","sources":["webpack://product-variations-view-react/./src/frontend/layouts/default-layout.ts"],"sourcesContent":["\"use strict\";\nconsole.log('Slick Carousel');\n"],"names":[],"sourceRoot":""}

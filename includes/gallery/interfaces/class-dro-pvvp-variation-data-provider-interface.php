@@ -4,9 +4,10 @@
  *
  * @package DRO\PVVP\Includes\Interfaces
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP\Includes\Gallery\Interfaces;
 
+use DRO\PVVP\Includes\Exceptions\DRO_PVVP_Invalid_Product_Exception;
 use WC_Product;
 
 defined( 'ABSPATH' ) || exit;
@@ -22,11 +23,13 @@ interface DRO_PVVP_Variation_Data_Provider_Interface {
 	public function set_product( WC_Product $product ): self;
 
 	/**
-	 * Get all available variations for the current product
+	 * Get all available variations for the current product.
 	 *
-	 * @return array Array of available variations
+	 * @return array List of available variation data.
+	 * @throws DRO_PVVP_Invalid_Product_Exception If the product is not set or is not variable.
 	 */
 	public function get_available_variations(): array;
+
 
 	/**
 	 * Get main image for a variation

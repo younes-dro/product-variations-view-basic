@@ -17,7 +17,7 @@
  * @version   1.0.0
  * @since     1.0.0
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP\Includes;
 
 use function DRO\PVVP\dro_pvvp;

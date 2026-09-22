@@ -1,0 +1,56 @@
+div.dro-pvvp-gallery-layout-wrapper {
+  border: 1px solid #f0f;
+  div.dro-pvvp-gallery-default {
+    border: 1px solid #0f0;
+    display: none;
+    &.active {
+      display: block;
+    }
+    &.thumbs-left {
+      //
+    }
+    &.thumbs-right {
+      //
+    }
+    &.thumbs-top {
+      //
+    }
+    &.thumbs-bottom {
+      //
+    }
+    &.slider-enabled {
+      //
+    }
+
+    /* Thumbs */
+    .dro-pvvp-thumbnails {
+      //
+      &.dro-pvvp-thumbnails-left {
+        //
+      }
+      .dro-pvvp-thumbs-wrapper {
+        //
+        .dro-pvvp-thumb {
+          //
+          &.active {
+            //
+          }
+          img{
+            //
+          }
+        }
+      }
+    }
+
+    /* Main Image*/
+    .dro-pvvp-main-images{
+        //
+        .dro-pvvp-main-image{
+          //
+          &.active{
+            border: 1px solid #eee;
+          }
+        }
+    }
+  }
+}

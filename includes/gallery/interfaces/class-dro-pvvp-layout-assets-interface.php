@@ -35,5 +35,5 @@ interface DRO_PVVP_Layout_Assets_Interface {
 	 *
 	 * @return void
 	 */
-	public function enqueue_assets(): void;
+	public function register_assets(): void;
 }

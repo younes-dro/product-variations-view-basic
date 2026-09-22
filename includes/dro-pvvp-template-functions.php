@@ -10,6 +10,8 @@
  * @since    1.0.0
  * @version  1.0.0
  */
+declare(strict_types=1);
+namespace DRO\PVVP\Includes;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,14 +38,11 @@ if ( ! function_exists( 'dro_pvvp_variation_attribute_options' ) ) {
 		$current_attribute    = $variation_attributes[ $selected_key ];
 
 		if ( isset( $current_attribute ) && ! empty( $current_attribute ) ) {
-
 			foreach ( $variation_attributes as $key_attribute => $value ) {
-
 				if ( $selected_key === $key_attribute && ! empty( $value ) ) {
 					echo '<span name="attribute_' . esc_html( $attribute_name ) . '" class="attribute-name">';
 					$tax = str_replace( 'attribute_', '', $key_attribute );
 					if ( $product && taxonomy_exists( $attribute_name ) && get_term_by( 'slug', $value, $tax ) ) {
-
 						$attr_name = esc_html( apply_filters( 'woocommerce_variation_option_name', get_term_by( 'slug', $value, $tax )->name, get_term_by( 'slug', $value, $tax ), $attribute_name, $product ) );
 						echo esc_html( $attr_name );
 					} else {
@@ -60,10 +59,8 @@ if ( ! function_exists( 'dro_pvvp_variation_attribute_options' ) ) {
 			$html .= '<option value="">' . esc_html__( 'Choose an option', 'product-variations-view-pro' ) . '</option>';
 
 			foreach ( $options as $key_option => $option ) {
-
 				if ( $product && taxonomy_exists( $attribute_name ) && get_term_by( 'slug', $option, $attribute_name ) ) {
 					$attr_name = esc_html( apply_filters( 'woocommerce_variation_option_name', get_term_by( 'slug', $option, $attribute_name )->name, get_term_by( 'slug', $option, $attribute_name ), $attribute_name, $product ) );
-
 				} else {
 					$attr_name = esc_html( apply_filters( 'woocommerce_variation_option_name', $option, null, $attribute_name, $product ) );
 				}
@@ -83,7 +80,6 @@ if ( ! function_exists( 'dro_pvvp_variation_attribute_options' ) ) {
 					),
 				)
 			);
-
 		}
 	}
 }
