@@ -9,10 +9,10 @@
  * Text Domain: product-variations-view-pro
  * Domain Path: /languages
  * Requires PHP: 7.4
- * Requires at least: 5.7
- * Tested up to: 6.7
+ * Requires at least: 6.5
+ * Tested up to: 7.0
  * WC requires at least: 5.8
- * WC tested up to: 9.4
+ * WC tested up to: 10.0
  * Requires Plugins: woocommerce
  *
  * Copyright: © 2024 Younes DRO

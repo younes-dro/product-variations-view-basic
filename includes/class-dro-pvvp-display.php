@@ -304,7 +304,8 @@ class DRO_PVVP_Display {
 		 * @hook  filter disable_variation_image_collections
 		 * @param bool $disabled  Whether to disable the override. Default false.
 		 */
-		if ( apply_filters( 'disable_variation_image_collections', false ) ) {
+		$disable_image_collections = apply_filters( 'disable_variation_image_collections', false );
+		if ( $disable_image_collections ) {
 			return $current_template;
 		}
 
