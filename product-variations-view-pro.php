@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Plugin Name: Product Variations View Pro
  * Plugin URI: https://github.com/younes-dro/product-variations-view-pro
- * Description: Product Variation View Pro enhances WooCommerce variable products by displaying variations in an intuitive, carousel-style interface. It allows customers to add multiple product variations to the cart in a single action, streamlining the shopping experience.
+ * Description: Display additional images for each variation to give customers a clearer view of their options and improve the shopping experience. Customers can also select and add multiple product variations to the cart in a single action, making it faster and easier to shop.
  * Version: 1.1.0
  * Author: Younes DRO
  * Author URI: https://github.com/younes-dro
@@ -21,14 +22,16 @@
  *
  * @package Product Variations View Pro
  */
+
 declare(strict_types=1);
+
 namespace DRO\PVVP;
 
 use DRO\PVVP\Includes\DRO_PVVP;
 use DRO\PVVP\Includes\DRO_PVVP_Dependencies;
 
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 $dro_pvvp_metadata = get_file_data(
@@ -37,39 +40,40 @@ $dro_pvvp_metadata = get_file_data(
 		'Version' => 'Version',
 	)
 );
-define( 'DRO_PVVP_VERSION', $dro_pvvp_metadata['Version'] );
-define( 'DRO_PVVP_FILE', __FILE__ );
-define( 'DRO_PVVP_NAME', 'Product Variations View Pro' );
-define( 'DRO_PVVP_INCLUDES_FOLDER', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/' );
+define('DRO_PVVP_VERSION', $dro_pvvp_metadata['Version']);
+define('DRO_PVVP_FILE', __FILE__);
+define('DRO_PVVP_NAME', 'Product Variations View Pro');
+define('DRO_PVVP_INCLUDES_FOLDER', untrailingslashit(plugin_dir_path(__FILE__)) . '/includes/');
 
 /**
  * Checks the server environment and deactivates plugins as necessary.
  *
  * @since 1.0.0
  */
-function activation_check() {
+function activation_check()
+{
 	$dependencies = new DRO_PVVP_Dependencies();
-	if ( ! $dependencies->check_php_version() ) {
-		deactivate_plugins( plugin_basename( DRO_PVVP_FILE ) );
+	if (! $dependencies->check_php_version()) {
+		deactivate_plugins(plugin_basename(DRO_PVVP_FILE));
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not needed as "activate" is used for display purposes only.
-		if ( isset( $_GET['activate'] ) ) {
-			unset( $_GET['activate'] );
+		if (isset($_GET['activate'])) {
+			unset($_GET['activate']);
 		}
 
 		wp_die(
 			sprintf(
 				/* translators: %s is the plugin name. */
-				esc_html__( '%s could not be activated.', 'product-variations-view-pro' ),
-				esc_html( DRO_PVVP_NAME )
-			) . esc_html( $dependencies->get_php_notice() )
+				esc_html__('%s could not be activated.', 'product-variations-view-pro'),
+				esc_html(DRO_PVVP_NAME)
+			) . esc_html($dependencies->get_php_notice())
 		);
 	}
-	update_option( 'dro_pvvp_is_enabled', 1 );
-	update_option( 'dro_pvvp_show_range_price', 1 );
-	update_option( 'dro_pvvp_show_main_product_short_description', 1 );
-	update_option( 'dro_pvvp_show_product_gallery', 1 );
+	update_option('dro_pvvp_is_enabled', 1);
+	update_option('dro_pvvp_show_range_price', 1);
+	update_option('dro_pvvp_show_main_product_short_description', 1);
+	update_option('dro_pvvp_show_product_gallery', 1);
 }
-register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ . '\\activation_check' );
+register_activation_hook(DRO_PVVP_FILE, __NAMESPACE__ . '\\activation_check');
 /**
  * Registers the custom autoloader for plugin classes.
  *
@@ -86,24 +90,25 @@ register_activation_hook( DRO_PVVP_FILE, __NAMESPACE__ . '\\activation_check' );
  * @since 1.1.0
  * @return void
  */
-function register_autoloader() {
+function register_autoloader()
+{
 	spl_autoload_register(
-		function ( $class_name ) {
+		function ($class_name) {
 			// Ensure the class is part of the current namespace.
-			if ( strncmp( __NAMESPACE__ . '\\', $class_name, strlen( __NAMESPACE__ ) + 1 ) !== 0 ) {
+			if (strncmp(__NAMESPACE__ . '\\', $class_name, strlen(__NAMESPACE__) + 1) !== 0) {
 				return;
 			}
 
-			$class_parts    = explode( '\\', $class_name );
-			$class_basename = array_pop( $class_parts );
-			$class_filename = strtolower( str_replace( '_', '-', $class_basename ) );
+			$class_parts    = explode('\\', $class_name);
+			$class_basename = array_pop($class_parts);
+			$class_filename = strtolower(str_replace('_', '-', $class_basename));
 
-			$class_parts   = array_map( 'strtolower', $class_parts );
-			$relative_path = implode( '/', array_slice( $class_parts, 2 ) );
+			$class_parts   = array_map('strtolower', $class_parts);
+			$relative_path = implode('/', array_slice($class_parts, 2));
 
 			$full_path = __DIR__ . '/' . $relative_path . '/class-' . $class_filename . '.php';
 
-			if ( file_exists( $full_path ) ) {
+			if (file_exists($full_path)) {
 				require $full_path;
 			}
 		}
@@ -113,9 +118,10 @@ function register_autoloader() {
 /**
  * Returns the main instance of  DRO_PVVP.
  */
-function dro_pvvp() {
+function dro_pvvp()
+{
 	register_autoloader();
-	return DRO_PVVP::start( new DRO_PVVP_Dependencies() );
+	return DRO_PVVP::start(new DRO_PVVP_Dependencies());
 }
 
 dro_pvvp();
@@ -126,8 +132,8 @@ dro_pvvp();
 add_action(
 	'before_woocommerce_init',
 	function () {
-		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
 		}
 	}
 );
