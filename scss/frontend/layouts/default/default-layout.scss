@@ -2,7 +2,8 @@ div.dro-pvvp-gallery-layout-wrapper {
   border: 1px solid #f0f;
   div.dro-pvvp-gallery-default {
     border: 1px solid #0f0;
-    display: none;
+    padding: 5px 0 5px 0;
+    // display: none;
     &.active {
       display: block;
     }

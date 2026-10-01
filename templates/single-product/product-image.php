@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Single Product Image
  *
@@ -14,50 +15,63 @@
  * @package WooCommerce\Templates
  * @version 9.0.0
  */
+
 declare(strict_types=1);
 
 use DRO\PVVP\Includes\Gallery\Factories\DRO_PVVP_Gallery_Factory as Gallery_Factory;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 // Note: `wc_get_gallery_image_html` was added in WC 3.3.2 and did not exist prior. This check protects against theme overrides being used on older versions of WC.
-if ( ! function_exists( 'wc_get_gallery_image_html' ) ) {
+if (! function_exists('wc_get_gallery_image_html')) {
 	return;
 }
 
 global $product;
 
-if ( ! $product ) {
+if (! $product) {
 	return;
 }
 $gallery_config = apply_filters(
 	'dro_pvvp_gallery_config',
 	array(
-		'layout'           => get_option( 'dro_pvvp_gallery_layout', 'default' ),
-		'thumb_position'   => get_option( 'dro_pvvp_thumb_position', 'left' ),
-		'slider_enabled'   => get_option( 'dro_pvvp_slider_enabled', true ),
-		'lightbox_enabled' => get_option( 'dro_pvvp_lightbox_enabled', false ),
-		'lazy_loading'     => get_option( 'dro_pvvp_lazy_loading', true ),
-		'thumb_size'       => get_option( 'dro_pvvp_thumb_size', 'thumbnail' ),
-		'main_size'        => get_option( 'dro_pvvp_main_size', 'large' ),
+		'layout'           => get_option('dro_pvvp_gallery_layout', 'default'),
+		'thumb_position'   => get_option('dro_pvvp_thumb_position', 'left'),
+		'slider_enabled'   => get_option('dro_pvvp_slider_enabled', true),
+		'lightbox_enabled' => get_option('dro_pvvp_lightbox_enabled', false),
+		'lazy_loading'     => get_option('dro_pvvp_lazy_loading', true),
+		'thumb_size'       => get_option('dro_pvvp_thumb_size', 'thumbnail'),
+		'main_size'        => get_option('dro_pvvp_main_size', 'large'),
 	),
 	$product
 );
 
-
+error_log( 'Is AJAX: ' . ( wp_doing_ajax() ? 'yes' : 'no' ) );
+error_log( 'Is REST: ' . ( defined( 'REST_REQUEST' ) && REST_REQUEST ? 'yes' : 'no' ) );
+error_log( 'Current action: ' . current_action() );
+error_log( 'Current filter stack: ' . print_r( $GLOBALS['wp_current_filter'], true ) );
+error_log( 'Backtrace: ' . print_r(
+	array_map(
+		function( $frame ) {
+			return ( $frame['class'] ?? '' ) . ( $frame['type'] ?? '' ) . $frame['function'] . '()' .
+				( isset( $frame['file'] ) ? ' @ ' . $frame['file'] . ':' . $frame['line'] : '' );
+		},
+		debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS )
+	),
+	true
+) );
 try {
 	$gallery_html = Gallery_Factory::get_instance()
-	->create_gallery_layout( $gallery_config )
-	->render( $product );
-} catch ( Throwable $e ) {
+		->create_gallery_layout($gallery_config)
+		->render($product);
+} catch (Throwable $e) {
 
-	error_log( 'DRO_PVVP Gallery Error: ' . $e->getMessage() );
-	add_filter( 'disable_variation_image_collections', '__return_true' );
+	error_log('DRO_PVVP Gallery Error: ' . $e->getMessage());
+	add_filter('disable_variation_image_collections', '__return_true');
 	// Load default WooCommerce product image template
-	wc_get_template( 'single-product/product-image.php' );
-	remove_filter( 'disable_variation_image_collections', '__return_true' );
+	wc_get_template('single-product/product-image.php');
+	remove_filter('disable_variation_image_collections', '__return_true');
 	return;
-
 }
 
 // Output the gallery
