@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace DRO\PVVP\Includes\Gallery\Factories;
 
 use DRO\PVVP\Includes\Gallery\Interfaces\DRO_PVVP_Gallery_Interface as Gallery_Interface;
-use DRO\PVVP\Includes\Gallery\Layouts\DRO_PVVP_Default_Gallery as Default_Gallery;
 use Exception;
 
 defined( 'ABSPATH' ) || exit;
@@ -41,7 +40,7 @@ class DRO_PVVP_Gallery_Factory {
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	private function __construct() {
 	}
 
 	/**
@@ -56,18 +55,19 @@ class DRO_PVVP_Gallery_Factory {
 	/**
 	 * Create gallery for product using configuration
 	 *
-	 * @param string $config Gallery configuration
+	 * @param array $gallery_config Gallery configuration
 	 * @return Gallery_Interface|null Gallery Layout or null if no variations
 	 * @throws Exception
 	 */
-	public function create_gallery_layout( string $layout ): Gallery_Interface {
+	public function create_gallery_layout( array $gallery_config ): Gallery_Interface {
+		$layout     = trim( strtolower( $gallery_config['layout'] ?? 'default' ) );
+		$class_name = '\\DRO\\PVVP\\Includes\\Gallery\\Layouts\\DRO_PVVP_' . ucfirst( $layout ) . '_Layout';
 
-		// Call Gallery layout
-		switch ( $layout ) {
-			case 'default':
-				return new Default_Gallery();
-			default:
-				throw new \InvalidArgumentException( "Unknown gallery layout: {$layout}" );
+		if ( class_exists( $class_name ) ) {
+			return new $class_name( $gallery_config );
 		}
+
+		error_log( "Gallery layout class not found: {$class_name}" );
+		throw new \InvalidArgumentException( "Unknown layout class: {$class_name}" );
 	}
 }

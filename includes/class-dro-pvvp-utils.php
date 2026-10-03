@@ -9,7 +9,7 @@
  * @package ProductVariationsViewPro\Includes
  * @author Younes DRO <younesdro@gmail.com>
  */
-
+declare(strict_types=1);
 namespace DRO\PVVP\Includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -62,7 +62,6 @@ class DRO_PVVP_Utils {
 				break;
 			default:
 				$value = null;
-
 		}
 	}
 }

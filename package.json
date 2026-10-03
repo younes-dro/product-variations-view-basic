@@ -35,12 +35,14 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --mode development",
     "build": "cross-env NODE_ENV=production webpack --mode production",
+    "build:both": "npm run build && npm run build:unminified",
+    "build:unminified": "cross-env NODE_ENV=development webpack --mode development --output-filename [name].js",
     "dev:settings": "cross-env NODE_ENV=development ENTRY=settings webpack",
     "build:settings": "cross-env NODE_ENV=production ENTRY=settings webpack",
-    "build:add-variation-images": "cross-env NODE_ENV=production ENTRY=dro-pvvp-add-variation-images webpack",
     "dev:add-variation-images": "cross-env NODE_ENV=development ENTRY=dro-pvvp-add-variation-images webpack",
-    "build:both": "npm run build && npm run build:unminified",
-    "build:unminified": "cross-env NODE_ENV=development webpack --mode development --output-filename [name].js"
+    "build:add-variation-images": "cross-env NODE_ENV=production ENTRY=dro-pvvp-add-variation-images webpack",
+    "dev:default-layout": "cross-env NODE_ENV=development ENTRY=default-layout webpack",
+    "build:default-layout": "cross-env NODE_ENV=production ENTRY=default-layout webpack"
   },
   "repository": {
     "type": "git",
@@ -55,9 +57,9 @@
   "author": "Younes DRO",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/younes-dro/product-variations-view-react/issues"
+    "url": "https://github.com/younes-dro/product-variations-view-basic/issues"
   },
-  "homepage": "https://github.com/younes-dro/product-variations-view-react#readme",
+  "homepage": "https://github.com/younes-dro/product-variations-view-basic#readme",
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
